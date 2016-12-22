@@ -1,16 +1,34 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.1-*",
   "buildOptions": {
     "debugType": "portable",
     "outputName": "Amplified.CSharp"
   },
   "dependencies": {
-    "JetBrains.Annotations": "10.2.1",
     "NETStandard.Library": "1.6.0"
   },
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "JetBrains.Annotations": "10.1.4"
+      }
+    },
+    "net45": {
+      "dependencies": {
+        "JetBrains.Annotations": "6.1.0"
+      }
     }
+  },
+  "packOptions": {
+    "licenseUrl": "https://github.com/Nillerr/Amplified.CSharp/blob/master/LICENSE",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Nillerr/Amplified.CSharp"
+    },
+    "owners": [ "nillerr" ],
+    "requireLicenseAcceptance": false,
+    "tags": [ "Functional", "Monad", "Monadic" ],
+    "summary": "Provides a set of monadic types for use with C#. These types provide null safety and functional chaining, to provider a functional-like programming style in C#."
   }
 }
