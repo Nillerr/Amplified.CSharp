@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1-*",
+  "version": "1.0.2-*",
   "buildOptions": {
     "debugType": "portable",
     "outputName": "Amplified.CSharp"
@@ -9,15 +9,7 @@
   },
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50",
-      "dependencies": {
-        "JetBrains.Annotations": "10.1.4"
-      }
-    },
-    "net45": {
-      "dependencies": {
-        "JetBrains.Annotations": "6.1.0"
-      }
+      "imports": "dnxcore50"
     }
   },
   "packOptions": {
