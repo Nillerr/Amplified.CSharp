@@ -45,6 +45,14 @@ namespace Amplified.CSharp
             return None;
         }
 
+        public Some<TResult> MatchToSome<TResult>(
+            [InstantHandle, NotNull] Func<T, TResult> some,
+            [InstantHandle, NotNull] Func<None, TResult> none
+        )
+        {
+            return IsSome ? some(_value) : none(CSharp.None.Instance);
+        }
+
         public TResult Match<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> some,
             [InstantHandle, NotNull] Func<None, TResult> none

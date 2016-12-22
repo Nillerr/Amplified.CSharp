@@ -10,6 +10,11 @@ namespace Amplified.CSharp.Extensions
             return selector();
         }
 
+        public static Some<TResult> ToSome<TResult>(this None source, [InstantHandle, NotNull] Func<None, TResult> selector)
+        {
+            return selector(source);
+        }
+
         public static Some<TResult> ToSome<TResult>(this None source, TResult result)
         {
             return result;

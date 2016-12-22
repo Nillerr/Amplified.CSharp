@@ -45,6 +45,22 @@ namespace Amplified.CSharp
         public bool IsLeft { get; }
         public bool IsRight { get; }
 
+        public Some<TResult> MatchToSome<TResult>(
+            [InstantHandle, NotNull] Func<TLeft, TResult> left,
+            [InstantHandle, NotNull] Func<TRight, TResult> right
+        )
+        {
+            if (IsLeft)
+            {
+                return left(_left);
+            }
+            if (IsRight)
+            {
+                return right(_right);
+            }
+            throw new InvalidOperationException();
+        }
+
         public TResult Match<TResult>(
             [InstantHandle, NotNull] Func<TLeft, TResult> left,
             [InstantHandle, NotNull] Func<TRight, TResult> right

@@ -35,6 +35,22 @@ namespace Amplified.CSharp
             return some.Value;
         }
 
+        public Some<TResult> MatchToSome<TResult>([InstantHandle, NotNull] Func<T, TResult> some)
+        {
+            return some(Value);
+        }
+
+        public TResult Match<TResult>([InstantHandle, NotNull] Func<T, TResult> some)
+        {
+            return some(Value);
+        }
+
+        public None Match([InstantHandle, NotNull] Action<T> some)
+        {
+            some(Value);
+            return None._;
+        }
+
         public bool Equals(Some<T> other)
         {
             return EqualityComparer<T>.Default.Equals(Value, other.Value);

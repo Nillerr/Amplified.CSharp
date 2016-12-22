@@ -58,6 +58,24 @@ namespace Amplified.CSharp
             return new Try<T>(exception);
         }
 
+        public Some<TResult> MatchToSome<TResult>(
+            [InstantHandle, NotNull] Func<T, TResult> result,
+            [InstantHandle, NotNull] Func<Exception, TResult> exception
+        )
+        {
+            if (IsResult)
+            {
+                return result(_result);
+            }
+
+            if (IsException)
+            {
+                return exception(_exception);
+            }
+
+            throw new InvalidOperationException($"The {nameof(Try<TResult>)} was created without a value.");
+        }
+
         public TResult Match<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> result,
             [InstantHandle, NotNull] Func<Exception, TResult> exception
@@ -99,7 +117,7 @@ namespace Amplified.CSharp
         public Try<T> Catch<TException>([InstantHandle, NotNull] Action<TException> @catch)
             where TException : Exception
         {
-            return Match<Try<T>>(
+            return Match(
                 Try.Result,
                 exception =>
                 {

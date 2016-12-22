@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Amplified.CSharp
 {
@@ -19,6 +20,11 @@ namespace Amplified.CSharp
         ///     Alawys returns <c>true</c>.
         /// </summary>
         public bool IsNone => true;
+
+        public TResult Match<TResult>([InstantHandle, NotNull] Func<None, TResult> none)
+        {
+            return none(this);
+        }
 
         public bool Equals(None other)
         {
