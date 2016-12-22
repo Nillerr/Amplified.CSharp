@@ -1,6 +1,6 @@
 # Amplified.CSharp
 
-[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)]()
+[![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg)]()
 
 Provides a set of monadic types for use with C#.
 
