@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Aplified.CSharp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides a set of monadic types for use with C#. These types provide null safety and functional chaining, to provider a functional-like programming style in C#. All the monads are structs, which enforces their non-null behaviour.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Nicklas Jensen")]
 [assembly: AssemblyProduct("Aplified.CSharp")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2016 Nicklas Jensen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
