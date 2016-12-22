@@ -96,6 +96,23 @@ namespace Amplified.CSharp
             return None._;
         }
 
+        public Try<T> Catch<TException>([InstantHandle, NotNull] Action<TException> @catch)
+            where TException : Exception
+        {
+            return Match<Try<T>>(
+                Try.Result,
+                exception =>
+                {
+                    var ex = exception as TException;
+                    if (ex != null)
+                    {
+                        @catch(ex);
+                    }
+                    return Try.Exception<T>(exception);
+                }
+            );
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
