@@ -1,5 +1,7 @@
 # Amplified.CSharp
 
+[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)]()
+
 Provides a set of monadic types for use with C#.
 
  - `None`
@@ -10,6 +12,14 @@ Provides a set of monadic types for use with C#.
 
 These types provide null safety and functional chaining, to provider a functional-like programming 
 style in C#. All the monads are structs, which enforces their non-`null` behaviour.
+
+## Installation
+
+The project is available as a [NuGet](https://www.nuget.org/packages/Amplified.CSharp) package.
+
+```
+Install-Package Amplified.CSharp
+```
 
 ## Null
 
