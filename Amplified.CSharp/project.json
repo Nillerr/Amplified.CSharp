@@ -10,7 +10,8 @@
   "frameworks": {
     "netstandard1.6": {
       "imports": "dnxcore50"
-    }
+    },
+    "net45": {}
   },
   "packOptions": {
     "licenseUrl": "https://github.com/Nillerr/Amplified.CSharp/blob/master/LICENSE",
