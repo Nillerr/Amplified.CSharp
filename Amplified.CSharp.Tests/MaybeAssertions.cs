@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using System;
+using Amplified.CSharp.Extensions;
+using Xunit;
 
 namespace Amplified.CSharp
 {
@@ -14,6 +16,11 @@ namespace Amplified.CSharp
         {
             Assert.Equal(source.IsNone, false);
             Assert.Equal(source.IsSome, true);
+        }
+
+        public static T OrFail<T>(this Maybe<T> source)
+        {
+            return source.OrThrow(() => new ArgumentException(nameof(source)));
         }
     }
 }
