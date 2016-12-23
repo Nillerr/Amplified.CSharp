@@ -155,12 +155,17 @@ namespace Amplified.CSharp
             return new Maybe<T>(value);
         }
 
-        public static Maybe<T> Some<T>(T value)
+        public static Maybe<T> Some<T>([NotNull] T value)
         {
             return new Maybe<T>(value);
         }
 
-        public static Maybe<T> OfNullable<T>(T value)
+        public static Maybe<T> None<T>()
+        {
+            return Maybe<T>.None;
+        }
+
+        public static Maybe<T> OfNullable<T>([CanBeNull] T value)
         {
             return value == null ? Maybe<T>.None : new Maybe<T>(value);
         }
