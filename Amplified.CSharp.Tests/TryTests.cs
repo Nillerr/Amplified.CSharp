@@ -1,4 +1,5 @@
 ﻿using System;
+using Amplified.CSharp.Extensions;
 using Xunit;
 
 namespace Amplified.CSharp

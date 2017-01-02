@@ -46,6 +46,24 @@ namespace Amplified.CSharp.Extensions
             return source.ExpectResult();
         }
 
+        public static T OrThrow<T>(this Try<T> source, Func<Exception> exception)
+        {
+            if (source.IsException)
+            {
+                throw exception();
+            }
+            return source.ExpectResult();
+        }
+
+        public static T OrThrow<T>(this Try<T> source, Exception exception)
+        {
+            if (source.IsException)
+            {
+                throw exception;
+            }
+            return source.ExpectResult();
+        }
+
         private static Exception ExpectException<T>(this Try<T> source)
         {
             return source.Exception()
