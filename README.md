@@ -11,7 +11,7 @@ Provides a set of monadic types for use with C#.
  - `Try<T>`
 
 These types provide null safety and functional chaining, to provider a functional-like programming 
-style in C#. All the monads are structs, which enforces their non-`null` behaviour.
+style in C#. All the monads are structs, ensuring they themselves will never be null when passed around.
 
 ## Installation
 
@@ -29,6 +29,29 @@ The monads does not accept `null` values. Creating an instance of one of the mon
 ## Type Token
 
  - `Type<T>`
+ 
+## Monads
+
+### Maybe
+
+```C#
+interface IProductRepository
+{
+    Maybe<Product> Product(int id);
+}
+
+class Program 
+{
+    IProductRepository _products;
+
+    IEnumerable<Product> GetRelatedProducts(int productId)
+    {
+        return _products.Product(productId)
+            .Select(product => product.RelatedProducts)
+            .OrReturn(Enumerable.Empty<Product>());
+    }
+}
+```
 
 ## License
 
