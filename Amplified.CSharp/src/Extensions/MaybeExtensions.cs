@@ -11,7 +11,7 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Match<Maybe<TResult>>(
                 some => mapper(some), // Result is implicitly converted to Maybe
-                none => none // None is implicitly converter to Maybe
+                none => none // None is implicitly converted to Maybe
             );
         }
 
