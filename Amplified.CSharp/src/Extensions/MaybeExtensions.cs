@@ -30,17 +30,26 @@ namespace Amplified.CSharp.Extensions
 
         public static T OrReturn<T>(this Maybe<T> source, T value)
         {
-            return source.OrSome(value);
+            return source.Match(
+                some => some,
+                none => value
+            );
         }
 
         public static T OrGet<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<T> value)
         {
-            return source.OrSome(value);
+            return source.Match(
+                some => some,
+                none => value()
+            );
         }
 
         public static T OrDefault<T>(this Maybe<T> source)
         {
-            return source.OrReturn(default(T));
+            return source.Match(
+                some => some,
+                none => default(T)
+            );
         }
 
         public static T OrThrow<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<Exception> exception)
