@@ -16,7 +16,7 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static Maybe<T> Filter<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<T, bool> predicate)
+        public static Maybe<T> Where<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<T, bool> predicate)
         {
             return source.FlatMap(some => predicate(some) ? Maybe.Some(some) : Maybe<T>.None);
         }
