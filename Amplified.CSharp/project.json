@@ -1,5 +1,5 @@
 {
-  "version": "1.0.8-*",
+  "version": "1.0.9-*",
   "buildOptions": {
     "debugType": "portable",
     "outputName": "Amplified.CSharp"
@@ -22,6 +22,6 @@
     "owners": [ "nillerr" ],
     "requireLicenseAcceptance": false,
     "tags": [ "Functional", "Monad", "Monadic" ],
-    "summary": "Provides a set of monadic types for use with C#. These types provide null safety and functional chaining, to provider a functional-like programming style in C#."
+    "summary": "Provides a set of types that provide null safety and functional chaining, to enable a functional-like programming style in C#."
   }
 }
