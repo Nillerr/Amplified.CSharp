@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace JetBrains.Annotations
 {
@@ -16,7 +15,6 @@ namespace JetBrains.Annotations
     /// }
     /// </code></example>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.GenericParameter)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
     internal sealed class CanBeNullAttribute : Attribute
     {
     }

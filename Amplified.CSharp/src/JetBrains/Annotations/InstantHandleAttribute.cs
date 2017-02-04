@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace JetBrains.Annotations
 {
@@ -9,7 +8,6 @@ namespace JetBrains.Annotations
     /// If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
     internal sealed class InstantHandleAttribute : Attribute
     {
     }
