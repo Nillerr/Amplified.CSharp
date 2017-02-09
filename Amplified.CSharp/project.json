@@ -1,5 +1,5 @@
 {
-  "version": "1.0.9-*",
+  "version": "1.0.10",
   "buildOptions": {
     "debugType": "portable",
     "outputName": "Amplified.CSharp"
@@ -15,6 +15,7 @@
   },
   "packOptions": {
     "licenseUrl": "https://github.com/Nillerr/Amplified.CSharp/blob/master/LICENSE",
+    "projectUrl": "https://github.com/Nillerr/Amplified.CSharp",
     "repository": {
       "type": "git",
       "url": "https://github.com/Nillerr/Amplified.CSharp"
