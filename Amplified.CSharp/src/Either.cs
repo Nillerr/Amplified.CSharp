@@ -97,6 +97,14 @@ namespace Amplified.CSharp
             return None._;
         }
 
+        public TResult Cast<TResult>()
+        {
+            return Match(
+                left => (TResult) Convert.ChangeType(left, typeof(TResult)),
+                right => (TResult) Convert.ChangeType(right, typeof(TResult))
+            );
+        }
+
         public bool Equals(Either<TLeft, TRight> other)
         {
             return IsLeft == other.IsLeft && IsRight == other.IsRight &&
@@ -179,7 +187,7 @@ namespace Amplified.CSharp
             return new Either<TLeft, TRight>(right);
         }
 
-        public static Either<TLeft, TRight> Right<TLeft, TRight>(TRight right, Type<TRight> type)
+        public static Either<TLeft, TRight> Right<TLeft, TRight>(TRight right, Type<TLeft> left)
         {
             return new Either<TLeft, TRight>(right);
         }
