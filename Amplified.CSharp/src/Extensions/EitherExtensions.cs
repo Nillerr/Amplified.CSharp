@@ -32,5 +32,15 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Map(left => left, mapper);
         }
+
+        public static TResult Cast<TLeft, TRight, TResult>(this Either<TLeft, TRight> source, Type<TResult> type)
+            where TLeft : TResult
+            where TRight : TResult
+        {
+            return source.Match(
+                left => (TResult) left,
+                right => (TResult) right
+            );
+        }
     }
 }
