@@ -61,13 +61,28 @@ namespace Amplified.CSharp.Extensions
             return source.OrDefault();
         }
 
-        public static T OrThrow<T>(this Maybe<T> source, [InstantHandle, NotNull] Exception exception)
+        public static T OrThrow<T>(this Maybe<T> source, [NotNull] Exception exception)
         {
             if (source.IsNone)
             {
                 throw exception;
             }
             return source.OrDefault();
+        }
+
+        public static Maybe<T> Or<T>(this Maybe<T> source, Maybe<T> other)
+        {
+            return source.Match(some => some, none => other);
+        }
+
+        public static Maybe<T> Or<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<Maybe<T>> other)
+        {
+            return source.Match(some => some, none => other());
+        }
+
+        public static Maybe<T> Or<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<None, Maybe<T>> other)
+        {
+            return source.Match(some => some, other);
         }
 
         public static Maybe<TResult> Zip<TFirst, TSecond, TResult>(
