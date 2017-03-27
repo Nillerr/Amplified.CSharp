@@ -88,7 +88,7 @@ namespace Amplified.CSharp
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
                    (obj is Some<T> && Equals((Some<T>) obj)) ||
-                   (obj is None && Equals((None) obj));
+                   (obj is CSharp.None && Equals((None) obj));
         }
 
         public override int GetHashCode()
