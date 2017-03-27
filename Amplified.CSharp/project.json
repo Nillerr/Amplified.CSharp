@@ -5,10 +5,9 @@
     "outputName": "Amplified.CSharp"
   },
   "frameworks": {
-    "netstandard1.6": {
-      "imports": "netcoreapp1.0",
+    "netstandard1.4": {
        "dependencies": {
-         "NETStandard.Library": "1.6.0"
+         "NETStandard.Library": "1.4.0"
        }
     },
     "net45": {}
