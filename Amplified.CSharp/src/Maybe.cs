@@ -80,7 +80,7 @@ namespace Amplified.CSharp
         public bool Equals(Maybe<T> other)
         {
             return (IsNone && other.IsNone) ||
-                   (IsSome && IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
+                   (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
         }
 
         public override bool Equals(object obj)
