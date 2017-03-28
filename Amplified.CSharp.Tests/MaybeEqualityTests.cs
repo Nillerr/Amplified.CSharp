@@ -15,6 +15,16 @@ namespace Amplified.CSharp
         }
 
         [Fact]
+        public void MaybeSome_IsNotEqualTo_SimpleDefaultMaybe()
+        {
+            var explicitSome = Maybe.Some(0);
+            var implicitNone = default(Maybe<int>);
+            Assert.NotEqual(explicitSome, implicitNone);
+            Assert.False(explicitSome == implicitNone);
+            Assert.True(explicitSome != implicitNone);
+        }
+
+        [Fact]
         public void MaybeNone_IsEqualTo_None()
         {
             var maybe = Maybe<int>.None;

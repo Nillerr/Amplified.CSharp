@@ -80,7 +80,7 @@ namespace Amplified.CSharp
         public bool Equals(Maybe<T> other)
         {
             return (IsNone && other.IsNone) ||
-                   (IsSome && IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
+                   (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
         }
 
         public override bool Equals(object obj)
@@ -165,9 +165,14 @@ namespace Amplified.CSharp
             return Maybe<T>.None;
         }
 
-        public static Maybe<T> OfNullable<T>([CanBeNull] T value)
+        public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
         {
             return value == null ? Maybe<T>.None : new Maybe<T>(value);
+        }
+
+        public static Maybe<T> OfNullable<T>([CanBeNull] T? value) where T : struct
+        {
+            return value.HasValue ? new Maybe<T>(value.Value) : Maybe<T>.None;
         }
     }
 }
