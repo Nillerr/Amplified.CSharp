@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg)]()
 
-Provides a set of types for use with C#.
+Provides a set of types that enables you to write expressive C# code.
 
  - `None`
  - `Some<T>`
@@ -10,8 +10,9 @@ Provides a set of types for use with C#.
  - `Either<TLeft, TRight>`
  - `Try<T>`
 
-These types provide `null` safety and functional chaining, to provider a functional-like programming 
-style in C#. All the types are structs, ensuring they themselves will never be `null` when passed around.
+The primary type is the `Maybe<T>` type, which can make method signatures more expressive, both in input 
+and output. The types offers a series of extension methods, that enables you to create a chain of filters 
+and modifications, and eventually extract the value stored within.
 
 ## Installation
 
