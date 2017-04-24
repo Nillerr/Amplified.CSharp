@@ -1,18 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.0.0
-MinimumVisualStudioVersion = 10.0.0.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Amplified.CSharp", "Amplified.CSharp\Amplified.CSharp.xproj", "{7CB9E50E-6497-4D46-B175-F57106200483}"
-EndProject
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{793D8AC6-99DD-4509-91F2-B21EA68CDC72}"
-ProjectSection(SolutionItems) = preProject
-	LICENSE = LICENSE
-	README.md = README.md
-	.gitignore = .gitignore
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Amplified.CSharp.Tests", "Amplified.CSharp.Tests\Amplified.CSharp.Tests.xproj", "{AFB3BADB-E2E1-4219-BE2D-C7B8B72F1766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amplified.CSharp", "Amplified.CSharp\Amplified.CSharp.csproj", "{7CB9E50E-6497-4D46-B175-F57106200483}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amplified.CSharp.Tests", "Amplified.CSharp.Tests\Amplified.CSharp.Tests.csproj", "{AFB3BADB-E2E1-4219-BE2D-C7B8B72F1766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
