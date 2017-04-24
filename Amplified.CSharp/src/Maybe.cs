@@ -30,7 +30,7 @@ namespace Amplified.CSharp
         public bool IsSome { get; }
         public bool IsNone => IsSome == false;
 
-        public static implicit operator Maybe<T>(T some)
+        public static implicit operator Maybe<T>([NotNull] T some)
         {
             return new Maybe<T>(some);
         }
@@ -45,6 +45,7 @@ namespace Amplified.CSharp
             return None;
         }
 
+        [Obsolete("Use " + nameof(Match) + " combined with " + nameof(AnyExtensions.ToSome) + " instead")]
         public Some<TResult> MatchToSome<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> some,
             [InstantHandle, NotNull] Func<None, TResult> none
@@ -59,6 +60,22 @@ namespace Amplified.CSharp
         )
         {
             return IsSome ? some(_value) : none(CSharp.None.Instance);
+        }
+
+        public None Match(
+            [InstantHandle, CanBeNull] Func<T, None> some = null,
+            [InstantHandle, CanBeNull] Func<None, None> none = null
+        )
+        {
+            if (IsSome)
+            {
+                some?.Invoke(_value);
+            }
+            else
+            {
+                none?.Invoke(CSharp.None.Instance);
+            }
+            return CSharp.None.Instance;
         }
 
         public None Match(
@@ -88,7 +105,7 @@ namespace Amplified.CSharp
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
                    (obj is Some<T> && Equals((Some<T>) obj)) ||
-                   (obj is CSharp.None && Equals((None) obj));
+                   (obj is None && Equals((None) obj));
         }
 
         public override int GetHashCode()

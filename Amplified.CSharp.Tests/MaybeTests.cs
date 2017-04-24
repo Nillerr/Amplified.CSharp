@@ -1,4 +1,5 @@
 ﻿using System;
+using Amplified.CSharp.Extensions;
 using Xunit;
 
 namespace Amplified.CSharp
@@ -95,10 +96,11 @@ namespace Amplified.CSharp
         {
             var expected = Some._(43);
             var result = Maybe.Some(1)
-                .MatchToSome(
+                .Match(
                     some => expected.Value,
                     none => 2
-                );
+                )
+                .ToSome();
             Assert.Equal(expected, result);
         }
 
