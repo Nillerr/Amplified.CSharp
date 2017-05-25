@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -9,9 +10,9 @@ namespace Amplified.CSharp.Extensions
             this Maybe<T> source,
             [InstantHandle, NotNull] Func<T, TResult> mapper)
         {
-            return source.Match<Maybe<TResult>>(
-                some => mapper(some), // Result is implicitly converted to Maybe
-                none => none // None is implicitly converted to Maybe
+            return source.Match(
+                some => Some(mapper(some)),
+                none => Maybe<TResult>.None
             );
         }
 
@@ -20,12 +21,12 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T, Maybe<TResult>> mapper
         )
         {
-            return source.Match(mapper, none => none);
+            return source.Match(mapper, none => Maybe<TResult>.None);
         }
 
         public static Maybe<T> Filter<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<T, bool> predicate)
         {
-            return source.FlatMap(some => predicate(some) ? Maybe.Some(some) : Maybe<T>.None);
+            return source.FlatMap(some => predicate(some) ? Some(some) : Maybe<T>.None);
         }
 
         public static T OrReturn<T>(this Maybe<T> source, T value)
@@ -54,46 +55,44 @@ namespace Amplified.CSharp.Extensions
 
         public static T OrThrow<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<Exception> exception)
         {
-            if (source.IsNone)
-            {
-                throw exception();
-            }
-            return source.OrDefault();
+            return source.Match(
+                some => some,
+                none => throw exception()
+            );
         }
 
         public static T OrThrow<T>(this Maybe<T> source, [NotNull] Exception exception)
         {
-            if (source.IsNone)
-            {
-                throw exception;
-            }
-            return source.OrDefault();
+            return source.Match(
+                some => some,
+                none => throw exception
+            );
         }
 
         public static Maybe<T> Or<T>(this Maybe<T> source, Maybe<T> other)
         {
-            return source.Match(some => some, none => other);
+            return source.Match(Some, none => other);
         }
 
         public static Maybe<T> Or<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<Maybe<T>> other)
         {
-            return source.Match(some => some, none => other());
+            return source.Match(Some, none => other());
         }
 
         public static Maybe<T> Or<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<None, Maybe<T>> other)
         {
-            return source.Match(some => some, other);
+            return source.Match(Some, other);
         }
 
-        public static Maybe<TResult> Zip<TFirst, TSecond, TResult>(
-            this Maybe<TFirst> first,
-            Maybe<TSecond> second,
-            [InstantHandle, NotNull] Func<TFirst, TSecond, TResult> zipper
+        public static Maybe<TResult> Zip<T1, T2, TResult>(
+            this Maybe<T1> first,
+            Maybe<T2> second,
+            [InstantHandle, NotNull] Func<T1, T2, TResult> zipper
         )
         {
-            return first.FlatMap(
-                some1 => second.FlatMap(
-                    some2 => Maybe.Some(zipper(some1, some2))
+            return first.FlatMap<T1, TResult>(
+                some1 => second.Map<T2, TResult>(
+                    some2 => zipper(some1, some2)
                 )
             );
         }
@@ -105,9 +104,9 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T1, T2, T3, TResult> zipper
         )
         {
-            return first.FlatMap(
-                some1 => second.FlatMap(
-                    some2 => third.FlatMap<T3, TResult>(
+            return first.FlatMap<T1, TResult>(
+                some1 => second.FlatMap<T2, TResult>(
+                    some2 => third.Map<T3, TResult>(
                         some3 => zipper(some1, some2, some3)
                     )
                 )
@@ -122,10 +121,10 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T1, T2, T3, T4, TResult> zipper
         )
         {
-            return first.FlatMap(
-                some1 => second.FlatMap(
-                    some2 => third.FlatMap(
-                        some3 => fourth.FlatMap<T4, TResult>(
+            return first.FlatMap<T1, TResult>(
+                some1 => second.FlatMap<T2, TResult>(
+                    some2 => third.FlatMap<T3, TResult>(
+                        some3 => fourth.Map<T4, TResult>(
                             some4 => zipper(some1, some2, some3, some4)
                         )
                     )

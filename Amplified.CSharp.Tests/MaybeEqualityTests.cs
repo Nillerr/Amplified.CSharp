@@ -1,3 +1,4 @@
+using Amplified.CSharp.Internal;
 using Xunit;
 
 namespace Amplified.CSharp

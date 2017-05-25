@@ -1,4 +1,5 @@
 using System;
+using Amplified.CSharp.Internal;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp
@@ -11,63 +12,55 @@ namespace Amplified.CSharp
     ///     may be some overhead associated with it. All <c>None</c>s are expectedly equal, and equality can be achieved
     ///     for other types by implementing <c>ICanBeNone</c> or <c>IMaybe</c>.
     /// </remarks>
-    public struct None : IEquatable<None>, IEquatable<ICanBeNone>, ICanBeNone
+    public struct None : ICanBeNone, IEquatable<None>, IEquatable<ICanBeNone>
     {
-        public static readonly None Instance = default(None);
-        public static readonly None _ = default(None);
-
-        /// <summary>
-        ///     Alawys returns <c>true</c>.
-        /// </summary>
+        [Pure]
         public bool IsNone => true;
-
+        
+        [Pure]
         public TResult Match<TResult>([InstantHandle, NotNull] Func<None, TResult> none)
         {
             return none(this);
         }
 
+        [Pure]
         public bool Equals(None other)
         {
             return true;
         }
 
+        [Pure]
         public bool Equals(ICanBeNone other)
         {
-            return other?.IsNone ?? false;
+            return other.IsNone;
         }
 
+        [Pure]
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return (obj is None && Equals((None) obj)) ||
-                   (obj is ICanBeNone && Equals((ICanBeNone) obj));
+            return obj is None && Equals((None) obj);
         }
 
+        [Pure]
         public override int GetHashCode()
         {
             return 0;
         }
 
+        [Pure]
         public static bool operator ==(None left, None right)
         {
             return left.Equals(right);
         }
 
+        [Pure]
         public static bool operator !=(None left, None right)
         {
             return !left.Equals(right);
         }
-
-        public static bool operator ==(None left, ICanBeNone right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(None left, ICanBeNone right)
-        {
-            return !left.Equals(right);
-        }
-
+        
+        [Pure]
         public override string ToString()
         {
             return nameof(None);

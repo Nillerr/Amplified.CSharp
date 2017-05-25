@@ -4,7 +4,7 @@
     {
         public static None ToNone<T>(this Maybe<T> source)
         {
-            return None._;
+            return default(None);
         }
     }
 }

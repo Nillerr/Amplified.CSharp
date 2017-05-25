@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -13,7 +14,7 @@ namespace Amplified.CSharp.Extensions
                 {
                     if (list.Count == 1)
                     {
-                        return Some._(list[0]);
+                        return Some(list[0]);
                     }
                 }
                 else
@@ -23,11 +24,11 @@ namespace Amplified.CSharp.Extensions
                         var result = enumerator.Current;
                         if (enumerator.MoveNext() == false)
                         {
-                            return Some._(result);
+                            return Some(result);
                         }
                     }
                 }
-                return None._;
+                return None;
             }
         }
 
@@ -40,14 +41,14 @@ namespace Amplified.CSharp.Extensions
                 {
                     if (list.Count > 0)
                     {
-                        return Some._(list[0]);
+                        return Some(list[0]);
                     }
                 }
                 else if (enumerator.MoveNext())
                 {
-                    return Some._(enumerator.Current);
+                    return Some(enumerator.Current);
                 }
-                return None._;
+                return None;
             }
         }
 
@@ -61,14 +62,14 @@ namespace Amplified.CSharp.Extensions
                     var count = list.Count;
                     if (count > 0)
                     {
-                        return Some._(list[count - 1]);
+                        return Some(list[count - 1]);
                     }
                 }
 
                 var last = Maybe<T>.None;
                 while (enumerator.MoveNext())
                 {
-                    last = Some._(enumerator.Current);
+                    last = Some(enumerator.Current);
                 }
                 return last;
             }
@@ -81,7 +82,7 @@ namespace Amplified.CSharp.Extensions
             {
                 if (index < list.Count)
                 {
-                    return Some._(list[index]);
+                    return Some(list[index]);
                 }
             }
             else
@@ -90,23 +91,23 @@ namespace Amplified.CSharp.Extensions
                 {
                     while (true)
                     {
-                        if (enumerator.MoveNext() == false) return None._;
-                        if (index == 0) return Some._(enumerator.Current);
+                        if (enumerator.MoveNext() == false) return None;
+                        if (index == 0) return Some(enumerator.Current);
                         index--;
                     }
                 }
             }
-            return None._;
+            return None;
         }
 
         public static Maybe<TValue> Value<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Maybe.Some(source[key]) : Maybe<TValue>.None;
+            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None;
         }
 
         public static Maybe<TValue> Value<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Maybe.Some(source[key]) : Maybe<TValue>.None;
+            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None;
         }
     }
 }

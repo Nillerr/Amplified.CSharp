@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Amplified.CSharp.Extensions;
+using Amplified.CSharp.Internal;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp
@@ -10,142 +10,143 @@ namespace Amplified.CSharp
     ///     types, but being a <c>struct</c>, it can never be <c>null</c> itself (unless it is boxed).
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<Some<T>>, IEquatable<None>, ICanBeNone
+    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<None>, IEquatable<T>, IEquatable<ICanBeNone>
     {
-        public static readonly Maybe<T> None = default(Maybe<T>);
-
+        public static Maybe<T> None = default(Maybe<T>);
+        
         private readonly T _value;
 
         public Maybe(T value) : this()
         {
             if (value == null)
-            {
                 throw new ArgumentNullException(nameof(value));
-            }
 
             _value = value;
             IsSome = true;
         }
 
-        public bool IsSome { get; }
-        public bool IsNone => IsSome == false;
-
-        public static implicit operator Maybe<T>([NotNull] T some)
-        {
-            return new Maybe<T>(some);
-        }
-
-        public static implicit operator Maybe<T>(Some<T> some)
-        {
-            return new Maybe<T>(some);
-        }
-
+        [Pure]
         public static implicit operator Maybe<T>(None none)
         {
-            return None;
+            return default(Maybe<T>);
         }
 
-        [Obsolete("Use " + nameof(Match) + " combined with " + nameof(AnyExtensions.ToSome) + " instead")]
-        public Some<TResult> MatchToSome<TResult>(
-            [InstantHandle, NotNull] Func<T, TResult> some,
-            [InstantHandle, NotNull] Func<None, TResult> none
-        )
-        {
-            return IsSome ? some(_value) : none(CSharp.None.Instance);
-        }
+        [Pure]
+        public bool IsSome { get; }
+        
+        [Pure]
+        public bool IsNone => IsSome == false;
 
+        [Pure]
         public TResult Match<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> some,
             [InstantHandle, NotNull] Func<None, TResult> none
         )
         {
-            return IsSome ? some(_value) : none(CSharp.None.Instance);
+            return IsSome ? some(_value) : none(default(None));
         }
 
-        public None Match(
-            [InstantHandle, CanBeNull] Func<T, None> some = null,
-            [InstantHandle, CanBeNull] Func<None, None> none = null
-        )
-        {
-            if (IsSome)
-            {
-                some?.Invoke(_value);
-            }
-            else
-            {
-                none?.Invoke(CSharp.None.Instance);
-            }
-            return CSharp.None.Instance;
-        }
-
-        public None Match(
-            [InstantHandle, CanBeNull] Action<T> some = null,
-            [InstantHandle, CanBeNull] Action none = null
-        )
-        {
-            if (IsSome)
-            {
-                some?.Invoke(_value);
-            }
-            else
-            {
-                none?.Invoke();
-            }
-            return CSharp.None.Instance;
-        }
-
+        [Pure]
         public bool Equals(Maybe<T> other)
         {
             return (IsNone && other.IsNone) ||
                    (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
         }
 
-        public override bool Equals(object obj)
+        [Pure]
+        public bool Equals(None other)
+        {
+            return IsNone;
+        }
+
+        [Pure]
+        public bool Equals([NotNull] ICanBeNone other)
+        {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
+            
+            return IsNone && other.IsNone;
+        }
+
+        [Pure]
+        public bool Equals([NotNull] T other)
+        {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
+
+            return IsSome && EqualityComparer<T>.Default.Equals(_value, other);
+        }
+
+        [Pure]
+        public override bool Equals([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is Some<T> && Equals((Some<T>) obj)) ||
-                   (obj is None && Equals((None) obj));
+                   (obj is None && Equals((None) obj)) ||
+                   (obj is T && Equals((T) obj)) ||
+                   (obj is ICanBeNone && Equals((ICanBeNone) obj));
         }
 
+        [Pure]
         public override int GetHashCode()
         {
+            if (IsNone) return 0;
+            
             unchecked
             {
                 return (EqualityComparer<T>.Default.GetHashCode(_value) * 397) ^ IsSome.GetHashCode();
             }
         }
 
+        [Pure]
         public static bool operator ==(Maybe<T> left, Maybe<T> right)
         {
             return left.Equals(right);
         }
 
+        [Pure]
         public static bool operator !=(Maybe<T> left, Maybe<T> right)
         {
             return !left.Equals(right);
         }
 
-        public static bool operator ==(Maybe<T> left, Some<T> right)
+        [Pure]
+        public static bool operator ==(Maybe<T> left, [NotNull] T right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Maybe<T> left, Some<T> right)
+        [Pure]
+        public static bool operator !=(Maybe<T> left, [NotNull] T right)
         {
             return !left.Equals(right);
         }
 
+        [Pure]
         public static bool operator ==(Maybe<T> left, None right)
         {
             return left.Equals(right);
         }
 
+        [Pure]
         public static bool operator !=(Maybe<T> left, None right)
         {
             return !left.Equals(right);
         }
 
+        [Pure]
+        public static bool operator ==(Maybe<T> left, [NotNull] ICanBeNone right)
+        {
+            return left.Equals(right);
+        }
+
+        [Pure]
+        public static bool operator !=(Maybe<T> left, [NotNull] ICanBeNone right)
+        {
+            return !left.Equals(right);
+        }
+
+        [Pure]
         public override string ToString()
         {
             return Match(
@@ -153,34 +154,13 @@ namespace Amplified.CSharp
                 none => "None"
             );
         }
-
-        public bool Equals(Some<T> other)
-        {
-            return Equals(other.ToMaybe());
-        }
-
-        public bool Equals(None other)
-        {
-            return Equals(other.ToMaybe<T>());
-        }
     }
 
     public static class Maybe
     {
-        public static Maybe<T> Some<T>(Some<T> value)
-        {
-            return new Maybe<T>(value);
-        }
+        public static Maybe<T> Some<T>([NotNull] T value) => new Maybe<T>(value);
 
-        public static Maybe<T> Some<T>([NotNull] T value)
-        {
-            return new Maybe<T>(value);
-        }
-
-        public static Maybe<T> None<T>()
-        {
-            return Maybe<T>.None;
-        }
+        public static None None() => default(None);
 
         public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
         {
