@@ -20,12 +20,12 @@ namespace Amplified.CSharp.Extensions
 
         public static Task<Maybe<T>> ToTask<T>(this AsyncMaybe<T> source)
         {
-            return source.Match(Some, none => Maybe<T>.None);
+            return source.Match(some: Some, none: none => Maybe<T>.None);
         }
 
         public static AsyncMaybe<T> Fold<T>(this Task<AsyncMaybe<T>> source)
         {
-            return new AsyncMaybe<T>(source.Then(it => it.Match(Some, none => none)));
+            return new AsyncMaybe<T>(source.Then(it => it.Match(some: Some, none: none => none)));
         }
 
         public static AsyncMaybe<TResult> Map<T, TResult>(
@@ -154,16 +154,16 @@ namespace Amplified.CSharp.Extensions
         public static AsyncMaybe<T> Or<T>(this AsyncMaybe<T> source, AsyncMaybe<T> other)
         {
             return source.Match(
-                Some,
-                none => other.ToTask()
+                some: Some,
+                noneAsync: none => other.ToTask()
             ).ToMaybeTask();
         }
 
         public static AsyncMaybe<T> Or<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<AsyncMaybe<T>> other)
         {
             return source.Match(
-                Some,
-                none => other().ToTask()
+                some: Some,
+                noneAsync: none => other().ToTask()
             ).ToMaybeTask();
         }
 
@@ -242,25 +242,25 @@ namespace Amplified.CSharp.Extensions
                     )
                 )
             );
+        }
 
-            public static AsyncMaybe<TResult> Zip<T1, T2, T3, T4, TResult>(
-                this AsyncMaybe<T1> first,
-                AsyncMaybe<T2> second,
-                AsyncMaybe<T3> third,
-                AsyncMaybe<T4> fourth,
-                [InstantHandle, NotNull] Func<T1, T2, T3, T4, Task<TResult>> zipper
-            )
-            {
-                return first.FlatMap<T1, TResult>(
-                    some1 => second.FlatMap<T2, TResult>(
-                        some2 => third.FlatMap<T3, TResult>(
-                            some3 => fourth.Map<T4, TResult>(
-                                some4 => zipper(some1, some2, some3, some4)
-                            )
+        public static AsyncMaybe<TResult> Zip<T1, T2, T3, T4, TResult>(
+            this AsyncMaybe<T1> first,
+            AsyncMaybe<T2> second,
+            AsyncMaybe<T3> third,
+            AsyncMaybe<T4> fourth,
+            [InstantHandle, NotNull] Func<T1, T2, T3, T4, Task<TResult>> zipper
+        )
+        {
+            return first.FlatMap<T1, TResult>(
+                some1 => second.FlatMap<T2, TResult>(
+                    some2 => third.FlatMap<T3, TResult>(
+                        some3 => fourth.Map<T4, TResult>(
+                            some4 => zipper(some1, some2, some3, some4)
                         )
                     )
-                );
-            }
+                )
+            );
         }
     }
 }

@@ -12,6 +12,7 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <RootNamespace>Amplified.CSharp</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Amplified.CSharp\Amplified.CSharp.csproj" />

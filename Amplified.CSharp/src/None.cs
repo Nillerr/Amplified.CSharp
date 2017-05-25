@@ -30,8 +30,11 @@ namespace Amplified.CSharp
         }
 
         [Pure]
-        public bool Equals(ICanBeNone other)
+        public bool Equals([NotNull] ICanBeNone other)
         {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
+            
             return other.IsNone;
         }
 
@@ -56,6 +59,18 @@ namespace Amplified.CSharp
 
         [Pure]
         public static bool operator !=(None left, None right)
+        {
+            return !left.Equals(right);
+        }
+
+        [Pure]
+        public static bool operator ==(None left, [NotNull] ICanBeNone right)
+        {
+            return left.Equals(right);
+        }
+
+        [Pure]
+        public static bool operator !=(None left, [NotNull] ICanBeNone right)
         {
             return !left.Equals(right);
         }

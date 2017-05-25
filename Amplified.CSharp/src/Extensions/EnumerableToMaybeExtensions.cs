@@ -28,7 +28,7 @@ namespace Amplified.CSharp.Extensions
                         }
                     }
                 }
-                return None;
+                return Maybe<T>.None;
             }
         }
 
@@ -48,7 +48,7 @@ namespace Amplified.CSharp.Extensions
                 {
                     return Some(enumerator.Current);
                 }
-                return None;
+                return Maybe<T>.None;
             }
         }
 
@@ -91,13 +91,13 @@ namespace Amplified.CSharp.Extensions
                 {
                     while (true)
                     {
-                        if (enumerator.MoveNext() == false) return None;
+                        if (enumerator.MoveNext() == false) return Maybe<T>.None;
                         if (index == 0) return Some(enumerator.Current);
                         index--;
                     }
                 }
             }
-            return None;
+            return Maybe<T>.None;
         }
 
         public static Maybe<TValue> Value<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)

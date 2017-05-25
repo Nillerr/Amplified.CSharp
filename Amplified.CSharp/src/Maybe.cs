@@ -10,7 +10,7 @@ namespace Amplified.CSharp
     ///     types, but being a <c>struct</c>, it can never be <c>null</c> itself (unless it is boxed).
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<None>, IEquatable<T>, IEquatable<ICanBeNone>
+    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<None>, ICanBeNone
     {
         public static Maybe<T> None = default(Maybe<T>);
         
@@ -69,22 +69,11 @@ namespace Amplified.CSharp
         }
 
         [Pure]
-        public bool Equals([NotNull] T other)
-        {
-            if (other == null)
-                throw new ArgumentNullException(nameof(other));
-
-            return IsSome && EqualityComparer<T>.Default.Equals(_value, other);
-        }
-
-        [Pure]
         public override bool Equals([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is None && Equals((None) obj)) ||
-                   (obj is T && Equals((T) obj)) ||
-                   (obj is ICanBeNone && Equals((ICanBeNone) obj));
+                   (obj is None && Equals((None) obj));
         }
 
         [Pure]
@@ -111,18 +100,6 @@ namespace Amplified.CSharp
         }
 
         [Pure]
-        public static bool operator ==(Maybe<T> left, [NotNull] T right)
-        {
-            return left.Equals(right);
-        }
-
-        [Pure]
-        public static bool operator !=(Maybe<T> left, [NotNull] T right)
-        {
-            return !left.Equals(right);
-        }
-
-        [Pure]
         public static bool operator ==(Maybe<T> left, None right)
         {
             return left.Equals(right);
@@ -133,19 +110,7 @@ namespace Amplified.CSharp
         {
             return !left.Equals(right);
         }
-
-        [Pure]
-        public static bool operator ==(Maybe<T> left, [NotNull] ICanBeNone right)
-        {
-            return left.Equals(right);
-        }
-
-        [Pure]
-        public static bool operator !=(Maybe<T> left, [NotNull] ICanBeNone right)
-        {
-            return !left.Equals(right);
-        }
-
+        
         [Pure]
         public override string ToString()
         {

@@ -1,20 +1,9 @@
-using Amplified.CSharp.Internal;
 using Xunit;
 
 namespace Amplified.CSharp
 {
     public class MaybeEqualityTests
     {
-        [Fact]
-        public void MaybeSome_IsEqualTo_Some()
-        {
-            var maybe = Maybe.Some(2);
-            var some = Some._(2);
-            Assert.Equal(maybe, some);
-            Assert.True(maybe == some);
-            Assert.False(maybe != some);
-        }
-
         [Fact]
         public void MaybeSome_IsNotEqualTo_SimpleDefaultMaybe()
         {
@@ -29,7 +18,7 @@ namespace Amplified.CSharp
         public void MaybeNone_IsEqualTo_None()
         {
             var maybe = Maybe<int>.None;
-            var none = None._;
+            var none = default(None);
             Assert.Equal(maybe, none);
             Assert.True(maybe == none);
             Assert.False(maybe != none);
