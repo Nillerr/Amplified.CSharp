@@ -6,12 +6,12 @@ namespace Amplified.CSharp.Extensions
 {
     public static class TaskToAsyncMaybeExtensions
     {
-        public static AsyncMaybe<T> ToAsync<T>(this Task<Maybe<T>> source)
+        public static AsyncMaybe<T> ToAsyncMaybe<T>(this Task<Maybe<T>> source)
         {
             return new AsyncMaybe<T>(source);
         }
 
-        public static AsyncMaybe<T> ToAsync<T>(this Task<AsyncMaybe<T>> source)
+        public static AsyncMaybe<T> ToAsyncMaybe<T>(this Task<AsyncMaybe<T>> source)
         {
             return new AsyncMaybe<T>(source.Then(it => it.Match(some: Some, none: none => none)));
         }

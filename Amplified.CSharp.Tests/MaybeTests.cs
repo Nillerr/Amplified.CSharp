@@ -9,7 +9,7 @@ namespace Amplified.CSharp
         [Fact]
         public void ImplicitFromNone()
         {
-            Maybe<int> converted = None();
+            Maybe<int> converted = default(None);
             converted.AssertIsNone();
         }
 

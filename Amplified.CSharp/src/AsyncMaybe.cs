@@ -22,6 +22,9 @@ namespace Amplified.CSharp
         public Task<bool> IsSome => _valueTask?.Then(it => it.IsSome) ?? Task.FromResult(false);
 
         [NotNull]
+        public Task<bool> IsNone => _valueTask?.Then(it => it.IsNone) ?? Task.FromResult(false);
+
+        [NotNull]
         public Task<TResult> Match<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> some,
             [InstantHandle, NotNull] Func<None, TResult> none
@@ -94,6 +97,11 @@ namespace Amplified.CSharp
         )
         {
             return _valueTask?.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync)) ?? noneAsync();
+        }
+
+        public static implicit operator AsyncMaybe<T>(Maybe<T> source)
+        {
+            return new AsyncMaybe<T>(Task.FromResult(source));
         }
 
         public TaskAwaiter<Maybe<T>> GetAwaiter()

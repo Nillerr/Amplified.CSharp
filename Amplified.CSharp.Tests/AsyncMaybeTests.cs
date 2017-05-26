@@ -20,5 +20,13 @@ namespace Amplified.CSharp
 
             Assert.Equal(result, 3);
         }
+
+        [Fact]
+        public async Task MaybeToAsyncMaybe()
+        {
+            const int value = 2;
+            var result = await new Maybe<int>(value).ToAsync().OrFail();
+            Assert.Equal(result, value);
+        }
     }
 }
