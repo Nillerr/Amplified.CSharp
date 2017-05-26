@@ -14,7 +14,7 @@ namespace Amplified.CSharp.Extensions
         public static AsyncMaybe<TResult> Select<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<TResult>> mapper
-        ) => source.Map(mapper);
+        ) => source.MapAsync(mapper);
         
         public static AsyncMaybe<T> Where<T>(
             this AsyncMaybe<T> source,
@@ -24,6 +24,6 @@ namespace Amplified.CSharp.Extensions
         public static AsyncMaybe<T> Where<T>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<bool>> predicate
-        ) => source.Filter(predicate);
+        ) => source.FilterAsync(predicate);
     }
 }

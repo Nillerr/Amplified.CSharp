@@ -27,7 +27,7 @@ namespace Amplified.CSharp
         public async Task Async_OnSome_ReturnsResultOfSome()
         {
             const int expected = 123;
-            var result = await Some(expected).ToAsync().OrReturn(Task.FromResult(321));
+            var result = await Some(expected).ToAsync().OrReturnAsync(Task.FromResult(321));
             Assert.Equal(expected, result);
         }
         
@@ -35,7 +35,7 @@ namespace Amplified.CSharp
         public async Task Async_OnNone_ReturnsResultOfValue()
         {
             const int expected = 321;
-            var result = await Maybe<int>.None.ToAsync().OrReturn(Task.FromResult(expected));
+            var result = await Maybe<int>.None.ToAsync().OrReturnAsync(Task.FromResult(expected));
             Assert.Equal(expected, result);
         }
     }

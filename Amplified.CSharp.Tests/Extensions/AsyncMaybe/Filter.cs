@@ -49,7 +49,7 @@ namespace Amplified.CSharp
         public async Task Async_OnSome_WithTruePredicate_ReturnsSome()
         {
             var expected = new {Flag = Task.FromResult(true)};
-            var isSome = await Some(expected).ToAsync().Filter(async it => await it.Flag).IsSome;
+            var isSome = await Some(expected).ToAsync().FilterAsync(async it => await it.Flag).IsSome;
             Assert.True(isSome);
         }
         
@@ -57,7 +57,7 @@ namespace Amplified.CSharp
         public async Task Async_OnSome_WithFalsePredicate_ReturnsNone()
         {
             var expected = new {Flag = Task.FromResult(false)};
-            var isNone = await Some(expected).ToAsync().Filter(async it => await it.Flag).IsNone;
+            var isNone = await Some(expected).ToAsync().FilterAsync(async it => await it.Flag).IsNone;
             Assert.True(isNone);
         }
         
@@ -65,7 +65,7 @@ namespace Amplified.CSharp
         public async Task Async_OnNone_WithTruePredicate_ReturnsNone()
         {
             var expected = new {Flag = Task.FromResult(false)};
-            var isSome = await Some(expected).ToAsync().Filter(async it => await it.Flag).IsNone;
+            var isSome = await Some(expected).ToAsync().FilterAsync(async it => await it.Flag).IsNone;
             Assert.True(isSome);
         }
         
@@ -73,7 +73,7 @@ namespace Amplified.CSharp
         public async Task Async_OnNone_WithFalsePredicate_ReturnsNone()
         {
             var expected = new {Flag = Task.FromResult(false)};
-            var isNone = await Some(expected).ToAsync().Filter(async it => await it.Flag).IsNone;
+            var isNone = await Some(expected).ToAsync().FilterAsync(async it => await it.Flag).IsNone;
             Assert.True(isNone);
         }
         

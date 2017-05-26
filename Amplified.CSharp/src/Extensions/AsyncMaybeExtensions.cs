@@ -8,7 +8,7 @@ namespace Amplified.CSharp.Extensions
 {
     public static class AsyncMaybeExtensions
     {
-        public static AsyncMaybe<TResult> Map<T, TResult>(
+        public static AsyncMaybe<TResult> MapAsync<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<TResult>> mapperAsync)
         {
@@ -29,7 +29,7 @@ namespace Amplified.CSharp.Extensions
             return source.Match(mapper, none => Maybe<TResult>.None).ToAsyncMaybe();
         }
 
-        public static AsyncMaybe<TResult> FlatMap<T, TResult>(
+        public static AsyncMaybe<TResult> FlatMapAsync<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<Maybe<TResult>>> mapper)
         {
@@ -43,7 +43,7 @@ namespace Amplified.CSharp.Extensions
             return source.Match(mapper, none => AsyncMaybe<TResult>.None).ToAsyncMaybe();
         }
 
-        public static AsyncMaybe<TResult> FlatMap<T, TResult>(
+        public static AsyncMaybe<TResult> FlatMapAsync<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<AsyncMaybe<TResult>>> mapper)
         {
@@ -85,7 +85,7 @@ namespace Amplified.CSharp.Extensions
             ).ToAsyncMaybe();
         }
 
-        public static AsyncMaybe<T> Filter<T>(
+        public static AsyncMaybe<T> FilterAsync<T>(
             this AsyncMaybe<T> source,
             [InstantHandle, NotNull] Func<T, Task<bool>> predicate)
         {
@@ -106,7 +106,7 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static Task<T> OrReturn<T>(this AsyncMaybe<T> source, Task<T> value)
+        public static Task<T> OrReturnAsync<T>(this AsyncMaybe<T> source, Task<T> value)
         {
             return source.Match(
                 some => some,
@@ -122,7 +122,7 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static Task<T> OrGet<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<T>> value)
+        public static Task<T> OrGetAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<T>> value)
         {
             return source.Match(
                 some => some,
@@ -146,7 +146,15 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static async Task<T> OrThrow<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<Exception>> exception)
+        public static Task<T> OrThrow<T>(this AsyncMaybe<T> source, [NotNull] Exception exception)
+        {
+            return source.Match(
+                some => some,
+                none: _ => throw exception
+            );
+        }
+
+        public static async Task<T> OrThrowAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<Exception>> exception)
         {
             return await source.Match<T>(
                 some: some => some,
@@ -154,19 +162,11 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static async Task<T> OrThrow<T>(this AsyncMaybe<T> source, [NotNull] Task<Exception> exception)
+        public static async Task<T> OrThrowAsync<T>(this AsyncMaybe<T> source, [NotNull] Task<Exception> exception)
         {
             return await source.Match<T>(
                 some: some => some,
                 noneAsync: async _ => throw await exception
-            );
-        }
-
-        public static Task<T> OrThrow<T>(this AsyncMaybe<T> source, [NotNull] Exception exception)
-        {
-            return source.Match(
-                some => some,
-                none: _ => throw exception
             );
         }
 
@@ -186,6 +186,22 @@ namespace Amplified.CSharp.Extensions
             ).ToAsyncMaybe();
         }
 
+        public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<AsyncMaybe<T>>> other)
+        {
+            return source.Match(
+                some: some => Some(some).ToAsync(),
+                noneAsync: none => other()
+            ).ToAsyncMaybe();
+        }
+
+        public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<Maybe<T>>> other)
+        {
+            return source.Match(
+                some: Some,
+                noneAsync: none => other()
+            ).ToAsyncMaybe();
+        }
+
         public static AsyncMaybe<TResult> Zip<T1, T2, TResult>(
             this AsyncMaybe<T1> first,
             AsyncMaybe<T2> second,
@@ -199,14 +215,14 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static AsyncMaybe<TResult> Zip<T1, T2, TResult>(
+        public static AsyncMaybe<TResult> ZipAsync<T1, T2, TResult>(
             this AsyncMaybe<T1> first,
             AsyncMaybe<T2> second,
             [InstantHandle, NotNull] Func<T1, T2, Task<TResult>> zipper
         )
         {
             return first.FlatMap(
-                some1 => second.Map(
+                some1 => second.MapAsync(
                     some2 => zipper(some1, some2)
                 )
             );
@@ -228,7 +244,7 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static AsyncMaybe<TResult> Zip<T1, T2, T3, TResult>(
+        public static AsyncMaybe<TResult> ZipAsync<T1, T2, T3, TResult>(
             this AsyncMaybe<T1> first,
             AsyncMaybe<T2> second,
             AsyncMaybe<T3> third,
@@ -237,7 +253,7 @@ namespace Amplified.CSharp.Extensions
         {
             return first.FlatMap<T1, TResult>(
                 some1 => second.FlatMap<T2, TResult>(
-                    some2 => third.Map<T3, TResult>(
+                    some2 => third.MapAsync<T3, TResult>(
                         some3 => zipper(some1, some2, some3)
                     )
                 )
@@ -263,7 +279,7 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static AsyncMaybe<TResult> Zip<T1, T2, T3, T4, TResult>(
+        public static AsyncMaybe<TResult> ZipAsync<T1, T2, T3, T4, TResult>(
             this AsyncMaybe<T1> first,
             AsyncMaybe<T2> second,
             AsyncMaybe<T3> third,
@@ -274,7 +290,7 @@ namespace Amplified.CSharp.Extensions
             return first.FlatMap<T1, TResult>(
                 some1 => second.FlatMap<T2, TResult>(
                     some2 => third.FlatMap<T3, TResult>(
-                        some3 => fourth.Map<T4, TResult>(
+                        some3 => fourth.MapAsync<T4, TResult>(
                             some4 => zipper(some1, some2, some3, some4)
                         )
                     )

@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
+using JetBrains.Annotations;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -9,6 +11,36 @@ namespace Amplified.CSharp.Extensions
         public static AsyncMaybe<T> ToAsync<T>(this Maybe<T> source)
         {
             return new AsyncMaybe<T>(Task.FromResult(source));
+        }
+        
+        public static AsyncMaybe<TResult> MapAsync<T, TResult>(
+            this Maybe<T> source,
+            [InstantHandle, NotNull] Func<T, Task<TResult>> mapper)
+        {
+            return source.Match(
+                some => mapper(some).Then(Some),
+                none => Task.FromResult(Maybe<TResult>.None)
+            ).ToAsyncMaybe();
+        }
+        
+        public static AsyncMaybe<TResult> FlatMapAsync<T, TResult>(
+            this Maybe<T> source,
+            [InstantHandle, NotNull] Func<T, Task<Maybe<TResult>>> mapper)
+        {
+            return source.Match(
+                mapper,
+                none => Task.FromResult(Maybe<TResult>.None)
+            ).ToAsyncMaybe();
+        }
+        
+        public static AsyncMaybe<T> FilterAsync<T>(
+            this Maybe<T> source,
+            [InstantHandle, NotNull] Func<T, Task<bool>> predicate)
+        {
+            return source.Match(
+                some => predicate(some).Then(matches => matches ? Some(some) : Maybe<T>.None),
+                none => Task.FromResult(Maybe<T>.None)
+            ).ToAsyncMaybe();
         }
 
         public static Task<T> OrReturnAsync<T>(this Maybe<T> source, Task<T> other)
