@@ -7,6 +7,13 @@ namespace Amplified.CSharp
     public class MaybeTests
     {
         [Fact]
+        public void ImplicitFromNone()
+        {
+            Maybe<int> converted = None();
+            converted.AssertIsNone();
+        }
+
+        [Fact]
         public void DefaultValue_IsNone()
         {
             var maybe = default(Maybe<object>);

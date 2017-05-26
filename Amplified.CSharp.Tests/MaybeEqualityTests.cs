@@ -1,4 +1,5 @@
 using Xunit;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -7,7 +8,7 @@ namespace Amplified.CSharp
         [Fact]
         public void MaybeSome_IsNotEqualTo_SimpleDefaultMaybe()
         {
-            var explicitSome = Maybe.Some(0);
+            var explicitSome = Some(0);
             var implicitNone = default(Maybe<int>);
             Assert.NotEqual(explicitSome, implicitNone);
             Assert.False(explicitSome == implicitNone);
@@ -22,6 +23,18 @@ namespace Amplified.CSharp
             Assert.Equal(maybe, none);
             Assert.True(maybe == none);
             Assert.False(maybe != none);
+            Assert.True(maybe.Equals(none));
+        }
+
+        [Fact]
+        public void MaybeSome_IsNotEqualTo_None()
+        {
+            var maybe = Some(2);
+            var none = default(None);
+            Assert.Equal(maybe, none);
+            Assert.False(maybe == none);
+            Assert.True(maybe != none);
+            Assert.False(maybe.Equals(none));
         }
 
         [Fact]
@@ -32,36 +45,40 @@ namespace Amplified.CSharp
             Assert.Equal(lhs, rhs);
             Assert.True(lhs == rhs);
             Assert.False(lhs != rhs);
+            Assert.True(lhs.Equals(rhs));
         }
 
         [Fact]
         public void Some_IsEqualTo_Some_WithSameValue()
         {
-            var lhs = Maybe.Some(1);
-            var rhs = Maybe.Some(1);
+            var lhs = Some(1);
+            var rhs = Some(1);
             Assert.Equal(lhs, rhs);
             Assert.True(lhs == rhs);
             Assert.False(lhs != rhs);
+            Assert.True(lhs.Equals(rhs));
         }
 
         [Fact]
         public void Some_IsNotEqualTo_Some_WithDifferentValue()
         {
-            var lhs = Maybe.Some(1);
-            var rhs = Maybe.Some(2);
+            var lhs = Some(1);
+            var rhs = Some(2);
             Assert.NotEqual(lhs, rhs);
             Assert.False(lhs == rhs);
             Assert.True(lhs != rhs);
+            Assert.False(lhs.Equals(rhs));
         }
 
         [Fact]
         public void Some_IsNotEqualTo_None()
         {
-            var some = Maybe.Some(1);
+            var some = Some(1);
             var none = Maybe<int>.None;
             Assert.NotEqual(some, none);
             Assert.False(some == none);
             Assert.True(some != none);
+            Assert.False(some.Equals(none));
         }
     }
 }
