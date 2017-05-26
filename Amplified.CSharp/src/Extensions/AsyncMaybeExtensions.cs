@@ -8,66 +8,46 @@ namespace Amplified.CSharp.Extensions
 {
     public static class AsyncMaybeExtensions
     {
-        private static AsyncMaybe<T> ToMaybeTask<T>(this Task<Maybe<T>> source)
-        {
-            return new AsyncMaybe<T>(source);
-        }
-
-        public static AsyncMaybe<T> ToAsync<T>(this Maybe<T> source)
-        {
-            return new AsyncMaybe<T>(Task.FromResult(source));
-        }
-
-        public static Task<Maybe<T>> ToTask<T>(this AsyncMaybe<T> source)
-        {
-            return source.Match(some: Some, none: none => Maybe<T>.None);
-        }
-
-        public static AsyncMaybe<T> Fold<T>(this Task<AsyncMaybe<T>> source)
-        {
-            return new AsyncMaybe<T>(source.Then(it => it.Match(some: Some, none: none => none)));
-        }
-
         public static AsyncMaybe<TResult> Map<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<TResult>> mapperAsync)
         {
-            return source.Match(some => mapperAsync(some).Then(Some), none => Maybe<TResult>.None).ToMaybeTask();
+            return source.Match(some => mapperAsync(some).Then(Some), none => Maybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<TResult> Map<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, TResult> mapper)
         {
-            return source.Match(some => Some(mapper(some)), none => Maybe<TResult>.None).ToMaybeTask();
+            return source.Match(some => Some(mapper(some)), none => Maybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<TResult> FlatMap<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Maybe<TResult>> mapper)
         {
-            return source.Match(mapper, none => Maybe<TResult>.None).ToMaybeTask();
+            return source.Match(mapper, none => Maybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<TResult> FlatMap<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<Maybe<TResult>>> mapper)
         {
-            return source.Match(mapper, none => Maybe<TResult>.None).ToMaybeTask();
+            return source.Match(mapper, none => Maybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<TResult> FlatMap<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, AsyncMaybe<TResult>> mapper)
         {
-            return source.Match(mapper, none => AsyncMaybe<TResult>.None).Fold();
+            return source.Match(mapper, none => AsyncMaybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<TResult> FlatMap<T, TResult>(
             this AsyncMaybe<T> source,
             [NotNull] Func<T, Task<AsyncMaybe<TResult>>> mapper)
         {
-            return source.Match(mapper, none => AsyncMaybe<TResult>.None).Fold();
+            return source.Match(mapper, none => AsyncMaybe<TResult>.None).ToAsync();
         }
 
         public static AsyncMaybe<T> Filter<T>(
@@ -79,7 +59,7 @@ namespace Amplified.CSharp.Extensions
                     ? Some(some)
                     : Maybe<T>.None,
                 none => Maybe<T>.None
-            ).ToMaybeTask();
+            ).ToAsync();
         }
 
         public static AsyncMaybe<T> Filter<T>(
@@ -92,7 +72,7 @@ namespace Amplified.CSharp.Extensions
                         ? Some(some)
                         : Maybe<T>.None),
                 none => Maybe<T>.None
-            ).ToMaybeTask();
+            ).ToAsync();
         }
 
         public static Task<T> OrReturn<T>(this AsyncMaybe<T> source, T value)
@@ -156,7 +136,7 @@ namespace Amplified.CSharp.Extensions
             return source.Match(
                 some: Some,
                 noneAsync: none => other.ToTask()
-            ).ToMaybeTask();
+            ).ToAsync();
         }
 
         public static AsyncMaybe<T> Or<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<AsyncMaybe<T>> other)
@@ -164,7 +144,7 @@ namespace Amplified.CSharp.Extensions
             return source.Match(
                 some: Some,
                 noneAsync: none => other().ToTask()
-            ).ToMaybeTask();
+            ).ToAsync();
         }
 
         public static AsyncMaybe<TResult> Zip<T1, T2, TResult>(

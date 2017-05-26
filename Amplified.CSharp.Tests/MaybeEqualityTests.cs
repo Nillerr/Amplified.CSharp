@@ -31,7 +31,7 @@ namespace Amplified.CSharp
         {
             var maybe = Some(2);
             var none = default(None);
-            Assert.Equal(maybe, none);
+            Assert.NotEqual(maybe, none);
             Assert.False(maybe == none);
             Assert.True(maybe != none);
             Assert.False(maybe.Equals(none));

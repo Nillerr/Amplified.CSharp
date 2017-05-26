@@ -22,4 +22,7 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Internal\Extensions" />
+  </ItemGroup>
 </Project>
