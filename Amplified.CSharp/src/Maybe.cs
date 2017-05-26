@@ -10,7 +10,7 @@ namespace Amplified.CSharp
     ///     types, but being a <c>struct</c>, it can never be <c>null</c> itself (unless it is boxed).
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<None>, ICanBeNone
+    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<Some<T>>, IEquatable<None>, ICanBeNone
     {
         public static Maybe<T> None = default(Maybe<T>);
         
@@ -54,6 +54,12 @@ namespace Amplified.CSharp
         }
 
         [Pure]
+        public bool Equals(Some<T> other)
+        {
+            return IsSome && EqualityComparer<T>.Default.Equals(_value, other.Value);
+        }
+
+        [Pure]
         public bool Equals(None other)
         {
             return IsNone;
@@ -73,7 +79,8 @@ namespace Amplified.CSharp
         {
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is None && Equals((None) obj));
+                   (obj is None && Equals((None) obj)) ||
+                   (obj is Some<T> && Equals((Some<T>) obj));
         }
 
         [Pure]
@@ -107,6 +114,18 @@ namespace Amplified.CSharp
 
         [Pure]
         public static bool operator !=(Maybe<T> left, None right)
+        {
+            return !left.Equals(right);
+        }
+
+        [Pure]
+        public static bool operator ==(Maybe<T> left, Some<T> right)
+        {
+            return left.Equals(right);
+        }
+
+        [Pure]
+        public static bool operator !=(Maybe<T> left, Some<T> right)
         {
             return !left.Equals(right);
         }
