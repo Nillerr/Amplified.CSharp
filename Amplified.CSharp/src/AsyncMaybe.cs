@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Amplified.CSharp.Extensions;
 using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
 
@@ -29,8 +28,24 @@ namespace Amplified.CSharp
         }
 
         public Task<TResult> Match<TResult>(
+            [InstantHandle, NotNull] Func<T, TResult> some,
+            [InstantHandle, NotNull] Func<TResult> none
+        )
+        {
+            return _valueTask.Then(result => result.Match(some, none));
+        }
+
+        public Task<TResult> Match<TResult>(
             [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
             [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
+        )
+        {
+            return _valueTask.Then(result => result.Match(someAsync, noneAsync));
+        }
+
+        public Task<TResult> Match<TResult>(
+            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
+            [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
         )
         {
             return _valueTask.Then(result => result.Match(someAsync, noneAsync));
@@ -45,8 +60,24 @@ namespace Amplified.CSharp
         }
 
         public Task<TResult> Match<TResult>(
+            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
+            [InstantHandle, NotNull] Func<TResult> none
+        )
+        {
+            return _valueTask.Then(result => result.Match(someAsync, n => Task.FromResult(none())));
+        }
+
+        public Task<TResult> Match<TResult>(
             [InstantHandle, NotNull] Func<T, TResult> some,
             [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
+        )
+        {
+            return _valueTask.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));
+        }
+
+        public Task<TResult> Match<TResult>(
+            [InstantHandle, NotNull] Func<T, TResult> some,
+            [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
         )
         {
             return _valueTask.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));

@@ -47,6 +47,15 @@ namespace Amplified.CSharp
         }
 
         [Pure]
+        public TResult Match<TResult>(
+            [InstantHandle, NotNull] Func<T, TResult> some,
+            [InstantHandle, NotNull] Func<TResult> none
+        )
+        {
+            return IsSome ? some(_value) : none();
+        }
+
+        [Pure]
         public bool Equals(Maybe<T> other)
         {
             return (IsNone && other.IsNone) ||
