@@ -13,7 +13,7 @@ namespace Amplified.CSharp
             AsyncMaybe<int> Other() => Some(3).ToAsync();
 
             var shouldBeOther = await None()
-                .ToAsync<int>()
+                .ToAsyncMaybe<int>()
                 .Or(Other);
 
             var result = shouldBeOther.OrFail();

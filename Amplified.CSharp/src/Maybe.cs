@@ -151,6 +151,8 @@ namespace Amplified.CSharp
 
     public static class Maybe
     {
+        public static Unit Unit() => CSharp.Unit.Instance;
+        
         public static Maybe<T> Some<T>([NotNull] T value) => new Maybe<T>(value);
 
         public static None None() => default(None);

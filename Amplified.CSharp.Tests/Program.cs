@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -20,6 +21,7 @@ namespace Amplified.CSharp
     {
         Maybe<AccessToken> GetAccessToken();
         Maybe<RefreshToken> GetRefreshToken();
+        void SetAccessToken(AccessToken token);
     }
 
     public class AccessTokenResult
@@ -43,20 +45,26 @@ namespace Amplified.CSharp
     {
         private ITokenManager _tokenCookieManager;
         
-        public Task<AccessTokenResult> Main21323(string[] args)
+        public Task<AccessTokenResult> GetAccessToken()
         {
             var instant = DateTimeOffset.Now;
             return _tokenCookieManager.GetAccessToken()
                 .Filter(accessToken => accessToken.Expires > instant)
-                .OrAsync(
-                    () => _tokenCookieManager.GetRefreshToken()
-                        .Filter(refreshToken => refreshToken.Expires > instant)
-                        .MapAsync(ObtainAccessToken)
-                )
+                .OrAsync(RefreshedAccessToken)
                 .Map(AccessTokenResult.From)
                 .OrGet(AccessTokenResult.Empty);
         }
 
+        private AsyncMaybe<AccessToken> RefreshedAccessToken()
+        {
+            var instant = DateTimeOffset.Now;
+            return _tokenCookieManager.GetRefreshToken()
+                .Filter(refreshToken => refreshToken.Expires > instant)
+                .MapAsync(ObtainAccessToken)
+                .Map(_tokenCookieManager.SetAccessToken)
+                .FlatMap(_tokenCookieManager.GetAccessToken);
+        }
+        
         private Task<AccessToken> ObtainAccessToken(RefreshToken refreshToken)
         {
             // Refresh the access token

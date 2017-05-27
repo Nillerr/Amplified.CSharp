@@ -10,28 +10,28 @@ namespace Amplified.CSharp
         public void ImplicitFromNone()
         {
             Maybe<int> converted = default(None);
-            converted.AssertIsNone();
+            converted.MustBeNone();
         }
 
         [Fact]
         public void DefaultValue_IsNone()
         {
             var maybe = default(Maybe<object>);
-            maybe.AssertIsNone();
+            maybe.MustBeNone();
         }
 
         [Fact]
         public void CallingEmptyConstructor_ReturnsNone()
         {
             var maybe = new Maybe<object>();
-            maybe.AssertIsNone();
+            maybe.MustBeNone();
         }
 
         [Fact]
         public void CallingConstructor_WithValue_ReturnsSome()
         {
             var maybe = new Maybe<object>(new object());
-            maybe.AssertIsSome();
+            maybe.MustBeSome();
         }
 
         [Fact]
@@ -50,21 +50,21 @@ namespace Amplified.CSharp
         public void StaticSome_WithNonNullArgument_ReturnsSome()
         {
             var some = Some(1);
-            some.AssertIsSome();
+            some.MustBeSome();
         }
 
         [Fact]
         public void StaticNone_ReturnsNone()
         {
             var none = Maybe<int>.None;
-            none.AssertIsNone();
+            none.MustBeNone();
         }
 
         [Fact]
         public void StaticNoneMethod_ReturnsNone()
         {
             var none = Maybe<int>.None;
-            none.AssertIsNone();
+            none.MustBeNone();
         }
 
         [Fact]

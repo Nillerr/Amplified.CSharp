@@ -18,8 +18,8 @@ namespace Amplified.CSharp
         [Fact]
         public void Map_OnNone()
         {
-            var result = None().AsMaybe<int>().Map(_ => Fail.With<int>());
-            result.AssertIsNone();
+            var result = None().ToMaybe<int>().Map(_ => Fail.With<int>());
+            result.MustBeNone();
         }
 
         [Fact]
@@ -34,15 +34,15 @@ namespace Amplified.CSharp
         [Fact]
         public void FlatMap_OnNone()
         {
-            var result = None().AsMaybe<int>().FlatMap(v => Fail.With<Maybe<double>>());
-            result.AssertIsNone();
+            var result = None().ToMaybe<int>().FlatMap(v => Fail.With<Maybe<double>>());
+            result.MustBeNone();
         }
 
         [Fact]
         public void Filter_OnSome_ReturningFalse_IsNone()
         {
             var result = Some(1).Filter(v => false);
-            result.AssertIsNone();
+            result.MustBeNone();
         }
 
         [Fact]
@@ -56,15 +56,15 @@ namespace Amplified.CSharp
         [Fact]
         public void Filter_OnNone_ReturningFalse_IsNone()
         {
-            var filtered = None().AsMaybe<object>().Filter(v => false);
-            filtered.AssertIsNone();
+            var filtered = None().ToMaybe<object>().Filter(v => false);
+            filtered.MustBeNone();
         }
 
         [Fact]
         public void Filter_OnNone_ReturningTrue_IsNone()
         {
-            var filtered = None().AsMaybe<object>().Filter(v => true);
-            filtered.AssertIsNone();
+            var filtered = None().ToMaybe<object>().Filter(v => true);
+            filtered.MustBeNone();
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace Amplified.CSharp
             var first = Some(1);
             var second = Some(true);
             var result = first.Zip(second, (f, s) => new { f, s });
-            result.AssertIsSome();
+            result.MustBeSome();
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Amplified.CSharp
             var first = Maybe<int>.None;
             var second = Maybe<object>.None;
             var result = first.Zip(second, (f, s) => new { f, s });
-            result.AssertIsNone();
+            result.MustBeNone();
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Amplified.CSharp
             var first = Some(100);
             var second = Maybe<object>.None;
             var result = first.Zip(second, (f, s) => new { f, s });
-            result.AssertIsNone();
+            result.MustBeNone();
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace Amplified.CSharp
             var first = Maybe<object>.None;
             var second = Some(100);
             var result = first.Zip(second, (f, s) => new { f, s });
-            result.AssertIsNone();
+            result.MustBeNone();
         }
 
         [Fact]
