@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
-using static Amplified.CSharp.Maybe;
+using static Amplified.CSharp.Constructors;
 
 namespace Amplified.CSharp
 {
@@ -44,6 +44,29 @@ namespace Amplified.CSharp
     public class Program
     {
         private ITokenManager _tokenCookieManager;
+
+        public static void Main123(string[] args)
+        {
+            /*args.FirstOrNone()
+                .Map(arg => Parse<int>(arg))
+                .Map(intArg => Store(intArg).Return(intArg))
+                .Match(
+                    intArg => Unit(() => Console.WriteLine($"Stored: {intArg}")),
+                    none => Unit(() => Console.WriteLine()) 
+                );*/
+
+            Unit unit = Some(1).ToUnit().Return(Some(1))
+                .Match(
+                    some => Console.WriteLine("Hello Some"),
+                    none => Console.WriteLine("Hello None")
+                );
+
+        }
+
+        public static Unit Store(int value)
+        {
+            return Unit();
+        }
         
         public Task<AccessTokenResult> GetAccessToken()
         {

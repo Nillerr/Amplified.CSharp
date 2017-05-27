@@ -104,6 +104,11 @@ namespace Amplified.CSharp
             return new AsyncMaybe<T>(Task.FromResult(source));
         }
 
+        public static implicit operator AsyncMaybe<T>(None none)
+        {
+            return new AsyncMaybe<T>(Task.FromResult(Maybe<T>.None));
+        }
+
         public TaskAwaiter<Maybe<T>> GetAwaiter()
         {
             return _valueTask?.GetAwaiter() ?? Task.FromResult(default(Maybe<T>)).GetAwaiter();

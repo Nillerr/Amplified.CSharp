@@ -1,5 +1,5 @@
 using Xunit;
-using static Amplified.CSharp.Maybe;
+using static Amplified.CSharp.Constructors;
 
 namespace Amplified.CSharp
 {

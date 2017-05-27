@@ -12,7 +12,7 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T, Task<bool>> predicate)
         {
             return source.Match(
-                some => predicate(some).Then(matches => matches ? Maybe.Some(some) : Maybe<T>.None),
+                some => predicate(some).Then(matches => matches ? Constructors.Some(some) : Maybe<T>.None),
                 none => Task.FromResult(Maybe<T>.None)
             ).ToAsyncMaybe();
         }

@@ -7,6 +7,21 @@ namespace Amplified.CSharp
         private static readonly int HashCode = nameof(Unit).GetHashCode();
         
         public static readonly Unit Instance = default(Unit);
+
+        public TResult Match<TResult>(TResult result)
+        {
+            return result;
+        }
+
+        public TResult Match<TResult>(Func<TResult> result)
+        {
+            return result();
+        }
+
+        public TResult Match<TResult>(Func<Unit, TResult> result)
+        {
+            return result(this);
+        }
         
         public bool Equals(Unit other)
         {

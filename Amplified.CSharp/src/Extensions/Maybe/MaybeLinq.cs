@@ -1,6 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Maybe;
+using static Amplified.CSharp.Constructors;
 
 namespace Amplified.CSharp.Extensions
 {

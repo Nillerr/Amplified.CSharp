@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
-using static Amplified.CSharp.Maybe;
+using static Amplified.CSharp.Constructors;
 
 namespace Amplified.CSharp.Extensions
 {

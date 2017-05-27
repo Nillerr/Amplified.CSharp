@@ -10,7 +10,7 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T, TResult> mapper)
         {
             return source.Match(
-                some => Maybe.Some(mapper(some)),
+                some => new Maybe<TResult>(mapper(some)),
                 none => Maybe<TResult>.None
             );
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Amplified.CSharp.Internal;
+using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp
@@ -53,6 +55,74 @@ namespace Amplified.CSharp
         )
         {
             return IsSome ? some(_value) : none();
+        }
+
+        [Pure]
+        public Unit Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Action<None> none
+        )
+        {
+            if (IsSome)
+                some(_value);
+            else
+                none(default(None));
+            
+            return default(Unit);
+        }
+
+        [Pure]
+        public Unit Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Action none
+        )
+        {
+            if (IsSome)
+                some(_value);
+            else
+                none();
+            
+            return default(Unit);
+        }
+
+        [Pure]
+        public Unit Match(
+            [InstantHandle, NotNull] Func<T, Unit> some,
+            [InstantHandle, NotNull] Action none
+        )
+        {
+            if (IsSome)
+                return some(_value);
+            
+            none();
+
+            return default(Unit);
+        }
+
+        [Pure]
+        public Unit Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Func<Unit> none
+        )
+        {
+            if (IsNone)
+                return none();
+            
+            some(_value);
+            return default(Unit);
+        }
+
+        [Pure]
+        public Unit Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Func<None, Unit> none
+        )
+        {
+            if (IsNone)
+                return none(default(None));
+            
+            some(_value);
+            return default(Unit);
         }
 
         [Pure]
@@ -148,13 +218,11 @@ namespace Amplified.CSharp
             );
         }
     }
-
+    
     public static class Maybe
     {
-        public static Unit Unit() => CSharp.Unit.Instance;
-        
         public static Maybe<T> Some<T>([NotNull] T value) => new Maybe<T>(value);
-
+        
         public static None None() => default(None);
 
         public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
@@ -165,6 +233,20 @@ namespace Amplified.CSharp
         public static Maybe<T> OfNullable<T>([CanBeNull] T? value) where T : struct
         {
             return value.HasValue ? new Maybe<T>(value.Value) : Maybe<T>.None;
+        }
+        
+        public static AsyncMaybe<T> Some<T>([NotNull] Task<T> task) => new AsyncMaybe<T>(task.Then(Some));
+
+        public static AsyncMaybe<T> OfNullable<T>([NotNull] Task<T> task)
+            where T : class
+        {
+            return new AsyncMaybe<T>(task.Then(OfNullable));
+        }
+
+        public static AsyncMaybe<T> OfNullable<T>([NotNull] Task<T?> task)
+            where T : struct
+        {
+            return new AsyncMaybe<T>(task.Then(OfNullable));
         }
     }
 }
