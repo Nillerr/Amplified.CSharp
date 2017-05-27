@@ -137,9 +137,12 @@ public async Task<Token> ObtainToken()
 #### Converions
 
 ```C#
+using System;
+using System.Threading.Tasks;
+using Amplified.CSharp;
 using static Amplified.CSharp.Maybe;
 
-public async Task Demonstration()
+public void Demonstration()
 {
     // Maybe<T>
     Maybe<int> none = None(); // Implicit conversion from None to Maybe<T>
@@ -155,6 +158,16 @@ public async Task Demonstration()
     
     AsyncMaybe<int> noneFromMaybe = None(); // Implicit conversion from None to AsyncMaybe<T>
     AsyncMaybe<int> noneFromNullable = OfNullable(Task.FromResult<int?>(null));
+    
+    // Maybe<T> --> AsyncMaybe<T>
+    Some(1) // Maybe<int>
+        .{Operator}(...) // Maybe<TResult>
+        .{Operator}Async(...) // AsyncMaybe<TResult>
+        .ToAsync() // AsyncMaybe<T>
+        
+    /// AsyncMaybe<T> --> Maybe<T>
+    AsyncMaybe<int> asyncInt = Some(1).ToAsync(); 
+    Maybe<int> nonAsyncInt = await asyncInt;
 }
 ```
 
