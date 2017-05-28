@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -26,14 +26,14 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Sync_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.Map(some => some + 3).IsNone;
+            var isNone = await AsyncMaybe<int>.None().Map(some => some + 3).IsNone;
             Assert.True(isNone);
         }
 
         [Fact]
         public async Task Async_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.MapAsync(some => Task.FromResult(some + 3)).IsNone;
+            var isNone = await AsyncMaybe<int>.None().MapAsync(some => Task.FromResult(some + 3)).IsNone;
             Assert.True(isNone);
         }
     }

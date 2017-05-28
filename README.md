@@ -12,6 +12,33 @@ Install-Package Amplified.CSharp
  
 ## Usage
 
+### Static imports
+
+It is recommended to add the following using statement to files where a instances of the types within this 
+library are created.
+```C#
+using static Amplified.CSharp.Maybe;
+```
+
+This allows you to use the library as it was intended. Example:
+```C#
+using Amplified.CSharp;
+...
+    Maybe<int> foo = Maybe.Some(1);
+    Maybe<int> bar = Maybe.None();
+...
+```
+
+Becomes:
+```C#
+using Amplified.CSharp;
+using static Amplified.CSharp.Maybe;
+...
+    Maybe<int> foo = Some(1);
+    Maybe<int> bar = None();
+...
+``` 
+
 ### Unit
 
 `Unit` is represents the lack of a value, sort of like `void`. Unlike `void`, it is an actual type, and can 
@@ -42,20 +69,16 @@ class Program
 }
 ```
 
-### None
-
-`None` represents the lack of a value. This is comparable to `void`, but unlike `void`, `None` is a value 
-itself. Every instance of `None` is equal to any other instance of `None`. Other types can achieve `None` 
-equality by implementing the interface `ICanBeNone`, which e.g. `Maybe<T>` does.
-
-There's no difference between using `None.Instance` vs `new None()` vs `default(None)` in terms of equality. Every 
-one of those 3 operations return the same value.
-
 ### Maybe
 
 `Maybe<T>` represents the possibility for the presence of a value, sort of like `null` does for reference 
 types, but more like `Nullable<T>` or for value types. The idea is to prevent runtime errors and exceptions, 
-by forcing you, the developer, to consider all cases before being able to extract the value within a `Maybe<T>`.
+by forcing you, the developer, to consider all cases before operating on the value within a `Maybe<T>`.
+
+It is a discriminated union / sum type, that consist of 2 types: `Some<T>` and `None`. Due to 
+the way type inference works in C#, we must create a separate type `None`, which is implicitly convertible 
+to `Maybe<T>`, without having any type arguments itself. The reason this is required is to support the 
+`None()` syntax, creating a `None` without specifying a type argument. 
 
 #### Usage
 
@@ -97,16 +120,32 @@ class Program {
 }
 ```
 
+#### Some
+
+`Maybe.Some<T>(T value)` represents the presence of a value. It is recommended to use a static import of 
+`Amplified.CSharp.Maybe` to achieve a fluent functional syntax.
+
+#### None
+
+`None` represents the lack of a value. This is comparable to `void`, but unlike `void`, `None` is a value 
+itself. Every instance of `None` is equal to any other instance of `None`. Other types can achieve `None` 
+equality by implementing the interface `ICanBeNone`, which e.g. `Maybe<T>` does.
+
+There's no difference between using `new None()` vs `default(None)` vs `Maybe.None()` 
+in terms of equality. Every one of those 3 operations return the same value.
+
 #### Async
 
 To support seamless integration with the Task Parallel Library and the `async` / `await` keywords, the type 
 `AsyncMaybe<T>` was created. This type acts as a deferred `Maybe<T>`, and is really just a wrapper around it, 
-using `Task` objects. This will be migrated to use the new `ValueTask` in the future.
+using `Task` objects.
+
+`AsyncMaybe<T>` will be migrated to use the new `ValueTask` in the future.
 
 All methods operating asynchronously has been named with the `Async` suffix, e.g. 
 ```C#
-public AsyncMaybe<TResult> MapAsync<T, TResult>(this Maybe<T> source, Func<T, Task<TResult>> mapper)
-public AsyncMaybe<TResult> MapAsync<T, TResult>(this AsyncMaybe<T> source, Func<T, Task<TResult>> mapper)
+public static AsyncMaybe<TResult> MapAsync<T, TResult>(this Maybe<T> source, Func<T, Task<TResult>> mapper);
+public static AsyncMaybe<TResult> MapAsync<T, TResult>(this AsyncMaybe<T> source, Func<T, Task<TResult>> mapper);
 ```
 
 As you can tell from the method signature in the first line in the block above, whenever you operate 
@@ -173,31 +212,52 @@ public void Demonstration()
 
 ### LINQ
 
-In order to provide a familiar interface for C# development, we've provided synonyms for a few extension methods.
+In order to provide a familiar interface for C# developers, we've provided LINQ-like synonyms for a few 
+extension methods. We recommend you use the native `Map` and `Fitler` operators, to easily distinquis 
+between `IEnumerable` / `IQueryable` and `Maybe`.
 
 The following methods are synonyms:
 ```C#
-Maybe<TResult> Map<T, TResult>(Func<T, TResult> mapper);
-Maybe<TResult> Select<T, TResult>(Func<T, TResult> mapper); // LINQ Synonym for Map
+// LINQ synonym for Map
+Maybe<TResult> Select<T, TResult>(Func<T, TResult> mapper);
+
+// LINQ synonym for Filter
+Maybe<T> Where<T>(Func<T, bool> predicate);
 ```
 
 ```C#
-Maybe<T> Filter<T>(Func<T, bool> predicate);
-Maybe<T> Where<T>(Func<T, bool> predicate); // LINQ Synonym for Filter
+// Asynchronous LINQ synonyms for Map
+AsyncMaybe<TResult> SelectAsync<T, TResult>(Func<T, TResult> mapper);
+AsyncMaybe<TResult> SelectAsync<T, TResult>(Func<T, Task<TResult>> mapper);
+
+// Asynchronous LINQ synonyms for Filter
+AsyncMaybe<T> WhereAsync<T>(Func<T, bool> predicate);
+AsyncMaybe<T> WhereAsync<T>(Func<T, Task<bool>> predicate);
 ```
 
 ### Null
 
-None of the types accepts `null` values as parameters. Creating an instance of one of the types, by passing 
-`null` as the value parameter, will throw an `ArgumentNullException`.
+None of the types accepts `null` values as parameters. Creating an instance of one of the types, by 
+passing `null` as the value parameter, will throw an `ArgumentNullException`. Similarly, returning 
+`null` from a lambda passed to any of the extension methods will also throw an 
+`ArgumentNullException`. The exceptions to this are `OrReturn<T>(T defaultValue)` and any of the 
+`Match()` methods on `Maybe<T>`. Basically any non-terminating operators.
 
-### Implicit Conversion
+### Implicit Conversion (Needs revision)
+
+To create a seamless API, 
 
 ```C#
-public class Program {
-    public static void Main(string[] args) {
+using System;
+using Amplified.CSharp;
+using static Amplified.CSharp.Maybe;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
         // None is implicitly convertible to Maybe<T>, resulting in a Maybe<T> without a value.
-        Maybe<int> noInt = None._;
+        Maybe<int> noInt = None();
         
         // T is implicitly convertible to Some<T>.
         Some<int> someInt = 2;
@@ -207,12 +267,6 @@ public class Program {
         
         // Some<T> is implicitly convertible to Maybe<T>, resulting in a Maybe<T> with a value.
         Maybe<int> maybeSomeInt = someInt;
-        
-        // T is implicitly convertible to Maybe<T>, resulting in a Maybe<T> with a value.
-        Maybe<int> maybeSomeInt = 201;
-        
-        // Throws an exception, because Maybe<T> cannot contain a null value.
-        Maybe<object> maybeObject = null;
     }
 }
 ```
@@ -220,13 +274,20 @@ public class Program {
 ### Equality
 
 ```C#
-public class Program {
-    public static void Main(string[] args) {
-        // Maybe<T> is comparably to None
-        Maybe<int> maybeNoInt = None._;
-        Maybe<int> maybeSomeInt = 2;
-        Assert.NotEqual(noInt, someInt);
-        Assert.Equal(noInt, None._);
+using System;
+using Amplified.CSharp;
+using static Amplified.CSharp.Maybe;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Maybe<T> == None
+        None none = None();
+        Maybe<int> someInt = Some(2);
+        
+        if (none != someInt)
+            Console.WriteLine($"{noneInt} != {someInt}");
         
         // Maybe<T> is comparable to Some<T>
         Some<int> someIntNotEqual = 3;

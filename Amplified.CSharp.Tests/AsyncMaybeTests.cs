@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -25,7 +25,7 @@ namespace Amplified.CSharp
         public async Task MaybeToAsyncMaybe()
         {
             const int value = 2;
-            var result = await new Maybe<int>(value).ToAsync().OrFail();
+            var result = await Maybe<int>.Some(value).ToAsync().OrFail();
             Assert.Equal(result, value);
         }
     }

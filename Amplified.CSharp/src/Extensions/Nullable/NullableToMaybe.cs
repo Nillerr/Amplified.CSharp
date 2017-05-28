@@ -4,7 +4,7 @@
     {
         public static Maybe<TSource> ToMaybe<TSource>(this TSource? source) where TSource : struct
         {
-            return Constructors.OfNullable(source);
+            return Maybe.OfNullable(source);
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -13,8 +13,8 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T, Task<TResult>> mapper)
         {
             return source.Match(
-                some => mapper(some).Then(Some),
-                none => Task.FromResult(Maybe<TResult>.None)
+                some => mapper(some).Then(Maybe<TResult>.Some),
+                none => Task.FromResult(Maybe<TResult>.None())
             ).ToAsyncMaybe();
         }
     }

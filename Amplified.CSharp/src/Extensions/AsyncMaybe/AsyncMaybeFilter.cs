@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Constructors;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -12,9 +11,9 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Match(
                 some => predicate(some)
-                    ? Some(some)
-                    : Maybe<T>.None,
-                none => Maybe<T>.None
+                    ? Maybe<T>.Some(some)
+                    : Maybe<T>.None(),
+                none => Maybe<T>.None()
             ).ToAsyncMaybe();
         }
     }

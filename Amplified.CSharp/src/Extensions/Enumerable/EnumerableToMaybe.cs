@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -28,7 +28,7 @@ namespace Amplified.CSharp.Extensions
                         }
                     }
                 }
-                return Maybe<T>.None;
+                return Maybe<T>.None();
             }
         }
 
@@ -48,7 +48,7 @@ namespace Amplified.CSharp.Extensions
                 {
                     return Some(enumerator.Current);
                 }
-                return Maybe<T>.None;
+                return Maybe<T>.None();
             }
         }
 
@@ -66,7 +66,7 @@ namespace Amplified.CSharp.Extensions
                     }
                 }
 
-                var last = Maybe<T>.None;
+                var last = Maybe<T>.None();
                 while (enumerator.MoveNext())
                 {
                     last = Some(enumerator.Current);
@@ -91,23 +91,23 @@ namespace Amplified.CSharp.Extensions
                 {
                     while (true)
                     {
-                        if (enumerator.MoveNext() == false) return Maybe<T>.None;
+                        if (enumerator.MoveNext() == false) return Maybe<T>.None();
                         if (index == 0) return Some(enumerator.Current);
                         index--;
                     }
                 }
             }
-            return Maybe<T>.None;
+            return Maybe<T>.None();
         }
 
         public static Maybe<TValue> Value<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None;
+            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None();
         }
 
         public static Maybe<TValue> Value<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None;
+            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None();
         }
     }
 }

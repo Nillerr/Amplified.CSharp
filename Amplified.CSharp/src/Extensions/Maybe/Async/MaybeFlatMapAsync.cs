@@ -12,7 +12,7 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Match(
                 mapper,
-                none => Task.FromResult(Maybe<TResult>.None)
+                none => Task.FromResult(Maybe<TResult>.None())
             ).ToAsyncMaybe();
         }
     }

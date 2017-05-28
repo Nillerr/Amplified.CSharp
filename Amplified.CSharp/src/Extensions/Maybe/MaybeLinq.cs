@@ -1,6 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -11,12 +11,12 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T, TResult> mapper
         )
         {
-            return source.Match(some => Some(mapper(some)), none => Maybe<TResult>.None);
+            return source.Match(some => Some(mapper(some)), none => Maybe<TResult>.None());
         }
 
         public static Maybe<T> Where<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<T, bool> predicate)
         {
-            return source.FlatMap(some => predicate(some) ? Some(some) : Maybe<T>.None);
+            return source.FlatMap(some => predicate(some) ? Some(some) : Maybe<T>.None());
         }
     }
 }

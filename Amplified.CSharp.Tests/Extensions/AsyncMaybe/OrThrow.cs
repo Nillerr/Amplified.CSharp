@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Amplified.CSharp.Util;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -20,7 +20,7 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Sync_OnNone_WithFunction_ThrowsException()
         {
-            var source = AsyncMaybe<int>.None;
+            var source = AsyncMaybe<int>.None();
             await Assert.ThrowsAsync<DummyException>(() => source.OrThrow(() => new DummyException()));
         }
         
@@ -36,7 +36,7 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Async_OnNone_WithFunction_ThrowsException()
         {
-            var source = AsyncMaybe<int>.None;
+            var source = AsyncMaybe<int>.None();
             await Assert.ThrowsAsync<DummyException>(() => source.OrThrow(() => new DummyException()));
         }
     }

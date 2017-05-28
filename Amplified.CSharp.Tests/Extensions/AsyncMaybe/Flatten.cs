@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {

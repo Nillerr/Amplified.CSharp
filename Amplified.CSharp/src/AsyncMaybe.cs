@@ -8,7 +8,11 @@ namespace Amplified.CSharp
 {
     public struct AsyncMaybe<T>
     {
-        public static AsyncMaybe<T> None = default(AsyncMaybe<T>);
+        public static AsyncMaybe<T> None() => default(AsyncMaybe<T>);
+
+        public static AsyncMaybe<T> Some(T value) => new AsyncMaybe<T>(Task.FromResult(Maybe<T>.Some(value)));
+
+        public static AsyncMaybe<T> SomeAsync(Task<T> task) => new AsyncMaybe<T>(task.Then(Maybe<T>.Some));
 
         [CanBeNull]
         private readonly Task<Maybe<T>> _valueTask;
@@ -106,7 +110,7 @@ namespace Amplified.CSharp
 
         public static implicit operator AsyncMaybe<T>(None none)
         {
-            return new AsyncMaybe<T>(Task.FromResult(Maybe<T>.None));
+            return new AsyncMaybe<T>(Task.FromResult(Maybe<T>.None()));
         }
 
         public TaskAwaiter<Maybe<T>> GetAwaiter()

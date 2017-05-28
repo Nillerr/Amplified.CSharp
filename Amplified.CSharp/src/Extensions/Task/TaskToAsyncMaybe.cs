@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -13,7 +13,7 @@ namespace Amplified.CSharp.Extensions
 
         public static AsyncMaybe<T> ToAsyncMaybe<T>(this Task<AsyncMaybe<T>> source)
         {
-            return new AsyncMaybe<T>(source.Then(it => it.Match(some: Some, none: none => none)));
+            return source.Then(it => it.Match(some: Some, none: none => none)).ToAsyncMaybe();
         }
     }
 }

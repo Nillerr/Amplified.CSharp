@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -18,7 +18,7 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Sync_OnNone_ReturnsDefaultValue()
         {
-            var result = await Maybe<int>.None.ToAsync().OrDefault();
+            var result = await Maybe<int>.None().ToAsync().OrDefault();
             Assert.Equal(default(int), result);
         }
     }

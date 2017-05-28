@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -19,7 +19,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnNone_ReturnsResultOfFunction()
         {
             const int expected = 321;
-            var result = await Maybe<int>.None.ToAsync().OrGet(() => expected);
+            var result = await Maybe<int>.None().ToAsync().OrGet(() => expected);
             Assert.Equal(expected, result);
         }
         
@@ -35,7 +35,7 @@ namespace Amplified.CSharp
         public async Task Async_OnNone_ReturnsResultOfFunction()
         {
             const int expected = 321;
-            var result = await Maybe<int>.None.ToAsync().OrGetAsync(async () => await Task.FromResult(expected));
+            var result = await Maybe<int>.None().ToAsync().OrGetAsync(async () => await Task.FromResult(expected));
             Assert.Equal(expected, result);
         }
     }

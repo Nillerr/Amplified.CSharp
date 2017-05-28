@@ -1,5 +1,5 @@
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -18,7 +18,7 @@ namespace Amplified.CSharp
         [Fact]
         public void MaybeNone_IsEqualTo_None()
         {
-            var maybe = Maybe<int>.None;
+            var maybe = Maybe<int>.None();
             var none = default(None);
             Assert.Equal(maybe, none);
             Assert.True(maybe == none);
@@ -40,8 +40,8 @@ namespace Amplified.CSharp
         [Fact]
         public void None_IsEqualTo_None()
         {
-            var lhs = Maybe<int>.None;
-            var rhs = Maybe<int>.None;
+            var lhs = Maybe<int>.None();
+            var rhs = Maybe<int>.None();
             Assert.Equal(lhs, rhs);
             Assert.True(lhs == rhs);
             Assert.False(lhs != rhs);
@@ -74,7 +74,7 @@ namespace Amplified.CSharp
         public void Some_IsNotEqualTo_None()
         {
             var some = Some(1);
-            var none = Maybe<int>.None;
+            var none = Maybe<int>.None();
             Assert.NotEqual(some, none);
             Assert.False(some == none);
             Assert.True(some != none);

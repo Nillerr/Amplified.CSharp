@@ -17,9 +17,14 @@ namespace Amplified.CSharp
             return some(Value);
         }
 
+        public static implicit operator T(Some<T> some)
+        {
+            return some.Value;
+        }
+
         public static implicit operator Maybe<T>(Some<T> some)
         {
-            return new Maybe<T>(some.Value);
+            return Maybe<T>.Some(some);
         }
 
         public bool Equals(Some<T> other)

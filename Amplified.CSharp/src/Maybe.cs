@@ -12,13 +12,18 @@ namespace Amplified.CSharp
     ///     types, but being a <c>struct</c>, it can never be <c>null</c> itself (unless it is boxed).
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct Maybe<T> : IEquatable<Maybe<T>>, IEquatable<Some<T>>, IEquatable<None>, ICanBeNone
+    public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
-        public static Maybe<T> None = default(Maybe<T>);
-        
+        public static Maybe<T> None() => default(Maybe<T>);
+
+        public static Maybe<T> Some(T value)
+        {
+            return new Maybe<T>(value);
+        }
+
         private readonly T _value;
 
-        public Maybe(T value) : this()
+        private Maybe(T value) : this()
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -133,28 +138,7 @@ namespace Amplified.CSharp
         }
 
         [Pure]
-        public bool Equals(Some<T> other)
-        {
-            return IsSome && EqualityComparer<T>.Default.Equals(_value, other.Value);
-        }
-
-        [Pure]
-        public bool Equals(None other)
-        {
-            return IsNone;
-        }
-
-        [Pure]
-        public bool Equals([NotNull] ICanBeNone other)
-        {
-            if (other == null)
-                throw new ArgumentNullException(nameof(other));
-            
-            return IsNone && other.IsNone;
-        }
-
-        [Pure]
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
@@ -184,30 +168,6 @@ namespace Amplified.CSharp
         {
             return !left.Equals(right);
         }
-
-        [Pure]
-        public static bool operator ==(Maybe<T> left, None right)
-        {
-            return left.Equals(right);
-        }
-
-        [Pure]
-        public static bool operator !=(Maybe<T> left, None right)
-        {
-            return !left.Equals(right);
-        }
-
-        [Pure]
-        public static bool operator ==(Maybe<T> left, Some<T> right)
-        {
-            return left.Equals(right);
-        }
-
-        [Pure]
-        public static bool operator !=(Maybe<T> left, Some<T> right)
-        {
-            return !left.Equals(right);
-        }
         
         [Pure]
         public override string ToString()
@@ -221,29 +181,34 @@ namespace Amplified.CSharp
     
     public static class Maybe
     {
-        public static Maybe<T> Some<T>([NotNull] T value) => new Maybe<T>(value);
+        public static Maybe<T> Some<T>([NotNull] T value) => Maybe<T>.Some(value);
         
         public static None None() => default(None);
 
         public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
         {
-            return value == null ? Maybe<T>.None : new Maybe<T>(value);
+            return value == null
+                ? Maybe<T>.None()
+                : Maybe<T>.Some(value);
         }
 
         public static Maybe<T> OfNullable<T>([CanBeNull] T? value) where T : struct
         {
-            return value.HasValue ? new Maybe<T>(value.Value) : Maybe<T>.None;
+            return value.HasValue ? Maybe<T>.Some(value.Value) : Maybe<T>.None();
         }
-        
-        public static AsyncMaybe<T> Some<T>([NotNull] Task<T> task) => new AsyncMaybe<T>(task.Then(Some));
 
-        public static AsyncMaybe<T> OfNullable<T>([NotNull] Task<T> task)
+        public static AsyncMaybe<T> SomeAsync<T>([NotNull] T value) 
+            => new AsyncMaybe<T>(Task.FromResult(Maybe<T>.Some(value)));
+        
+        public static AsyncMaybe<T> SomeAsync<T>([NotNull] Task<T> task) => new AsyncMaybe<T>(task.Then(Maybe<T>.Some));
+
+        public static AsyncMaybe<T> OfNullableAsync<T>([NotNull] Task<T> task)
             where T : class
         {
             return new AsyncMaybe<T>(task.Then(OfNullable));
         }
 
-        public static AsyncMaybe<T> OfNullable<T>([NotNull] Task<T?> task)
+        public static AsyncMaybe<T> OfNullableAsync<T>([NotNull] Task<T?> task)
             where T : struct
         {
             return new AsyncMaybe<T>(task.Then(OfNullable));

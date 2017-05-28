@@ -4,7 +4,7 @@ namespace Amplified.CSharp.Extensions
 {
     public static class ActionToFuncUnit
     {
-        public static Func<T, Unit> ToUnit<T>(this Action<T> action)
+        public static Func<T, Unit> WithUnitResult<T>(this Action<T> action)
         {
             return arg =>
             {

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -16,8 +16,8 @@ namespace Amplified.CSharp.Extensions
                 some => predicate(some).Then(
                     it => it
                         ? Some(some)
-                        : Maybe<T>.None),
-                none => Maybe<T>.None
+                        : Maybe<T>.None()),
+                none => Maybe<T>.None()
             ).ToAsyncMaybe();
         }
     }

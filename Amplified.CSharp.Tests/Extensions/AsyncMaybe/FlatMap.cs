@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -42,28 +42,28 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Sync_ReturningSome_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.FlatMap(some => Some(some + 3)).IsNone;
+            var isNone = await AsyncMaybe<int>.None().FlatMap(some => Some(some + 3)).IsNone;
             Assert.True(isNone);
         }
 
         [Fact]
         public async Task Async_ReturningSome_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.FlatMapAsync(some => Task.FromResult(Some(some + 3))).IsNone;
+            var isNone = await AsyncMaybe<int>.None().FlatMapAsync(some => Task.FromResult(Some(some + 3))).IsNone;
             Assert.True(isNone);
         }
 
         [Fact]
         public async Task Sync_ReturningAsyncSome_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.FlatMap(some => Some(some + 3).ToAsync()).IsNone;
+            var isNone = await AsyncMaybe<int>.None().FlatMap(some => Some(some + 3).ToAsync()).IsNone;
             Assert.True(isNone);
         }
 
         [Fact]
         public async Task Async_ReturningAsyncSome_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None.FlatMap(some => Task.FromResult(Some(some + 3)).ToAsyncMaybe()).IsNone;
+            var isNone = await AsyncMaybe<int>.None().FlatMap(some => Task.FromResult(Some(some + 3)).ToAsyncMaybe()).IsNone;
             Assert.True(isNone);
         }
     }

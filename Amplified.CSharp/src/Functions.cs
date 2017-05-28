@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -9,7 +9,7 @@ namespace Amplified.CSharp.Extensions
     {
         public static AsyncMaybe<T> ToAsyncMaybe<T>(this None none)
         {
-            return AsyncMaybe<T>.None;
+            return AsyncMaybe<T>.None();
         }
         
         public static AsyncMaybe<TResult> ToSomeAsync<TResult>(this None none, Task<TResult> some)

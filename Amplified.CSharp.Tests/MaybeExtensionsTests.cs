@@ -1,7 +1,7 @@
 ﻿using Amplified.CSharp.Extensions;
 using Amplified.CSharp.Util;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -89,8 +89,8 @@ namespace Amplified.CSharp
         [Fact]
         public void Zip_OnNone_AndNone_DoesNotInvokeZipper()
         {
-            var first = Maybe<int>.None;
-            var second = Maybe<object>.None;
+            var first = Maybe<int>.None();
+            var second = Maybe<object>.None();
 
             var zipped = false;
             first.Zip(
@@ -108,8 +108,8 @@ namespace Amplified.CSharp
         [Fact]
         public void Zip_OnNone_AndNone_ReturnsNone()
         {
-            var first = Maybe<int>.None;
-            var second = Maybe<object>.None;
+            var first = Maybe<int>.None();
+            var second = Maybe<object>.None();
             var result = first.Zip(second, (f, s) => new { f, s });
             result.MustBeNone();
         }
@@ -118,7 +118,7 @@ namespace Amplified.CSharp
         public void Zip_OnNone_AndSome_ReturnsNone()
         {
             var first = Some(100);
-            var second = Maybe<object>.None;
+            var second = Maybe<object>.None();
             var result = first.Zip(second, (f, s) => new { f, s });
             result.MustBeNone();
         }
@@ -126,7 +126,7 @@ namespace Amplified.CSharp
         [Fact]
         public void Zip_OnSome_AndNone_ReturnsNone()
         {
-            var first = Maybe<object>.None;
+            var first = Maybe<object>.None();
             var second = Some(100);
             var result = first.Zip(second, (f, s) => new { f, s });
             result.MustBeNone();
@@ -145,7 +145,7 @@ namespace Amplified.CSharp
         public void OrReturn_OnNone_ReturnsArgumentValue()
         {
             const int alternativeValue = 3780;
-            var none = Maybe<int>.None;
+            var none = Maybe<int>.None();
             var result = none.OrReturn(alternativeValue);
             Assert.Equal(alternativeValue, result);
         }
@@ -162,7 +162,7 @@ namespace Amplified.CSharp
         [Fact]
         public void OrDefault_OnNone_ReturnsDefaultValue()
         {
-            var none = Maybe<object>.None;
+            var none = Maybe<object>.None();
             var result = none.OrDefault();
             Assert.Equal(default(object), result);
         }
@@ -180,7 +180,7 @@ namespace Amplified.CSharp
         public void OrGet_OnNone_ReturnsValueOfLambda()
         {
             var expected = new object();
-            var none = Maybe<object>.None;
+            var none = Maybe<object>.None();
             var result = none.OrGet(() => expected);
             Assert.Same(expected, result);
         }
@@ -197,7 +197,7 @@ namespace Amplified.CSharp
         [Fact]
         public void OrThrow_OnNone_ThrowsException()
         {
-            var none = Maybe<object>.None;
+            var none = Maybe<object>.None();
             Assert.Throws<DummyException>(() => none.OrThrow(new DummyException()));
         }
 
@@ -213,7 +213,7 @@ namespace Amplified.CSharp
         [Fact]
         public void OrThrow_Lambda_OnNone_ThrowsException()
         {
-            var none = Maybe<object>.None;
+            var none = Maybe<object>.None();
             Assert.Throws<DummyException>(() => none.OrThrow(() => new DummyException()));
         }
 

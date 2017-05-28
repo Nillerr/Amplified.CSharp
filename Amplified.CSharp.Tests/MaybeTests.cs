@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -21,32 +21,6 @@ namespace Amplified.CSharp
         }
 
         [Fact]
-        public void CallingEmptyConstructor_ReturnsNone()
-        {
-            var maybe = new Maybe<object>();
-            maybe.MustBeNone();
-        }
-
-        [Fact]
-        public void CallingConstructor_WithValue_ReturnsSome()
-        {
-            var maybe = new Maybe<object>(new object());
-            maybe.MustBeSome();
-        }
-
-        [Fact]
-        public void CallingConstructor_WithNullReferenceType_ThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new Maybe<object>(null));
-        }
-
-        [Fact]
-        public void CallingConstructor_WithNullValueType_ThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new Maybe<int?>(null));
-        }
-
-        [Fact]
         public void StaticSome_WithNonNullArgument_ReturnsSome()
         {
             var some = Some(1);
@@ -56,14 +30,14 @@ namespace Amplified.CSharp
         [Fact]
         public void StaticNone_ReturnsNone()
         {
-            var none = Maybe<int>.None;
+            var none = Maybe<int>.None();
             none.MustBeNone();
         }
 
         [Fact]
         public void StaticNoneMethod_ReturnsNone()
         {
-            var none = Maybe<int>.None;
+            var none = Maybe<int>.None();
             none.MustBeNone();
         }
 
@@ -93,7 +67,7 @@ namespace Amplified.CSharp
         public void Match_OnNone_ReturnsValue()
         {
             var expected = new object();
-            var result = Maybe<int>.None
+            var result = Maybe<int>.None()
                 .Match(
                     some => new object(),
                     none => expected

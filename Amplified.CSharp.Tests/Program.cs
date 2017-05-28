@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
-using static Amplified.CSharp.Constructors;
+using static Amplified.CSharp.Maybe;
+using static Amplified.CSharp.Units;
 
 namespace Amplified.CSharp
 {
@@ -55,11 +57,19 @@ namespace Amplified.CSharp
                     none => Unit(() => Console.WriteLine()) 
                 );*/
 
-            Unit unit = Some(1).ToUnit().Return(Some(1))
+            var none = None();
+            var some = Some(1);
+
+            if (some == none)
+            {
+                
+            }
+
+            /*Unit unit = Some(1).ToUnit().Return(Some(1))
                 .Match(
                     some => Console.WriteLine("Hello Some"),
                     none => Console.WriteLine("Hello None")
-                );
+                );*/
 
         }
 
