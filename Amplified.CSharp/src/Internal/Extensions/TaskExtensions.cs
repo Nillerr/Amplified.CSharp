@@ -28,5 +28,11 @@ namespace Amplified.CSharp.Internal.Extensions
             await source.ConfigureAwait(false);
             return continuation();
         }
+
+        public static async Task<TResult> WithResult<TResult>(this Task source, TResult result)
+        {
+            await source.ConfigureAwait(false);
+            return result;
+        }
     }
 }

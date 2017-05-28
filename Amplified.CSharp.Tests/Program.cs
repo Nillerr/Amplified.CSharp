@@ -57,19 +57,19 @@ namespace Amplified.CSharp
                     none => Unit(() => Console.WriteLine()) 
                 );*/
 
-            var none = None();
+            /*var none = None();
             var some = Some(1);
 
             if (some == none)
             {
                 
-            }
+            }*/
 
-            /*Unit unit = Some(1).ToUnit().Return(Some(1))
+            Unit unit = Some(1).ToUnit().Return(Some(1))
                 .Match(
                     some => Console.WriteLine("Hello Some"),
                     none => Console.WriteLine("Hello None")
-                );*/
+                );
 
         }
 

@@ -1,28 +1,25 @@
 using System;
 using System.Threading.Tasks;
+using Amplified.CSharp.Internal.Extensions;
 
 namespace Amplified.CSharp
 {
     public static class Units
     {
         public static Unit Unit() => default(Unit);
-        
-        public static Unit Unit(Action action)
+
+        public static Func<Unit> Unit(Action action) => () =>
         {
             action();
             return default(Unit);
-        }
-        
-        public static async Task<Unit> Unit(Func<Task> action)
+        };
+
+        public static Func<T, Unit> Unit<T>(Action<T> action) => arg =>
         {
-            await action();
+            action(arg);
             return default(Unit);
-        }
-        
-        public static Unit Unit<T>(Func<T> action)
-        {
-            /*var ignored = */action();
-            return default(Unit);
-        }
+        };
+
+        public static Func<Task<Unit>> Unit(Func<Task> func) => () => func().WithResult(default(Unit));
     }
 }
