@@ -23,10 +23,13 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<bool> IsSome => _valueTask?.Then(it => it.IsSome) ?? Task.FromResult(false);
+        private Task<Maybe<T>> GetTask() => _valueTask ?? Task.FromResult(default(Maybe<T>));
 
         [NotNull]
-        public Task<bool> IsNone => _valueTask?.Then(it => it.IsNone) ?? Task.FromResult(true);
+        public Task<bool> IsSome => GetTask().Then(it => it.IsSome);
+
+        [NotNull]
+        public Task<bool> IsNone => GetTask().Then(it => it.IsNone);
 
         [NotNull]
         public Task<TResult> Match<TResult>(
@@ -34,7 +37,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<None, TResult> none
         )
         {
-            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(none(default(None)));
+            return GetTask().Then(result => result.Match(some, none));
         }
 
         [NotNull]
@@ -43,7 +46,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<TResult> none
         )
         {
-            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(none());
+            return GetTask().Then(result => result.Match(some, none));
         }
 
         [NotNull]
@@ -52,7 +55,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
         )
         {
-            return _valueTask?.Then(result => result.Match(someAsync, noneAsync)) ?? noneAsync(default(None));
+            return GetTask().Then(result => result.Match(someAsync, noneAsync));
         }
 
         [NotNull]
@@ -61,7 +64,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
         )
         {
-            return _valueTask?.Then(result => result.Match(someAsync, noneAsync)) ?? noneAsync();
+            return GetTask().Then(result => result.Match(someAsync, noneAsync));
         }
 
         [NotNull]
@@ -70,8 +73,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<None, TResult> none
         )
         {
-            return _valueTask?.Then(result => result.Match(someAsync, n => Task.FromResult(none(n)))) ??
-                   Task.FromResult(none(default(None)));
+            return GetTask().Then(result => result.Match(someAsync, n => Task.FromResult(none(n))));
         }
 
         [NotNull]
@@ -80,8 +82,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<TResult> none
         )
         {
-            return _valueTask?.Then(result => result.Match(someAsync, n => Task.FromResult(none()))) ??
-                   Task.FromResult(none());
+            return GetTask().Then(result => result.Match(someAsync, n => Task.FromResult(none())));
         }
 
         [NotNull]
@@ -90,8 +91,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
         )
         {
-            return _valueTask?.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync)) ??
-                   noneAsync(default(None));
+            return GetTask().Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));
         }
 
         [NotNull]
@@ -100,7 +100,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
         )
         {
-            return _valueTask?.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync)) ?? noneAsync();
+            return GetTask().Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));
         }
 
         [NotNull]
@@ -109,7 +109,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Action<None> none
         )
         {
-            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(default(Unit));
+            return GetTask().Then(result => result.Match(some, none));
         }
 
         [NotNull]
@@ -118,7 +118,7 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Action none
         )
         {
-            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(default(Unit));
+            return GetTask().Then(result => result.Match(some, none));
         }
 
         [NotNull]
@@ -127,13 +127,13 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<None, Task> noneAsync
         )
         {
-            return _valueTask?.Then(
-                       result => result
-                           .Match(
-                               async some => await someAsync(some).WithResult(default(Unit)),
-                               none => Task.FromResult(noneAsync(none))
-                           )
-                   ) ?? Task.FromResult(default(Unit));
+            return GetTask().Then(
+                result => result
+                    .Match(
+                        async some => await someAsync(some).WithResult(default(Unit)),
+                        none => Task.FromResult(noneAsync(none))
+                    )
+            );
         }
 
         [NotNull]
@@ -142,13 +142,13 @@ namespace Amplified.CSharp
             [InstantHandle, NotNull] Func<Task> noneAsync
         )
         {
-            return _valueTask?.Then(
-                       result => result
-                           .Match(
-                               async some => await someAsync(some).WithResult(default(Unit)),
-                               () => Task.FromResult(noneAsync())
-                           )
-                   ) ?? Task.FromResult(default(Unit));
+            return GetTask().Then(
+                result => result
+                    .Match(
+                        async some => await someAsync(some).WithResult(default(Unit)),
+                        () => Task.FromResult(noneAsync())
+                    )
+            );
         }
 
         public static implicit operator AsyncMaybe<T>(Maybe<T> source)
@@ -163,7 +163,7 @@ namespace Amplified.CSharp
 
         public TaskAwaiter<Maybe<T>> GetAwaiter()
         {
-            return _valueTask?.GetAwaiter() ?? Task.FromResult(default(Maybe<T>)).GetAwaiter();
+            return GetTask().GetAwaiter();
         }
     }
 }

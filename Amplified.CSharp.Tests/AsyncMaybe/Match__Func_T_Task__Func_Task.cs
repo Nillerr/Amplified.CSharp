@@ -8,6 +8,16 @@ namespace Amplified.CSharp
     public class AsyncMaybe__Match__Func_T_Task__Func_Task
     {
         [Fact]
+        public async Task NoneValue_WithLambdas()
+        {
+            var invocations = 0;
+            var source = AsyncMaybe<int>.None();
+            var result = await source.Match(some => Task.CompletedTask, () => { invocations++; return Task.CompletedTask; });
+            Assert.Equal(Unit(), result);
+            Assert.Equal(1, invocations);
+        }
+        
+        [Fact]
         public async Task WithLambdas()
         {
             var source = AsyncMaybe<int>.Some(1);
