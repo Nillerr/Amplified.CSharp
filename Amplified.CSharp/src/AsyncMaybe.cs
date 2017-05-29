@@ -26,7 +26,7 @@ namespace Amplified.CSharp
         public Task<bool> IsSome => _valueTask?.Then(it => it.IsSome) ?? Task.FromResult(false);
 
         [NotNull]
-        public Task<bool> IsNone => _valueTask?.Then(it => it.IsNone) ?? Task.FromResult(false);
+        public Task<bool> IsNone => _valueTask?.Then(it => it.IsNone) ?? Task.FromResult(true);
 
         [NotNull]
         public Task<TResult> Match<TResult>(
