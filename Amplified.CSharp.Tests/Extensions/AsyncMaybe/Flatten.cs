@@ -5,7 +5,8 @@ using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
-    public class Flatten
+    // ReSharper disable once InconsistentNaming
+    public class AsyncMaybe_Flatten
     {
         [Fact]
         public async Task WithSome_ReturnsResultOfSome()

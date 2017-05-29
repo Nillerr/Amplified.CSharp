@@ -47,7 +47,7 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<TResult> Match<TResult>(
+        public Task<TResult> MatchAsync<TResult>(
             [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
             [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
         )
@@ -56,7 +56,7 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<TResult> Match<TResult>(
+        public Task<TResult> MatchAsync<TResult>(
             [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
             [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
         )

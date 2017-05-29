@@ -5,7 +5,8 @@ using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
-    public class FlatMap
+    // ReSharper disable once InconsistentNaming
+    public class AsyncMaybe_FlatMap
     {
         [Fact]
         public async Task Sync_ReturningSome_WhenSome_ReturnsResultOfInner()

@@ -5,7 +5,8 @@ using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
-    public class OrDefault
+    // ReSharper disable once InconsistentNaming
+    public class AsyncMaybe_OrDefault
     {
         [Fact]
         public async Task Sync_OnSome_ReturnsResultOfSome()

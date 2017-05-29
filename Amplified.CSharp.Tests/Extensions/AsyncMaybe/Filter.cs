@@ -5,7 +5,8 @@ using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
-    public class Filter
+    // ReSharper disable once InconsistentNaming
+    public class AsyncMaybe_Filter
     {
         #region Sync
         

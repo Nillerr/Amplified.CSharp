@@ -4,7 +4,7 @@ using static Amplified.CSharp.Maybe;
 namespace Amplified.CSharp
 {
     // ReSharper disable once InconsistentNaming
-    public class Match__Func_T_TResult__Func_TResult
+    public class Maybe__Match__Func_T_TResult__Func_TResult
     {
         [Fact]
         public void WithLambdas()
