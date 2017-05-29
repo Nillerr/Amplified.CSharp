@@ -18,7 +18,7 @@ namespace Amplified.CSharp
 
             var result = shouldBeOther.OrFail();
 
-            Assert.Equal(result, 3);
+            Assert.Equal(3, result);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Amplified.CSharp
         {
             const int value = 2;
             var result = await Maybe<int>.Some(value).ToAsync().OrFail();
-            Assert.Equal(result, value);
+            Assert.Equal(value, result);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Amplified.CSharp
         {
             var source = AsyncMaybe<int>.Some(1);
             var result = await source.Match(some => { }, none: () => { });
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
         
         [Fact]
@@ -24,7 +24,7 @@ namespace Amplified.CSharp
             
             var source = AsyncMaybe<int>.Some(1);
             var result = await source.Match(some => { }, none: MatchNone);
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
         
         [Fact]
@@ -36,7 +36,7 @@ namespace Amplified.CSharp
             
             var source = AsyncMaybe<int>.Some(1);
             var result = await source.Match(some: MatchSome, none: () => { });
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
         
         [Fact]
@@ -52,7 +52,7 @@ namespace Amplified.CSharp
             
             var source = AsyncMaybe<int>.Some(1);
             var result = await source.Match(some: MatchSome, none: MatchNone);
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
     }
 }

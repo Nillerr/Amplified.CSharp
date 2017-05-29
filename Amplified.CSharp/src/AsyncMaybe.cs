@@ -130,7 +130,7 @@ namespace Amplified.CSharp
             return _valueTask?.Then(
                        result => result
                            .Match(
-                               some => someAsync(some).WithResult(default(Unit)),
+                               async some => await someAsync(some).WithResult(default(Unit)),
                                none => Task.FromResult(noneAsync(none))
                            )
                    ) ?? Task.FromResult(default(Unit));
@@ -145,7 +145,7 @@ namespace Amplified.CSharp
             return _valueTask?.Then(
                        result => result
                            .Match(
-                               some => someAsync(some).WithResult(default(Unit)),
+                               async some => await someAsync(some).WithResult(default(Unit)),
                                () => Task.FromResult(noneAsync())
                            )
                    ) ?? Task.FromResult(default(Unit));

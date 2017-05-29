@@ -11,7 +11,7 @@ namespace Amplified.CSharp
         {
             var source = new None();
             var result = source.Match(() => { });
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
         
         [Fact]
@@ -23,7 +23,7 @@ namespace Amplified.CSharp
 
             var source = new None();
             var result = source.Match(Match);
-            Assert.Equal(result, Unit());
+            Assert.Equal(Unit(), result);
         }
     }
 }
