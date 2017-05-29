@@ -103,6 +103,54 @@ namespace Amplified.CSharp
             return _valueTask?.Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync)) ?? noneAsync();
         }
 
+        [NotNull]
+        public Task<Unit> Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Action<None> none
+        )
+        {
+            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(default(Unit));
+        }
+
+        [NotNull]
+        public Task<Unit> Match(
+            [InstantHandle, NotNull] Action<T> some,
+            [InstantHandle, NotNull] Action none
+        )
+        {
+            return _valueTask?.Then(result => result.Match(some, none)) ?? Task.FromResult(default(Unit));
+        }
+
+        [NotNull]
+        public Task<Unit> Match(
+            [InstantHandle, NotNull] Func<T, Task> someAsync,
+            [InstantHandle, NotNull] Func<None, Task> noneAsync
+        )
+        {
+            return _valueTask?.Then(
+                       result => result
+                           .Match(
+                               some => someAsync(some).WithResult(default(Unit)),
+                               none => Task.FromResult(noneAsync(none))
+                           )
+                   ) ?? Task.FromResult(default(Unit));
+        }
+
+        [NotNull]
+        public Task<Unit> Match(
+            [InstantHandle, NotNull] Func<T, Task> someAsync,
+            [InstantHandle, NotNull] Func<Task> noneAsync
+        )
+        {
+            return _valueTask?.Then(
+                       result => result
+                           .Match(
+                               some => someAsync(some).WithResult(default(Unit)),
+                               () => Task.FromResult(noneAsync())
+                           )
+                   ) ?? Task.FromResult(default(Unit));
+        }
+
         public static implicit operator AsyncMaybe<T>(Maybe<T> source)
         {
             return new AsyncMaybe<T>(Task.FromResult(source));

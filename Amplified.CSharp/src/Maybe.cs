@@ -91,46 +91,6 @@ namespace Amplified.CSharp
         }
 
         [Pure]
-        public Unit Match(
-            [InstantHandle, NotNull] Func<T, Unit> some,
-            [InstantHandle, NotNull] Action none
-        )
-        {
-            if (IsSome)
-                return some(_value);
-            
-            none();
-
-            return default(Unit);
-        }
-
-        [Pure]
-        public Unit Match(
-            [InstantHandle, NotNull] Action<T> some,
-            [InstantHandle, NotNull] Func<Unit> none
-        )
-        {
-            if (IsNone)
-                return none();
-            
-            some(_value);
-            return default(Unit);
-        }
-
-        [Pure]
-        public Unit Match(
-            [InstantHandle, NotNull] Action<T> some,
-            [InstantHandle, NotNull] Func<None, Unit> none
-        )
-        {
-            if (IsNone)
-                return none(default(None));
-            
-            some(_value);
-            return default(Unit);
-        }
-
-        [Pure]
         public bool Equals(Maybe<T> other)
         {
             return (IsNone && other.IsNone) ||

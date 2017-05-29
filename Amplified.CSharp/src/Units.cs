@@ -20,6 +20,14 @@ namespace Amplified.CSharp
             return default(Unit);
         };
 
+        public static Func<None, Unit> Unit(Action<None> action) => arg =>
+        {
+            action(arg);
+            return default(Unit);
+        };
+
         public static Func<Task<Unit>> Unit(Func<Task> func) => () => func().WithResult(default(Unit));
+
+        public static Func<T, Task<Unit>> Unit<T>(Func<T, Task> func) => arg => func(arg).WithResult(default(Unit));
     }
 }
