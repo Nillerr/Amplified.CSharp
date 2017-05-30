@@ -1,3 +1,4 @@
+using System;
 using Amplified.CSharp.Util;
 using Xunit;
 
@@ -11,6 +12,19 @@ namespace Amplified.CSharp
         {
             Maybe<int> source = new None();
             source.MustBeNone();
+        }
+
+        [Fact]
+        public void UsingEmptyConstructor()
+        {
+            var source = new Maybe<int>();
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public void UsingStaticSome_WithNullValue_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() => Maybe<object>.Some(null));
         }
 
         [Fact]

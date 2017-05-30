@@ -73,6 +73,22 @@ namespace Amplified.CSharp
             Assert.False(equals);
             Assert.NotEqual(source, other);
         }
+
+        [Fact]
+        public void ImplicitNone()
+        {
+            var defaultConstructor = new Maybe<int>();
+            var defaultValue = default(Maybe<int>);
+            var genericStaticNone = Maybe<int>.None();
+            var implicitFromNone = new None();
+            var some = Maybe<int>.Some(2);
+            
+            Assert.Equal(defaultConstructor, defaultValue);
+            Assert.Equal(defaultConstructor, genericStaticNone);
+            Assert.Equal(defaultConstructor, implicitFromNone);
+
+            Assert.NotEqual(defaultConstructor, some);
+        }
         
         #endregion
 
