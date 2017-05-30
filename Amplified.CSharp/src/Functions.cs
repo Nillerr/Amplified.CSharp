@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
+    [DebuggerStepThrough]
     public static class Functions
     {
         public static Maybe<byte> ParseByte(string str)

@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Amplified.CSharp
 {
+    [DebuggerStepThrough]
     public struct Unit : IEquatable<Unit>
     {
         private static readonly int HashCode = nameof(Unit).GetHashCode();

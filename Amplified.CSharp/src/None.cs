@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Amplified.CSharp.Internal;
 using JetBrains.Annotations;
 using static Amplified.CSharp.Units;
@@ -13,6 +14,7 @@ namespace Amplified.CSharp
     ///     may be some overhead associated with it. All <c>None</c>s are expectedly equal, and equality can be achieved
     ///     for other types by implementing <c>ICanBeNone</c> or <c>IMaybe</c>.
     /// </remarks>
+    [DebuggerStepThrough]
     public struct None : IEquatable<None>, IEquatable<IMaybe>
     {
         [Pure]

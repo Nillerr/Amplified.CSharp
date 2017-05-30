@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
@@ -6,6 +7,7 @@ using JetBrains.Annotations;
 
 namespace Amplified.CSharp
 {
+    [DebuggerStepThrough]
     public struct AsyncMaybe<T>
     {
         public static AsyncMaybe<T> None() => default(AsyncMaybe<T>);

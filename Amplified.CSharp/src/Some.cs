@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Amplified.CSharp
 {
+    [DebuggerStepThrough]
     public struct Some<T> : IEquatable<Some<T>>, IEquatable<Maybe<T>>, IEquatable<None>
     {
         public Some(T value)

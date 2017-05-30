@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal;
 using Amplified.CSharp.Internal.Extensions;
@@ -12,10 +13,20 @@ namespace Amplified.CSharp
     ///     types, but being a <c>struct</c>, it can never be <c>null</c> itself (unless it is boxed).
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [DebuggerStepThrough]
     public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
+        /// <summary>
+        /// Returns a <c>None</c> instance (a <see cref="Maybe{T}"/> without a value).
+        /// </summary>
+        /// <returns>A <see cref="Maybe{T}"/>.<c>None</c>.</returns>
         public static Maybe<T> None() => default(Maybe<T>);
 
+        /// <summary>
+        /// Creates a Some case using <see cref="value"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>A <see cref="Maybe{T}"/>.<c>Some</c> with a value.</returns>
         public static Maybe<T> Some(T value)
         {
             return new Maybe<T>(value);
@@ -32,15 +43,27 @@ namespace Amplified.CSharp
             IsSome = true;
         }
 
+        /// <summary>
+        /// Converts an instance of <see cref="None"/> to <see cref="Maybe{T}"/>.<c>None</c>.
+        /// </summary>
+        /// <remarks>
+        /// This operator is required to support type-parameterless Maybe.None construction.
+        /// </remarks>
         [Pure]
         public static implicit operator Maybe<T>(None none)
         {
             return default(Maybe<T>);
         }
 
+        /// <summary>
+        /// Returns <c>true</c> if the instance contains a value.
+        /// </summary>
         [Pure]
         public bool IsSome { get; }
         
+        /// <summary>
+        /// Returns <c>false</c> if the instance does not contain a value.
+        /// </summary>
         [Pure]
         public bool IsNone => IsSome == false;
 
@@ -139,6 +162,7 @@ namespace Amplified.CSharp
         }
     }
     
+    [DebuggerStepThrough]
     public static class Maybe
     {
         public static Maybe<T> Some<T>([NotNull] T value) => Maybe<T>.Some(value);

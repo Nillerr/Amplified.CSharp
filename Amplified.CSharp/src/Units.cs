@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal.Extensions;
 
 namespace Amplified.CSharp
 {
+    [DebuggerStepThrough]
     public static class Units
     {
         public static Unit Unit() => default(Unit);
