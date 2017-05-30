@@ -13,10 +13,11 @@ namespace Amplified.CSharp
             Assert.Equal(source.IsSome, false);
         }
 
-        public static void MustBeSome<T>(this Maybe<T> source)
+        public static T MustBeSome<T>(this Maybe<T> source)
         {
             Assert.Equal(source.IsNone, false);
             Assert.Equal(source.IsSome, true);
+            return source.OrFail();
         }
 
         public static T OrFail<T>(this Maybe<T> source)

@@ -6,7 +6,7 @@ using static Amplified.CSharp.Maybe;
 namespace Amplified.CSharp
 {
     // ReSharper disable once InconsistentNaming
-    public class AsyncMaybe_Filter
+    public class AsyncMaybe_Where
     {
         #region Sync
         
@@ -14,7 +14,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnSome_WithTruePredicate_ReturnsSome()
         {
             var expected = new {Flag = true};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await SomeAsync(expected).Where(it => it.Flag);
             source.MustBeSome();
         }
         
@@ -22,7 +22,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnSome_WithFalsePredicate_ReturnsNone()
         {
             var expected = new {Flag = false};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await SomeAsync(expected).Where(it => it.Flag);
             source.MustBeNone();
         }
         
@@ -30,7 +30,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnNone_WithTruePredicate_ReturnsNone()
         {
             var expected = new {Flag = false};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await SomeAsync(expected).Where(it => it.Flag);
             source.MustBeNone();
         }
         
@@ -38,7 +38,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnNone_WithFalsePredicate_ReturnsNone()
         {
             var expected = new {Flag = false};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await SomeAsync(expected).Where(it => it.Flag);
             source.MustBeNone();
         }
         
@@ -50,7 +50,7 @@ namespace Amplified.CSharp
         public async Task Async_OnSome_WithTruePredicate_ReturnsSome()
         {
             var expected = new {Flag = Task.FromResult(true)};
-            var source = await SomeAsync(expected).FilterAsync(async it => await it.Flag);
+            var source = await SomeAsync(expected).WhereAsync(async it => await it.Flag);
             source.MustBeSome();
         }
         
@@ -58,7 +58,7 @@ namespace Amplified.CSharp
         public async Task Async_OnSome_WithFalsePredicate_ReturnsNone()
         {
             var expected = new {Flag = Task.FromResult(false)};
-            var source = await SomeAsync(expected).FilterAsync(async it => await it.Flag);            
+            var source = await SomeAsync(expected).WhereAsync(async it => await it.Flag);            
             source.MustBeNone();
         }
         
@@ -67,7 +67,7 @@ namespace Amplified.CSharp
         {
             var invocations = 0;
             var source = await AsyncMaybe<object>.None()
-                .FilterAsync(async it => { invocations++; return await Task.FromResult(true); });
+                .WhereAsync(async it => { invocations++; return await Task.FromResult(true); });
             
             source.MustBeNone();
             Assert.Equal(0, invocations);
@@ -78,7 +78,7 @@ namespace Amplified.CSharp
         {
             var invocations = 0;
             var source = await AsyncMaybe<object>.None()
-                .FilterAsync(async it => { invocations++; return await Task.FromResult(false); });
+                .WhereAsync(async it => { invocations++; return await Task.FromResult(false); });
             source.MustBeNone();
             Assert.Equal(0, invocations);
         }
