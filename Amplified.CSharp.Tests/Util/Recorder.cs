@@ -21,42 +21,36 @@ namespace Amplified.CSharp.Util
     public sealed class Recorder
     {
         public int Invocations { get; private set; }
-        
-        public Func<TResult> Record<TResult>(Func<TResult> func)
+
+        public Action<T> Record<T>(Action<T> action) => arg =>
         {
-            return () =>
-            {
-                Invocations++;
-                return func();
-            };
-        }
-        
-        public Func<T, TResult> Record<T, TResult>(Func<T, TResult> func)
+            Invocations++;
+            action(arg);
+        };
+
+        public Func<TResult> Record<TResult>(Func<TResult> func) => () =>
         {
-            return arg =>
-            {
-                Invocations++;
-                return func(arg);
-            };
-        }
-        
-        public Func<T1, T2, TResult> Record<T1, T2, TResult>(Func<T1, T2, TResult> func)
+            Invocations++;
+            return func();
+        };
+
+        public Func<T, TResult> Record<T, TResult>(Func<T, TResult> func) => arg =>
         {
-            return (arg1, arg2) =>
-            {
-                Invocations++;
-                return func(arg1, arg2);
-            };
-        }
-        
-        public Func<T1, T2, T3, TResult> Record<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func)
+            Invocations++;
+            return func(arg);
+        };
+
+        public Func<T1, T2, TResult> Record<T1, T2, TResult>(Func<T1, T2, TResult> func) => (arg1, arg2) =>
         {
-            return (arg1, arg2, arg3) =>
-            {
-                Invocations++;
-                return func(arg1, arg2, arg3);
-            };
-        }
+            Invocations++;
+            return func(arg1, arg2);
+        };
+
+        public Func<T1, T2, T3, TResult> Record<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func) => (arg1, arg2, arg3) =>
+        {
+            Invocations++;
+            return func(arg1, arg2, arg3);
+        };
 
         public void MustHaveExactly(Invocations invocations)
         {

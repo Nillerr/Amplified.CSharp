@@ -12,13 +12,6 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Match(some => AsyncMaybe<TResult>.Some(mapper(some)), none: AsyncMaybe<TResult>.None).ToAsyncMaybe();
         }
-        
-        public static AsyncMaybe<TResult> Map<TResult>(
-            this AsyncMaybe<Unit> source,
-            [NotNull] Func<TResult> mapper)
-        {
-            return source.Match(unit => AsyncMaybe<TResult>.Some(mapper()), none: AsyncMaybe<TResult>.None).ToAsyncMaybe();
-        }
 
         public static AsyncMaybe<Unit> Map<T>(
             this AsyncMaybe<T> source,

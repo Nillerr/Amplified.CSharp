@@ -7,6 +7,8 @@ namespace Amplified.CSharp
     // ReSharper disable once InconsistentNaming
     public class AsyncMaybe_Select
     {
+        #region Select<T, TResult>(Func<T, TResult> selector) 
+        
         [Fact]
         public async Task Sync_OnSome_ReturnsSameAsMap()
         {
@@ -24,6 +26,32 @@ namespace Amplified.CSharp
             var map = await source.Map(it => it * 2);
             Assert.Equal(where, map);
         }
+        
+        #endregion
+
+        #region Select<T>(Action<T> selector)
+
+        [Fact]
+        public async Task Some_Select_ReturnsSameAsMap()
+        {
+            var source = AsyncMaybe<int>.Some(5);
+            var where = await source.Select(it => { });
+            var map = await source.Map(it => { });
+            Assert.Equal(where, map);
+        }
+
+        [Fact]
+        public async Task None_Select_ReturnsSameAsMap()
+        {
+            var source = AsyncMaybe<int>.None();
+            var where = await source.Select(it => { });
+            var map = await source.Map(it => { });
+            Assert.Equal(where, map);
+        }
+        
+        #endregion
+        
+        #region SelectAsync<T, TResult>(Func<T, Task<TResult>> selector)
 
         [Fact]
         public async Task Async_OnSome_ReturnsSameAsMapAsync()
@@ -42,5 +70,7 @@ namespace Amplified.CSharp
             var map = await source.MapAsync(it => Task.FromResult(it * 2));
             Assert.Equal(where, map);
         }
+        
+        #endregion
     }
 }
