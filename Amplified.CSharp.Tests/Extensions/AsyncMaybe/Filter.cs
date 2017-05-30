@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
+using Amplified.CSharp.Util;
 using Xunit;
 using static Amplified.CSharp.Maybe;
 
@@ -15,7 +16,8 @@ namespace Amplified.CSharp
         {
             var expected = new {Flag = true};
             var source = await SomeAsync(expected).Filter(it => it.Flag);
-            source.MustBeSome();
+            var result = source.MustBeSome();
+            Assert.Same(expected, result);
         }
         
         [Fact]
@@ -29,16 +31,14 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Sync_OnNone_WithTruePredicate_ReturnsNone()
         {
-            var expected = new {Flag = false};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await AsyncMaybe<object>.None().Filter(it => true);
             source.MustBeNone();
         }
         
         [Fact]
         public async Task Sync_OnNone_WithFalsePredicate_ReturnsNone()
         {
-            var expected = new {Flag = false};
-            var source = await SomeAsync(expected).Filter(it => it.Flag);
+            var source = await AsyncMaybe<object>.None().Filter(it => false);
             source.MustBeNone();
         }
         
@@ -51,7 +51,8 @@ namespace Amplified.CSharp
         {
             var expected = new {Flag = Task.FromResult(true)};
             var source = await SomeAsync(expected).FilterAsync(async it => await it.Flag);
-            source.MustBeSome();
+            var result = source.MustBeSome();
+            Assert.Same(expected, result);
         }
         
         [Fact]
@@ -65,22 +66,23 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Async_OnNone_WithTruePredicate_ReturnsNone()
         {
-            var invocations = 0;
+            var rec = new Recorder();
             var source = await AsyncMaybe<object>.None()
-                .FilterAsync(async it => { invocations++; return await Task.FromResult(true); });
+                .FilterAsync(rec.Record(async (object it) => await Task.FromResult(true)));
             
             source.MustBeNone();
-            Assert.Equal(0, invocations);
+            rec.MustHaveExactly(0.Invocations());
         }
         
         [Fact]
         public async Task Async_OnNone_WithFalsePredicate_ReturnsNone()
         {
-            var invocations = 0;
+            var rec = new Recorder();
             var source = await AsyncMaybe<object>.None()
-                .FilterAsync(async it => { invocations++; return await Task.FromResult(false); });
+                .FilterAsync(rec.Record(async (object it) => await Task.FromResult(false)));
+            
             source.MustBeNone();
-            Assert.Equal(0, invocations);
+            rec.MustHaveExactly(0.Invocations());
         }
         
         #endregion

@@ -64,8 +64,160 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Async_ReturningAsyncSome_WhenNone_ReturnsNone()
         {
-            var isNone = await AsyncMaybe<int>.None().FlatMap(some => Task.FromResult(Some(some + 3)).ToAsyncMaybe()).IsNone;
+            var isNone = await AsyncMaybe<int>.None().FlatMapAsync(some => Task.FromResult(Some(some + 3).ToAsync())).IsNone;
             Assert.True(isNone);
         }
+        
+        #region AsyncMaybe<Unit>.FlatMap(Func<Maybe<T>>)
+
+        [Fact]
+        public async Task Sync_ReturningSome_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMap(() => Maybe<int>.Some(3));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningSome_UsingNoArgs_WhenSome_ReturnsSome()
+        {
+            const int expected = 3;
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(() => Maybe<int>.Some(expected));
+            var result = source.MustBeSome();
+            Assert.Equal(expected, result);
+        }
+        
+        [Fact]
+        public async Task Sync_ReturningNone_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMap(() => Maybe<int>.Some(3));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningNoneUsingLambda_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            // ReSharper disable once ConvertClosureToMethodGroup
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(() => Maybe<int>.None());
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningNoneUsingMethodRefernece_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(Maybe<int>.None);
+            source.MustBeNone();
+        }
+        
+        #endregion
+        
+        #region AsyncMaybe<Unit>.FlatMap(Func<AsyncMaybe<T>>)
+
+        [Fact]
+        public async Task Sync_ReturningAsyncSome_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMap(() => AsyncMaybe<int>.Some(3));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningAsyncSome_UsingNoArgs_WhenSome_ReturnsSome()
+        {
+            const int expected = 3;
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(() => AsyncMaybe<int>.Some(expected));
+            var result = source.MustBeSome();
+            Assert.Equal(expected, result);
+        }
+        
+        [Fact]
+        public async Task Sync_ReturningAsyncNone_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMap(() => AsyncMaybe<int>.Some(3));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningAsyncNoneUsingLambda_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            // ReSharper disable once ConvertClosureToMethodGroup
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(() => AsyncMaybe<int>.None());
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Sync_ReturningAsyncNoneUsingMethodRefernece_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMap(AsyncMaybe<int>.None);
+            source.MustBeNone();
+        }
+        
+        #endregion
+        
+        #region AsyncMaybe<Unit>.FlatMapAsync(Func<Task<Maybe<T>>>))
+
+        [Fact]
+        public async Task Async_ReturningSome_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMapAsync(() => Task.FromResult(Maybe<int>.Some(3)));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Async_ReturningSome_UsingNoArgs_WhenSome_ReturnsSome()
+        {
+            const int expected = 3;
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMapAsync(() => Task.FromResult(Maybe<int>.Some(expected)));
+            var result = source.MustBeSome();
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public async Task Async_ReturningNone_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMapAsync(() => Task.FromResult(Maybe<int>.None()));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Async_ReturningNone_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMapAsync(() => Task.FromResult(Maybe<int>.None()));
+            source.MustBeNone();
+        }
+        
+        #endregion
+        
+        #region AsyncMaybe<Unit>.FlatMapAsync(Func<Task<AsyncMaybe<T>>>))
+
+        [Fact]
+        public async Task Async_ReturningAsyncSome_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMapAsync(() => Task.FromResult(AsyncMaybe<int>.Some(3)));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Async_ReturningAsyncSome_UsingNoArgs_WhenSome_ReturnsSome()
+        {
+            const int expected = 3;
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMapAsync(() => Task.FromResult(AsyncMaybe<int>.Some(expected)));
+            var result = source.MustBeSome();
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public async Task Async_ReturningAsyncNone_UsingNoArgs_WhenNone_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.None().FlatMapAsync(() => Task.FromResult(AsyncMaybe<int>.None()));
+            source.MustBeNone();
+        }
+
+        [Fact]
+        public async Task Async_ReturningAsyncNone_UsingNoArgs_WhenSome_ReturnsNone()
+        {
+            var source = await AsyncMaybe<Unit>.Some(new Unit()).FlatMapAsync(() => Task.FromResult(AsyncMaybe<int>.None()));
+            source.MustBeNone();
+        }
+        
+        #endregion
     }
 }

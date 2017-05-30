@@ -40,14 +40,6 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static Task<T> OrThrow<T>(this AsyncMaybe<T> source, [NotNull] Exception exception)
-        {
-            return source.Match(
-                some => some,
-                none: _ => throw exception
-            );
-        }
-
         public static AsyncMaybe<T> Or<T>(this AsyncMaybe<T> source, AsyncMaybe<T> other)
         {
             return source.Match(

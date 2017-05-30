@@ -17,12 +17,6 @@ namespace Amplified.CSharp.Internal.Extensions
             return continuation(result);
         }
 
-        public static async Task<TResult> Then<TResult>(this Task source, Func<Task<TResult>> continuation)
-        {
-            await source.ConfigureAwait(false);
-            return await continuation();
-        }
-
         public static async Task<TResult> Then<TResult>(this Task source, Func<TResult> continuation)
         {
             await source.ConfigureAwait(false);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -14,7 +13,7 @@ namespace Amplified.CSharp.Extensions
                 {
                     if (list.Count == 1)
                     {
-                        return Some(list[0]);
+                        return Maybe<T>.Some(list[0]);
                     }
                 }
                 else
@@ -24,7 +23,7 @@ namespace Amplified.CSharp.Extensions
                         var result = enumerator.Current;
                         if (enumerator.MoveNext() == false)
                         {
-                            return Some(result);
+                            return Maybe<T>.Some(result);
                         }
                     }
                 }
@@ -41,12 +40,12 @@ namespace Amplified.CSharp.Extensions
                 {
                     if (list.Count > 0)
                     {
-                        return Some(list[0]);
+                        return Maybe<T>.Some(list[0]);
                     }
                 }
                 else if (enumerator.MoveNext())
                 {
-                    return Some(enumerator.Current);
+                    return Maybe<T>.Some(enumerator.Current);
                 }
                 return Maybe<T>.None();
             }
@@ -62,14 +61,14 @@ namespace Amplified.CSharp.Extensions
                     var count = list.Count;
                     if (count > 0)
                     {
-                        return Some(list[count - 1]);
+                        return Maybe<T>.Some(list[count - 1]);
                     }
                 }
 
                 var last = Maybe<T>.None();
                 while (enumerator.MoveNext())
                 {
-                    last = Some(enumerator.Current);
+                    last = Maybe<T>.Some(enumerator.Current);
                 }
                 return last;
             }
@@ -82,7 +81,7 @@ namespace Amplified.CSharp.Extensions
             {
                 if (index < list.Count)
                 {
-                    return Some(list[index]);
+                    return Maybe<T>.Some(list[index]);
                 }
             }
             else
@@ -92,7 +91,7 @@ namespace Amplified.CSharp.Extensions
                     while (true)
                     {
                         if (enumerator.MoveNext() == false) return Maybe<T>.None();
-                        if (index == 0) return Some(enumerator.Current);
+                        if (index == 0) return Maybe<T>.Some(enumerator.Current);
                         index--;
                     }
                 }
@@ -100,14 +99,14 @@ namespace Amplified.CSharp.Extensions
             return Maybe<T>.None();
         }
 
-        public static Maybe<TValue> Value<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)
+        public static Maybe<TValue> GetValueOrNone<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None();
+            return source.ContainsKey(key) ? Maybe<TValue>.Some(source[key]) : Maybe<TValue>.None();
         }
 
-        public static Maybe<TValue> Value<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
+        public static Maybe<TValue> GetValueOrNone<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Some(source[key]) : Maybe<TValue>.None();
+            return source.ContainsKey(key) ? Maybe<TValue>.Some(source[key]) : Maybe<TValue>.None();
         }
     }
 }
