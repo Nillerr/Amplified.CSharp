@@ -39,11 +39,19 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<AsyncMaybe<T>>> other)
+        public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<AsyncMaybe<T>>> otherAsync)
         {
             return source.Match(
                 some: some => Some(some).ToAsync(),
-                noneAsync: none => other()
+                noneAsync: none => otherAsync()
+            ).ToAsyncMaybe();
+        }
+
+        public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Task<AsyncMaybe<T>> otherAsync)
+        {
+            return source.Match(
+                some: some => Some(some).ToAsync(),
+                noneAsync: none => otherAsync
             ).ToAsyncMaybe();
         }
 
