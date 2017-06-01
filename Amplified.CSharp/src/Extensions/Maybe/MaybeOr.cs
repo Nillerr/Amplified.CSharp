@@ -40,14 +40,6 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static T OrThrow<T>(this Maybe<T> source, [NotNull] Exception exception)
-        {
-            return source.Match(
-                some => some,
-                none => throw exception
-            );
-        }
-
         public static Maybe<T> Or<T>(this Maybe<T> source, Maybe<T> other)
         {
             return source.Match(Some, none => other);

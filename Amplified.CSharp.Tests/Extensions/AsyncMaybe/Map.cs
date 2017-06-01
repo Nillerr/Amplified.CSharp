@@ -13,15 +13,7 @@ namespace Amplified.CSharp
         public async Task Sync_WhenSome_ReturnsMappedResult()
         {
             const int expected = 5;
-            var result = await Some(2).ToAsync().Map(some => some + 3).OrFail();
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public async Task Async_WhenSome_ReturnsMappedResult()
-        {
-            const int expected = 5;
-            var result = await Some(2).ToAsync().MapAsync(some => Task.FromResult(some + 3)).OrFail();
+            var result = await AsyncMaybe<int>.Some(2).Map(some => some + 3).OrFail();
             Assert.Equal(expected, result);
         }
 
@@ -29,13 +21,6 @@ namespace Amplified.CSharp
         public async Task Sync_WhenNone_ReturnsNone()
         {
             var isNone = await AsyncMaybe<int>.None().Map(some => some + 3).IsNone;
-            Assert.True(isNone);
-        }
-
-        [Fact]
-        public async Task Async_WhenNone_ReturnsNone()
-        {
-            var isNone = await AsyncMaybe<int>.None().MapAsync(some => Task.FromResult(some + 3)).IsNone;
             Assert.True(isNone);
         }
 

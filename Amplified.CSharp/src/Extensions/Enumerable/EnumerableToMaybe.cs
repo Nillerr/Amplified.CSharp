@@ -1,54 +1,104 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Amplified.CSharp.Extensions
 {
     public static class EnumerableToMaybe
     {
-        public static Maybe<T> SingleOrNone<T>(this IEnumerable<T> source)
+        public static Maybe<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            
+            var list = source as IList<TSource>;
+            if (list != null)
+            {
+                switch (list.Count)
+                {
+                    case 0:
+                        return Maybe<TSource>.None();
+                    case 1:
+                        return Maybe<TSource>.Some(list[0]);
+                }
+            }
+            else
+            {
+                using (var enumerator = source.GetEnumerator())
+                {
+                    if (!enumerator.MoveNext())
+                        return Maybe<TSource>.None();
+
+                    var current = enumerator.Current;
+                    if (!enumerator.MoveNext())
+                        return Maybe<TSource>.Some(current);
+                }
+            }
+            
+            throw new InvalidOperationException("The sequence contains more than one element.");
+        }
+        
+        public static Maybe<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+            
             using (var enumerator = source.GetEnumerator())
             {
-                var list = source as IList<T>;
-                if (list != null)
+                while (enumerator.MoveNext())
                 {
-                    if (list.Count == 1)
+                    var current = enumerator.Current;
+                    if (!predicate(current))
+                        continue;
+                    
+                    while (enumerator.MoveNext())
                     {
-                        return Maybe<T>.Some(list[0]);
+                        if (predicate(enumerator.Current))
+                            throw new InvalidOperationException("The sequence contains more than one element matching the predicate.");
                     }
+                    return Maybe<TSource>.Some(current);
                 }
-                else
-                {
-                    if (enumerator.MoveNext())
-                    {
-                        var result = enumerator.Current;
-                        if (enumerator.MoveNext() == false)
-                        {
-                            return Maybe<T>.Some(result);
-                        }
-                    }
-                }
-                return Maybe<T>.None();
             }
+            
+            return Maybe<TSource>.None();
         }
 
-        public static Maybe<T> FirstOrNone<T>(this IEnumerable<T> source)
+        public static Maybe<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source)
         {
-            using (var enumerator = source.GetEnumerator())
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            
+            var sourceList = source as IList<TSource>;
+            if (sourceList != null)
             {
-                var list = source as IList<T>;
-                if (list != null)
-                {
-                    if (list.Count > 0)
-                    {
-                        return Maybe<T>.Some(list[0]);
-                    }
-                }
-                else if (enumerator.MoveNext())
-                {
-                    return Maybe<T>.Some(enumerator.Current);
-                }
-                return Maybe<T>.None();
+                if (sourceList.Count > 0)
+                    return Maybe<TSource>.Some(sourceList[0]);
             }
+            else
+            {
+                using (var enumerator = source.GetEnumerator())
+                {
+                    if (enumerator.MoveNext())
+                        return Maybe<TSource>.Some(enumerator.Current);
+                }
+            }
+            return Maybe<TSource>.None();
+        }
+
+        public static Maybe<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+            
+            foreach (var element in source)
+            {
+                if (predicate(element))
+                    return Maybe<TSource>.Some(element);
+            }
+            return Maybe<TSource>.None();
         }
 
         public static Maybe<T> LastOrNone<T>(this IEnumerable<T> source)

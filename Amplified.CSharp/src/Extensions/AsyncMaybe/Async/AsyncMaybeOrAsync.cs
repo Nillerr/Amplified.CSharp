@@ -31,14 +31,6 @@ namespace Amplified.CSharp.Extensions
             );
         }
 
-        public static async Task<T> OrThrowAsync<T>(this AsyncMaybe<T> source, [NotNull] Task<Exception> exception)
-        {
-            return await source.Match<T>(
-                some: some => some,
-                noneAsync: async _ => throw await exception
-            );
-        }
-
         public static AsyncMaybe<T> OrAsync<T>(this AsyncMaybe<T> source, [InstantHandle, NotNull] Func<Task<AsyncMaybe<T>>> otherAsync)
         {
             return source.Match(
