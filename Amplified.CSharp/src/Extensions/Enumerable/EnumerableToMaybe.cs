@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Amplified.CSharp.Extensions
 {
@@ -101,62 +102,91 @@ namespace Amplified.CSharp.Extensions
             return Maybe<TSource>.None();
         }
 
-        public static Maybe<T> LastOrNone<T>(this IEnumerable<T> source)
+        public static Maybe<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source)
         {
-            using (var enumerator = source.GetEnumerator())
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            
+            var sourceList = source as IList<TSource>;
+            if (sourceList != null)
             {
-                var list = source as IList<T>;
-                if (list != null)
-                {
-                    var count = list.Count;
-                    if (count > 0)
-                    {
-                        return Maybe<T>.Some(list[count - 1]);
-                    }
-                }
-
-                var last = Maybe<T>.None();
-                while (enumerator.MoveNext())
-                {
-                    last = Maybe<T>.Some(enumerator.Current);
-                }
-                return last;
-            }
-        }
-
-        public static Maybe<T> ElementAtOrNone<T>(this IEnumerable<T> source, int index)
-        {
-            var list = source as IList<T>;
-            if (list != null)
-            {
-                if (index < list.Count)
-                {
-                    return Maybe<T>.Some(list[index]);
-                }
+                var count = sourceList.Count;
+                if (count > 0)
+                    return Maybe<TSource>.Some(sourceList[count - 1]);
             }
             else
             {
                 using (var enumerator = source.GetEnumerator())
                 {
-                    while (true)
+                    if (enumerator.MoveNext())
                     {
-                        if (enumerator.MoveNext() == false) return Maybe<T>.None();
-                        if (index == 0) return Maybe<T>.Some(enumerator.Current);
-                        index--;
+                        TSource current;
+                        do
+                        {
+                            current = enumerator.Current;
+                        }
+                        while (enumerator.MoveNext());
+                        return Maybe<TSource>.Some(current);
                     }
                 }
             }
-            return Maybe<T>.None();
+            return Maybe<TSource>.None();
+        }
+
+        public static Maybe<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            var matching = Maybe<TSource>.None();
+            foreach (var element in source)
+            {
+                if (predicate(element))
+                    matching = Maybe<TSource>.Some(element);
+            }
+            return matching;
+        }
+
+        public static Maybe<TSource> ElementAtOrNone<TSource>(this IEnumerable<TSource> source, int index)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            
+            if (index >= 0)
+            {
+                var sourceList = source as IList<TSource>;
+                if (sourceList != null)
+                {
+                    if (index < sourceList.Count)
+                        return Maybe<TSource>.Some(sourceList[index]);
+                }
+                else
+                {
+                    foreach (var element in source)
+                    {
+                        if (index == 0)
+                            return Maybe<TSource>.Some(element);
+                        --index;
+                    }
+                }
+            }
+            return Maybe<TSource>.None();
         }
 
         public static Maybe<TValue> GetValueOrNone<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Maybe<TValue>.Some(source[key]) : Maybe<TValue>.None();
+            return source.TryGetValue(key, out TValue value)
+                ? Maybe<TValue>.Some(value)
+                : Maybe<TValue>.None();
         }
 
         public static Maybe<TValue> GetValueOrNone<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source, TKey key)
         {
-            return source.ContainsKey(key) ? Maybe<TValue>.Some(source[key]) : Maybe<TValue>.None();
+            return source.TryGetValue(key, out TValue value)
+                ? Maybe<TValue>.Some(value)
+                : Maybe<TValue>.None();
         }
     }
 }
