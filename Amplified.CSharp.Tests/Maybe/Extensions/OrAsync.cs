@@ -1,75 +1,76 @@
+using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Xunit;
 
 namespace Amplified.CSharp
 {
     // ReSharper disable once InconsistentNaming
-    public class Maybe__Or
+    public class Maybe__OrAsync
     {
         [Fact]
-        public void OnSome_ReturnsSource()
+        public async Task OnSome_ReturnsSource()
         {
             const int expected = 5;
             var source = Maybe<int>.Some(expected);
-            var other = Maybe<int>.Some(79);
-            var result = source.Or(other);
+            var other = AsyncMaybe<int>.Some(79);
+            var result = await source.OrAsync(other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }
 
         [Fact]
-        public void OnNone_ReturnsOther()
+        public async Task OnSome_ReturnsOther()
         {
             const int expected = 79;
             var source = Maybe<int>.None();
-            var other = Maybe<int>.Some(expected);
-            var result = source.Or(other);
+            var other = AsyncMaybe<int>.Some(expected);
+            var result = await source.OrAsync(other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }
 
         [Fact]
-        public void OnSome_WithLambda_ReturnsSource()
+        public async Task OnSome_WithLambda_ReturnsSource()
         {
             const int expected = 5;
             var source = Maybe<int>.Some(expected);
-            var other = Maybe<int>.Some(79);
-            var result = source.Or(() => other);
+            var other = AsyncMaybe<int>.Some(79);
+            var result = await source.OrAsync(() => other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }
 
         [Fact]
-        public void OnNone_WithLambda_ReturnsOther()
+        public async Task OnNone_WithLambda_ReturnsOther()
         {
             const int expected = 79;
             var source = Maybe<int>.None();
-            var other = Maybe<int>.Some(expected);
-            var result = source.Or(() => other);
+            var other = AsyncMaybe<int>.Some(expected);
+            var result = await source.OrAsync(() => other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }
 
         [Fact]
-        public void OnSome_WithMethodReference_ReturnsSource()
+        public async Task OnSome_WithMethodReference_ReturnsSource()
         {
             const int expected = 5;
-            Maybe<int> Other() => Maybe<int>.Some(79);
+            AsyncMaybe<int> Other() => AsyncMaybe<int>.Some(79);
             
             var source = Maybe<int>.Some(expected);
-            var result = source.Or(Other);
+            var result = await source.OrAsync(Other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }
 
         [Fact]
-        public void OnNone_WithMethodReference_ReturnsOther()
+        public async Task OnNone_WithMethodReference_ReturnsOther()
         {
             const int expected = 79;
-            Maybe<int> Other() => Maybe<int>.Some(expected);
+            AsyncMaybe<int> Other() => AsyncMaybe<int>.Some(expected);
             
             var source = Maybe<int>.None();
-            var result = source.Or(Other);
+            var result = await source.OrAsync(Other);
             var value = result.MustBeSome();
             Assert.Equal(expected, value);
         }

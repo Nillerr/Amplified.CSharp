@@ -95,7 +95,7 @@ namespace Amplified.CSharp
                 .Filter(refreshToken => refreshToken.Expires > instant)
                 .MapAsync(ObtainAccessToken)
                 .Map(_tokenCookieManager.SetAccessToken)
-                .FlatMap(_tokenCookieManager.GetAccessToken);
+                .FlatMapUnit(_tokenCookieManager.GetAccessToken);
         }
         
         private Task<AccessToken> ObtainAccessToken(RefreshToken refreshToken)

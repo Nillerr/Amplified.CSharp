@@ -57,10 +57,5 @@ namespace Amplified.CSharp.Extensions
         {
             return source.Match(Some, none => other());
         }
-
-        public static Maybe<T> Or<T>(this Maybe<T> source, [InstantHandle, NotNull] Func<None, Maybe<T>> other)
-        {
-            return source.Match(Some, other);
-        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Amplified.CSharp.Util
 {
-    public class DummyException : Exception
+    public class ExpectedException : Exception
     {
         
     }

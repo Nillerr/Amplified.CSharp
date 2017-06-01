@@ -27,8 +27,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AsyncMaybe" />
-    <Folder Include="Maybe\Extensions" />
     <Folder Include="None" />
     <Folder Include="Unit" />
+    <Folder Include="Units" />
   </ItemGroup>
 </Project>

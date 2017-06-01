@@ -1,5 +1,4 @@
 using Xunit;
-using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {
@@ -9,7 +8,7 @@ namespace Amplified.CSharp
         [Fact]
         public void WithLambdas()
         {
-            var source = Some(1);
+            var source = Maybe<int>.Some(1);
             var result = source.Match(some => { }, () => { });
             Assert.Equal(Units.Unit(), result);
         }
@@ -21,7 +20,7 @@ namespace Amplified.CSharp
             {
             }
             
-            var source = Maybe.Some(1);
+            var source = Maybe<int>.Some(1);
             var result = source.Match(some => { }, MatchNone);
             Assert.Equal(Units.Unit(), result);
         }
@@ -33,7 +32,7 @@ namespace Amplified.CSharp
             {
             }
             
-            var source = Some(1);
+            var source = Maybe<int>.Some(1);
             var result = source.Match(MatchSome, () => { });
             Assert.Equal(Units.Unit(), result);
         }
@@ -49,7 +48,7 @@ namespace Amplified.CSharp
             {
             }
             
-            var source = Some(1);
+            var source = Maybe<int>.Some(1);
             var result = source.Match(MatchSome, MatchNone);
             Assert.Equal(Units.Unit(), result);
         }

@@ -1,5 +1,6 @@
 using System;
 using Amplified.CSharp.Extensions;
+using Amplified.CSharp.Util;
 using Xunit;
 
 namespace Amplified.CSharp
@@ -12,7 +13,7 @@ namespace Amplified.CSharp
         {
             const int expected = 6;
             var source = Maybe<int>.Some(expected);
-            var result = source.OrThrow(new NotImplementedException());
+            var result = source.OrThrow(new ExpectedException());
             Assert.Equal(expected, result);
         }
 
@@ -21,7 +22,7 @@ namespace Amplified.CSharp
         {
             const int expected = 6;
             var source = Maybe<int>.Some(expected);
-            var result = source.OrThrow(() => new NotImplementedException());
+            var result = source.OrThrow(() => new ExpectedException());
             Assert.Equal(expected, result);
         }
 
@@ -29,14 +30,14 @@ namespace Amplified.CSharp
         public void OnNone_ThrowsException()
         {
             var source = Maybe<int>.None();
-            Assert.Throws<NotImplementedException>(() => source.OrThrow(new NotImplementedException()));
+            Assert.Throws<ExpectedException>(() => source.OrThrow(new ExpectedException()));
         }
 
         [Fact]
         public void OnNone_WithLambda_ThrowsException()
         {
             var source = Maybe<int>.None();
-            Assert.Throws<NotImplementedException>(() => source.OrThrow(() => new NotImplementedException()));
+            Assert.Throws<ExpectedException>(() => source.OrThrow(() => new ExpectedException()));
         }
     }
 }

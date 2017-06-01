@@ -14,7 +14,7 @@ namespace Amplified.CSharp
         {
             const int expected = 123132;
             var source = Some(expected).ToAsync();
-            var result = await source.OrThrow(() => new DummyException());
+            var result = await source.OrThrow(() => new ExpectedException());
             Assert.Equal(expected, result);
         }
         
@@ -22,7 +22,7 @@ namespace Amplified.CSharp
         public async Task Sync_OnNone_WithFunction_ThrowsException()
         {
             var source = AsyncMaybe<int>.None();
-            await Assert.ThrowsAsync<DummyException>(() => source.OrThrow(() => new DummyException()));
+            await Assert.ThrowsAsync<ExpectedException>(() => source.OrThrow(() => new ExpectedException()));
         }
         
         [Fact]
@@ -30,7 +30,7 @@ namespace Amplified.CSharp
         {
             const int expected = 123132;
             var source = Some(expected).ToAsync();
-            var result = await source.OrThrow(() => new DummyException());
+            var result = await source.OrThrow(() => new ExpectedException());
             Assert.Equal(expected, result);
         }
         
@@ -38,7 +38,7 @@ namespace Amplified.CSharp
         public async Task Async_OnNone_WithFunction_ThrowsException()
         {
             var source = AsyncMaybe<int>.None();
-            await Assert.ThrowsAsync<DummyException>(() => source.OrThrow(() => new DummyException()));
+            await Assert.ThrowsAsync<ExpectedException>(() => source.OrThrow(() => new ExpectedException()));
         }
     }
 }
