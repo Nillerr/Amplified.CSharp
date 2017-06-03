@@ -184,7 +184,13 @@ namespace Amplified.CSharp
         public static AsyncMaybe<T> SomeAsync<T>([NotNull] T value) 
             => new AsyncMaybe<T>(Task.FromResult(Maybe<T>.Some(value)));
         
-        public static AsyncMaybe<T> SomeAsync<T>([NotNull] Task<T> task) => new AsyncMaybe<T>(task.Then(Maybe<T>.Some));
+        public static AsyncMaybe<T> SomeAsync<T>([NotNull] Task<T> task)
+        {
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
+            
+            return new AsyncMaybe<T>(task.Then(Maybe<T>.Some));
+        }
 
         public static AsyncMaybe<T> OfNullableAsync<T>([NotNull] Task<T> task)
             where T : class

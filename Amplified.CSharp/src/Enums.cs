@@ -1,10 +1,12 @@
 using System;
 using System.Diagnostics;
+using Amplified.CSharp.Attributes;
 
 namespace Amplified.CSharp
 {
     public abstract class EnumsBase<TEnum>
     {
+        [ExcludeFromCoverage]
         internal EnumsBase()
         {
         }
@@ -19,6 +21,7 @@ namespace Amplified.CSharp
     
     public sealed class Enums : EnumsBase<Enum>
     {
+        [ExcludeFromCoverage]
         private Enums()
         {
         }
