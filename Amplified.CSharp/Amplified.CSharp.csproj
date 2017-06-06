@@ -5,7 +5,7 @@
     <DebugType>portable</DebugType>
     <AssemblyName>Amplified.CSharp</AssemblyName>
     <PackageId>Amplified.CSharp</PackageId>
-    <PackageTags>Functional;Monad;Monadic</PackageTags>
+    <PackageTags>Monad;Functional;Optional;Maybe;Option</PackageTags>
     <PackageProjectUrl>https://github.com/Nillerr/Amplified.CSharp</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Nillerr/Amplified.CSharp/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
@@ -17,6 +17,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <AssemblyVersion>1.1.0.2</AssemblyVersion>
+    <FileVersion>1.1.0.2</FileVersion>
+    <Version>1.1.0-alpha2</Version>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />

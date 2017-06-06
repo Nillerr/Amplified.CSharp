@@ -161,16 +161,16 @@ namespace Amplified.CSharp
             );
         }
     }
-    
-    public delegate bool TypeParser<T>(string str, out T value);
-    public delegate bool NumberTypeParser<T>(string str, NumberStyles style, IFormatProvider provider, out T value);
-    
+
     [DebuggerStepThrough]
     public static class Maybe
     {
         public static Maybe<T> Some<T>([NotNull] T value) => Maybe<T>.Some(value);
         
         public static None None() => default(None);
+        
+        [Obsolete("Use Maybe.None() or Maybe<T>.None() instead")]
+        public static Maybe<T> None<T>() => Maybe<T>.None();
 
         public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
         {
@@ -210,15 +210,15 @@ namespace Amplified.CSharp
         public static Maybe<T> Parse<T>(TypeParser<T> parser, [CanBeNull] string str)
         {
             return parser(str, out T result)
-                ? Maybe.Some(result)
-                : Maybe.None();
+                ? Some(result)
+                : None();
         }
         
         public static Maybe<T> Parse<T>(NumberTypeParser<T> parser, [CanBeNull] string str, NumberStyles style, IFormatProvider provider)
         {
             return parser(str, style, provider, out T result)
-                ? Maybe.Some(result)
-                : Maybe.None();
+                ? Some(result)
+                : None();
         }
     }
 }
