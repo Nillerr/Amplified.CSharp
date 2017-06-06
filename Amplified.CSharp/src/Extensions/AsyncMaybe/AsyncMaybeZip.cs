@@ -11,6 +11,9 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T1, T2, TResult> zipper
         )
         {
+            if (zipper == null)
+                throw new ArgumentNullException(nameof(zipper));
+            
             return first.FlatMap(
                 some1 => second.Map(
                     some2 => zipper(some1, some2)
@@ -25,6 +28,9 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T1, T2, T3, TResult> zipper
         )
         {
+            if (zipper == null)
+                throw new ArgumentNullException(nameof(zipper));
+            
             return first.FlatMap<T1, TResult>(
                 some1 => second.FlatMap<T2, TResult>(
                     some2 => third.Map<T3, TResult>(
@@ -42,6 +48,9 @@ namespace Amplified.CSharp.Extensions
             [InstantHandle, NotNull] Func<T1, T2, T3, T4, TResult> zipper
         )
         {
+            if (zipper == null)
+                throw new ArgumentNullException(nameof(zipper));
+            
             return first.FlatMap<T1, TResult>(
                 some1 => second.FlatMap<T2, TResult>(
                     some2 => third.FlatMap<T3, TResult>(

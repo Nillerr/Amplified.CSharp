@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using Amplified.CSharp.Internal;
 using Amplified.CSharp.Internal.Extensions;
@@ -125,8 +126,7 @@ namespace Amplified.CSharp
         {
             if (ReferenceEquals(null, obj)) return false;
             return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is None && Equals((None) obj)) ||
-                   (obj is Some<T> && Equals((Some<T>) obj));
+                   (obj is None && Equals((None) obj));
         }
 
         [Pure]
@@ -161,6 +161,9 @@ namespace Amplified.CSharp
             );
         }
     }
+    
+    public delegate bool TypeParser<T>(string str, out T value);
+    public delegate bool NumberTypeParser<T>(string str, NumberStyles style, IFormatProvider provider, out T value);
     
     [DebuggerStepThrough]
     public static class Maybe
@@ -202,6 +205,20 @@ namespace Amplified.CSharp
             where T : struct
         {
             return new AsyncMaybe<T>(task.Then(OfNullable));
+        }
+        
+        public static Maybe<T> Parse<T>(TypeParser<T> parser, [CanBeNull] string str)
+        {
+            return parser(str, out T result)
+                ? Maybe.Some(result)
+                : Maybe.None();
+        }
+        
+        public static Maybe<T> Parse<T>(NumberTypeParser<T> parser, [CanBeNull] string str, NumberStyles style, IFormatProvider provider)
+        {
+            return parser(str, style, provider, out T result)
+                ? Maybe.Some(result)
+                : Maybe.None();
         }
     }
 }
