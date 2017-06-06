@@ -7,7 +7,7 @@
 The project is available as a [NuGet](https://www.nuget.org/packages/Amplified.CSharp) package.
 
 ```
-Install-Package Amplified.CSharp
+Install-Package Amplified.CSharp -Pre
 ```
  
 ## Usage
