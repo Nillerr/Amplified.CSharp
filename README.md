@@ -14,6 +14,10 @@ The primary type is the `Maybe<T>` type, which can make method signatures more e
 and output. The types offers a series of extension methods, that enables you to create a chain of filters 
 and modifications, and eventually extract the value stored within.
 
+## Alpha
+
+Checkout the `develop` branch for the alpha release.
+
 ## Installation
 
 The project is available as a [NuGet](https://www.nuget.org/packages/Amplified.CSharp) package.
