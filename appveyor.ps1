@@ -18,19 +18,19 @@ Write-Host "Installation succeeded." -ForegroundColor Green
 # Update AppVeyor Build version
 #-------------------------------
 
-Write-Host "Parsing project file..."
+#Write-Host "Parsing project file..."
 
-[xml]$proj = Get-Content -Path "./src/AspNetCore.Lambda/AspNetCore.Lambda.fsproj"
+#[xml]$proj = Get-Content -Path "./src/Amplified.CSharp/Amplified.CSharp.csproj"
 
-$versionPrefix = $proj.Project.PropertyGroup.VersionPrefix
+#$versionPrefix = $proj.Project.PropertyGroup.VersionPrefix
 
-Write-Host "Version prefix: $versionPrefix"
+#Write-Host "Version prefix: $versionPrefix"
 
-$version = "$versionPrefix-$env:APPVEYOR_BUILD_NUMBER"
+#$version = "$versionPrefix-$env:APPVEYOR_BUILD_NUMBER"
 
-Write-Host "Updating AppVeyor build version to $version."
+#Write-Host "Updating AppVeyor build version to $version."
 
-Update-AppveyorBuild -Version $version
+#Update-AppveyorBuild -Version $version
 
 #-------------------------------
 # Update AppVeyor Build version
