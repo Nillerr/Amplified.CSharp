@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\packages\xunit.core\2.2.0\build\uap10.0\xunit.core.props" Condition="Exists('..\packages\xunit.core\2.2.0\build\uap10.0\xunit.core.props')" />
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <AssemblyName>Amplified.CSharp.Tests</AssemblyName>
