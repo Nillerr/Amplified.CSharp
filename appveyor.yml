@@ -10,7 +10,7 @@ pull_requests:
 image: Visual Studio 2017
 
 before_build:
-- nuget restore dir
+- nuget restore
 - dotnet restore
 
 build_script:
