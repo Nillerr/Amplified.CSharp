@@ -13,9 +13,6 @@ before_build:
 - nuget restore
 - dotnet restore
 
-build_script:
-  - ps: .\appveyor.ps1
-
 nuget:
   project_feed: true
   
