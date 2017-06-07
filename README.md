@@ -1,6 +1,6 @@
 # Amplified.CSharp
 
-[![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg)]()[![CI](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/develop?svg=true)]()
+![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg) ![Build status](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/develop?svg=true)
 
 ## Installation
 
