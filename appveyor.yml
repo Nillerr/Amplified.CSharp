@@ -20,6 +20,12 @@ test_script:
  - dotnet restore Amplified.CSharp.Tests
  - dotnet build Amplified.CSharp.Tests
  - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj
+ - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests.dll -noshadow" -filter:"+[Amplified.CSharp]*  -[Amplified.CSharp]Amplified.CSharp.Properties.*" -excludebyattribute:*.ExcludeFromCoverage* -hideskipped:All -output:coverage.xml
+
+after_test:
+ - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+ - pip install codecov
+ - codecov -f "coverage.xml" -t YourUploadToken
 
 nuget:
   project_feed: true
