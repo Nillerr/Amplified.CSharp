@@ -1,8 +1,6 @@
 version: 1.0.{build}
 
-configuration:
- - Release
- - Debug
+configuration: Release
 
 platform: Any CPU
 
@@ -23,7 +21,12 @@ test_script:
  - dotnet build Amplified.CSharp.Tests
  - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj
  - dotnet restore Amplified.CSharp.sln --packages packages
- - .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Debug\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -filter:"+[Amplified.CSharp]*  -[Amplified.CSharp]Amplified.CSharp.Properties.*" -excludebyattribute:*.ExcludeFromCoverage* -hideskipped:All -output:coverage.xml
+ - dir
+ - dir Amplified.CSharp.Tests
+ - dir Amplified.CSharp.Tests\bin
+ - dir Amplified.CSharp.Tests\bin\Release
+ - dir Amplified.CSharp.Tests\bin\Release\netcoreapp1.1
+ - .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Release\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -filter:"+[Amplified.CSharp]*  -[Amplified.CSharp]Amplified.CSharp.Properties.*" -excludebyattribute:*.ExcludeFromCoverage* -hideskipped:All -output:coverage.xml
 
 after_test:
  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
