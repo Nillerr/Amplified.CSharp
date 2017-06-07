@@ -17,10 +17,7 @@ build_script:
  - dotnet build Amplified.CSharp
 
 test_script:
- - dir
- - dir ..
- - dir ..\..
- - dotnet build Amplified.CSharp.sln
+ - dotnet restore Amplified.CSharp.sln
  - dotnet restore Amplified.CSharp.Tests
  - dotnet build Amplified.CSharp.Tests
  - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj

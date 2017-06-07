@@ -1,16 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{793D8AC6-99DD-4509-91F2-B21EA68CDC72}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-		appveyor.yml = appveyor.yml
 		appveyor.ps1 = appveyor.ps1
+		appveyor.yml = appveyor.yml
 		build.cmd = build.cmd
+		LICENSE = LICENSE
+		nuget.config = nuget.config
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amplified.CSharp", "Amplified.CSharp\Amplified.CSharp.csproj", "{7CB9E50E-6497-4D46-B175-F57106200483}"
