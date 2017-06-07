@@ -19,7 +19,7 @@ build_script:
 test_script:
  - dir
  - dir ..
- - dir ../..
+ - dir ..\..
  - dotnet build Amplified.CSharp.sln
  - dotnet restore Amplified.CSharp.Tests
  - dotnet build Amplified.CSharp.Tests
