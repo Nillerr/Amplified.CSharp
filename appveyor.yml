@@ -17,14 +17,14 @@ build_script:
 test_script:
  - dotnet restore Amplified.CSharp.Tests
  - dotnet build Amplified.CSharp.Tests
- - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj
- - dotnet restore Amplified.CSharp.sln --packages packages
- - .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Release\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -filter:"+[Amplified.CSharp]*  -[Amplified.CSharp]Amplified.CSharp.Properties.*" -excludebyattribute:*.ExcludeFromCoverage* -hideskipped:All -output:coverage.xml
+ - dotnet test Amplified.CSharp.Tests
+#- dotnet restore Amplified.CSharp.sln --packages packages
+#- .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Release\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -filter:"+[Amplified.CSharp]*  -[Amplified.CSharp]Amplified.CSharp.Properties.*" -excludebyattribute:*.ExcludeFromCoverage* -hideskipped:All -output:coverage.xml
 
 after_test:
- - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
- - pip install codecov
- - codecov -f "coverage.xml" -t 75b80682-b7f7-47c4-b31a-925e59331076
+#- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+#- pip install codecov
+#- codecov -f "coverage.xml" -t 75b80682-b7f7-47c4-b31a-925e59331076
 
 nuget:
   project_feed: true
