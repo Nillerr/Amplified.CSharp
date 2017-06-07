@@ -26,7 +26,7 @@ test_script:
 after_test:
  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
  - pip install codecov
- - codecov -f "coverage.xml" -t YourUploadToken
+ - codecov -f "coverage.xml" -t 75b80682-b7f7-47c4-b31a-925e59331076
 
 nuget:
   project_feed: true
