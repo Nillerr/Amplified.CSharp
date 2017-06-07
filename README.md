@@ -16,7 +16,7 @@ and modifications, and eventually extract the value stored within.
 
 ## Alpha
 
-Checkout the `develop` branch for the alpha release.
+Check out the `develop` branch for the alpha release.
 
 ## Installation
 
