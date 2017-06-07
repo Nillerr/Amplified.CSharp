@@ -13,7 +13,13 @@ before_build:
 - nuget restore
 
 build_script:
-  - ps: .\appveyor.ps1
+ - dotnet restore Amplified.CSharp
+ - dotnet build Amplified.CSharp
+
+test_script:
+ - dotnet restore Amplified.CSharp.Tests
+ - dotnet build Amplified.CSharp.Tests
+ - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj
 
 nuget:
   project_feed: true
