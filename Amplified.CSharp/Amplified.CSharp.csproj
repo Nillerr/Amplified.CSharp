@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>1.0.12</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
     <TargetFrameworks>netstandard1.4;net45</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Amplified.CSharp</AssemblyName>
@@ -17,9 +17,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <AssemblyVersion>1.1.0.2</AssemblyVersion>
-    <FileVersion>1.1.0.2</FileVersion>
-    <Version>1.1.0-alpha2</Version>
+    <AssemblyVersion>1.1.0.3</AssemblyVersion>
+    <FileVersion>1.1.0.3</FileVersion>
+    <Version>1.1.0-alpha3</Version>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
