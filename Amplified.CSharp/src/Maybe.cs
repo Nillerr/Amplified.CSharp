@@ -21,6 +21,7 @@ namespace Amplified.CSharp
         /// Returns a <c>None</c> instance (a <see cref="Maybe{T}"/> without a value).
         /// </summary>
         /// <returns>A <see cref="Maybe{T}"/>.<c>None</c>.</returns>
+        [Pure]
         public static Maybe<T> None() => default(Maybe<T>);
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace Amplified.CSharp
         /// </summary>
         /// <param name="value"></param>
         /// <returns>A <see cref="Maybe{T}"/>.<c>Some</c> with a value.</returns>
+        [Pure]
         public static Maybe<T> Some(T value)
         {
             return new Maybe<T>(value);
@@ -86,7 +88,6 @@ namespace Amplified.CSharp
             return IsSome ? some(_value) : none();
         }
 
-        [Pure]
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action<None> none
@@ -100,7 +101,6 @@ namespace Amplified.CSharp
             return default(Unit);
         }
 
-        [Pure]
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action none
@@ -114,7 +114,6 @@ namespace Amplified.CSharp
             return default(Unit);
         }
 
-        [Pure]
         public Unit MatchSome([InstantHandle, NotNull] Action<T> some)
         {
             if (IsSome)
@@ -123,7 +122,6 @@ namespace Amplified.CSharp
             return default(Unit);
         }
 
-        [Pure]
         public Unit MatchNone([InstantHandle, NotNull] Action<None> none)
         {
             if (IsNone)
@@ -132,7 +130,6 @@ namespace Amplified.CSharp
             return default(Unit);
         }
 
-        [Pure]
         public Unit MatchNone([InstantHandle, NotNull] Action none)
         {
             if (IsNone)
@@ -192,13 +189,17 @@ namespace Amplified.CSharp
     [DebuggerStepThrough]
     public static class Maybe
     {
+        [Pure]
         public static Maybe<T> Some<T>([NotNull] T value) => Maybe<T>.Some(value);
         
+        [Pure]
         public static None None() => default(None);
         
+        [Pure]
         [Obsolete("Use Maybe.None() or Maybe<T>.None() instead")]
         public static Maybe<T> None<T>() => Maybe<T>.None();
 
+        [Pure]
         public static Maybe<T> OfNullable<T>([CanBeNull] T value) where T : class
         {
             return value == null
@@ -206,6 +207,7 @@ namespace Amplified.CSharp
                 : Maybe<T>.Some(value);
         }
 
+        [Pure]
         public static Maybe<T> OfNullable<T>([CanBeNull] T? value) where T : struct
         {
             return value.HasValue ? Maybe<T>.Some(value.Value) : Maybe<T>.None();
