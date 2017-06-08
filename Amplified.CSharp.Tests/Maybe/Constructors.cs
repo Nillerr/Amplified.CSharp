@@ -59,6 +59,13 @@ namespace Amplified.CSharp
         }
 
         [Fact]
+        public void UsingStaticGenericNone_OnMaybe()
+        {
+            Maybe<int> source = Maybe.None<int>();
+            source.MustBeNone();
+        }
+
+        [Fact]
         public void UsingStaticOfNullable_WithNonNullValueType_OnMaybe()
         {
             var expected = (int?) 1;
