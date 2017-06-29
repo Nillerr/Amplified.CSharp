@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Aplified.CSharp")]
+[assembly: AssemblyTitle("Amplified.CSharp")]
 [assembly: AssemblyDescription("Provides a set of monadic types for use with C#. These types provide null safety and functional chaining, to provider a functional-like programming style in C#. All the monads are structs, which enforces their non-null behaviour.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nicklas Jensen")]
-[assembly: AssemblyProduct("Aplified.CSharp")]
+[assembly: AssemblyProduct("Amplified.CSharp")]
 [assembly: AssemblyCopyright("Copyright © 2016 Nicklas Jensen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
