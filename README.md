@@ -1,6 +1,6 @@
 # Amplified.CSharp
 
-![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg) ![Build status](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/develop?svg=true)
+![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg) ![Build status](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/master?svg=true)
 
 ## Alpha
 
@@ -11,7 +11,7 @@ Check out the `develop` branch for the alpha release.
 The project is available as a [NuGet](https://www.nuget.org/packages/Amplified.CSharp) package.
 
 ```
-Install-Package Amplified.CSharp -Pre
+Install-Package Amplified.CSharp
 ```
  
 ## Usage
