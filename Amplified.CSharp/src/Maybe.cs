@@ -196,7 +196,6 @@ namespace Amplified.CSharp
         public static None None() => default(None);
         
         [Pure]
-        [Obsolete("Use Maybe.None() or Maybe<T>.None() instead")]
         public static Maybe<T> None<T>() => Maybe<T>.None();
 
         [Pure]
