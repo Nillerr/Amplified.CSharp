@@ -2,10 +2,6 @@
 
 ![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg) ![Build status](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/master?svg=true)
 
-## Alpha
-
-Check out the `develop` branch for the alpha release.
-
 ## Installation
 
 The project is available as a [NuGet](https://www.nuget.org/packages/Amplified.CSharp) package.
@@ -18,8 +14,8 @@ Install-Package Amplified.CSharp
 
 ### Static imports
 
-It is recommended to add the following using statement to files where a instances of the types within this 
-library are created.
+We recommended adding a static import of the following namespace, in files where creation of `Maybe<T>` 
+instances occur.
 ```C#
 using static Amplified.CSharp.Maybe;
 ```
@@ -45,8 +41,9 @@ using static Amplified.CSharp.Maybe;
 
 ### Unit
 
-`Unit` is represents the lack of a value, sort of like `void`. Unlike `void`, it is an actual type, and can 
-be referenced and operated upon.
+`Unit` represents the lack of a value, sort of like `void`. Unlike `void`, it is an actual type, and can 
+be referenced and operated upon. The difference between `Unit` and `None` is that `None` is actually one 
+of the possible types of a `Maybe<T>`, whereas `Unit` has no relationship with `Maybe<T>`.
 
 #### Examples
 
@@ -76,13 +73,14 @@ class Program
 ### Maybe
 
 `Maybe<T>` represents the possibility for the presence of a value, sort of like `null` does for reference 
-types, but more like `Nullable<T>` or for value types. The idea is to prevent runtime errors and exceptions, 
-by forcing you, the developer, to consider all cases before operating on the value within a `Maybe<T>`.
+types, but it's more like `Nullable<T>`. The idea is to prevent hard to predict runtime errors and 
+exceptions by forcing you, the developer, to consider all possible cases before operating on the value 
+within a `Maybe<T>`. It's analogous to a forced `null` check by the runtime.
 
 It is a discriminated union / sum type, that consist of 2 types: `Some<T>` and `None`. Due to 
 the way type inference works in C#, we must create a separate type `None`, which is implicitly convertible 
 to `Maybe<T>`, without having any type arguments itself. The reason this is required is to support the 
-`None()` syntax, creating a `None` without specifying a type argument. 
+`None()` syntax, creating a `None` without specifying a type argument.
 
 #### Usage
 
@@ -95,7 +93,7 @@ class Program {
     {
         var productId = new ProductId(67748);
         
-        Unit ignored = GetRelatedProducts(productId)
+        GetRelatedProducts(productId)
             .Match(
                 relatedProducts => DisplayRelatedProducts(productId, relatedProducts),
                 none => DisplayNoRelatedProducts(productId)
@@ -241,78 +239,11 @@ AsyncMaybe<T> WhereAsync<T>(Func<T, Task<bool>> predicate);
 
 ### Null
 
-None of the types accepts `null` values as parameters. Creating an instance of one of the types, by 
-passing `null` as the value parameter, will throw an `ArgumentNullException`. Similarly, returning 
-`null` from a lambda passed to any of the extension methods will also throw an 
-`ArgumentNullException`. The exceptions to this are `OrReturn<T>(T defaultValue)` and any of the 
-`Match()` methods on `Maybe<T>`. Basically any non-terminating operators.
-
-### Implicit Conversion (Needs revision)
-
-To create a seamless API, 
-
-```C#
-using System;
-using Amplified.CSharp;
-using static Amplified.CSharp.Maybe;
-
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        // None is implicitly convertible to Maybe<T>, resulting in a Maybe<T> without a value.
-        Maybe<int> noInt = None();
-        
-        // T is implicitly convertible to Some<T>.
-        Some<int> someInt = 2;
-        
-        // Throws an exception, because Some<T> cannot contain a null value.
-        Some<object> someObject = null;
-        
-        // Some<T> is implicitly convertible to Maybe<T>, resulting in a Maybe<T> with a value.
-        Maybe<int> maybeSomeInt = someInt;
-    }
-}
-```
-
-### Equality
-
-```C#
-using System;
-using Amplified.CSharp;
-using static Amplified.CSharp.Maybe;
-
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        // Maybe<T> == None
-        None none = None();
-        Maybe<int> someInt = Some(2);
-        
-        if (none != someInt)
-            Console.WriteLine($"{noneInt} != {someInt}");
-        
-        // Maybe<T> is comparable to Some<T>
-        Some<int> someIntNotEqual = 3;
-        Some<int> someIntEqual = 2;
-        Assert.NotEqual(maybeSomeInt, someIntNotEqual);
-        Assert.Equal(maybeSomeInt, someIntEqual);
-        
-        // Maybe<T> is comparable to Maybe<T>
-        Maybe<int> maybeSomeOtherIntEqual = 2;
-        Maybe<int> maybeSomeOtherIntNotEqual = 3;
-        Assert.Equal(maybeSomeInt, maybeSomeOtherIntEqual);
-        Assert.NotEqual(maybeSomeInt, maybeSomeOtherIntNotEqual);   
-        
-        // Some<T> is comparable to None, but is always false.
-        Assert.NotEqual(maybeSomeInt, None._);
-        
-        // All of these are also comparable to T, which causes T to be implicitly converted to Some<T>. This 
-        // also means that comparing to null will throw an exception.
-    }
-}
-```
+The `Maybe<T>` type doesn't accept `null` values as parameters. Creating an instance of one of the types, 
+by passing `null` as the value parameter, will throw an `ArgumentNullException`. Similarly, returning 
+`null` from a lambda passed to any of the operators returning a `Maybe<T>` will also throw an 
+`ArgumentNullException`. This means you're allowed to return `null` from lambdas in any of the 
+terminating operators, such as `Match`, `OrReturn`, `OrGet`, etc.
 
 ## License
 
