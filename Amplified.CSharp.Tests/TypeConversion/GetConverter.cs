@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Amplified.CSharp.ComponentModel;
 using Xunit;
@@ -58,10 +59,10 @@ namespace Amplified.CSharp.TypeConversion
         [Fact]
         public void ConvertFromNonNullNullableInt()
         {
-            int? expected = 5;
+            var expected = (int?) 5;
             var converter = TypeDescriptor.GetConverter(typeof(Maybe<int>));
-            var value = converter.ConvertFrom(expected);
-            Assert.Equal(Maybe.OfNullable(expected), value);
+            var result = (Maybe<int>) converter.ConvertFrom(expected);
+            Assert.Equal(expected, result.OrFail());
         }
         
         [Fact]
@@ -157,6 +158,23 @@ namespace Amplified.CSharp.TypeConversion
             var converter = TypeDescriptor.GetConverter(typeof(Maybe<int>));
             var result = converter.ConvertFrom(str);
             Assert.Equal(Maybe.Some(25), result);
+        }
+
+        [Fact]
+        public void ConvertFromEmptyString()
+        {
+            var converter = TypeDescriptor.GetConverter(typeof(Maybe<int>));
+            var result = (Maybe<int>) converter.ConvertFrom(string.Empty);
+            Assert.Equal(Maybe.None<int>(), result);
+        }
+
+        [Fact]
+        public void ConvertFromNullString()
+        {
+            string str = null;
+            var converter = TypeDescriptor.GetConverter(typeof(Maybe<int>));
+            var result = (Maybe<int>) converter.ConvertFrom(str);
+            Assert.Equal(Maybe.None<int>(), result);
         }
 
         [Fact]
