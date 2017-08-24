@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -30,9 +29,11 @@ namespace Amplified.CSharp
         [Fact]
         public void WithMethodReferenceAsAction_ReturnsFunc_Unit()
         {
-            void Foo() => Console.WriteLine("bar");
+            var output = string.Empty;
+            void Foo() => output = "bar";
             var result = Units.Unit(Foo);
             Assert.Equal(result, default(Unit));
+            Assert.Equal("bar", output);
         }
 
         [Fact]

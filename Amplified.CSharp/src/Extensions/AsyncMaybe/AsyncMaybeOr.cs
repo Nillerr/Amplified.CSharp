@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
 using static Amplified.CSharp.Maybe;
 
