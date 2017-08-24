@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!--<Import Project="..\packages\xunit.core\2.2.0\build\uap10.0\xunit.core.props" Condition="Exists('..\packages\xunit.core\2.2.0\build\uap10.0\xunit.core.props')" />-->
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFrameworks>netcoreapp1.1;net46</TargetFrameworks>
     <AssemblyName>Amplified.CSharp.Tests</AssemblyName>
     <PackageId>Amplified.CSharp.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
