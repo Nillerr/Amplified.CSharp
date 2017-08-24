@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
+using Amplified.CSharp.ComponentModel;
 using Amplified.CSharp.Internal;
 using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
@@ -15,6 +17,7 @@ namespace Amplified.CSharp
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DebuggerStepThrough]
+    [TypeConverter(typeof(MaybeConverter))]
     public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
         /// <summary>

@@ -8,50 +8,50 @@ namespace Amplified.CSharp.ComponentModel
 {
     public sealed class MaybeConverter : TypeConverter
     {
-        private readonly TypeConverter _actualConverter;
-        
         public MaybeConverter(Type actualType)
         {
             var valueType = actualType.GenericTypeArguments[0];
             var actualConverterType = typeof(MaybeConverter<>).MakeGenericType(valueType);
-            _actualConverter = (TypeConverter) Activator.CreateInstance(actualConverterType);
+            ActualConverter = (TypeConverter) Activator.CreateInstance(actualConverterType);
         }
 
+        public TypeConverter ActualConverter { get; }
+
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => _actualConverter.CanConvertFrom(context, sourceType);
+            => ActualConverter.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-            => _actualConverter.ConvertFrom(context, culture, value);
+            => ActualConverter.ConvertFrom(context, culture, value);
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-            => _actualConverter.CanConvertTo(context, destinationType);
+            => ActualConverter.CanConvertTo(context, destinationType);
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-            => _actualConverter.ConvertTo(context, culture, value, destinationType);
+            => ActualConverter.ConvertTo(context, culture, value, destinationType);
 
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
-            => _actualConverter.CreateInstance(context, propertyValues);
+            => ActualConverter.CreateInstance(context, propertyValues);
 
         public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
-            => _actualConverter.GetCreateInstanceSupported(context);
+            => ActualConverter.GetCreateInstanceSupported(context);
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
-            => _actualConverter.GetProperties(context, value, attributes);
+            => ActualConverter.GetProperties(context, value, attributes);
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)
-            => _actualConverter.GetPropertiesSupported(context);
+            => ActualConverter.GetPropertiesSupported(context);
 
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-            => _actualConverter.GetStandardValues(context);
+            => ActualConverter.GetStandardValues(context);
 
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
-            => _actualConverter.GetStandardValuesExclusive(context);
+            => ActualConverter.GetStandardValuesExclusive(context);
 
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
-            => _actualConverter.GetStandardValuesSupported(context);
+            => ActualConverter.GetStandardValuesSupported(context);
 
         public override bool IsValid(ITypeDescriptorContext context, object value)
-            => _actualConverter.IsValid(context, value);
+            => ActualConverter.IsValid(context, value);
     }
 
     public sealed class MaybeConverter<T> : TypeConverter
@@ -60,15 +60,27 @@ namespace Amplified.CSharp.ComponentModel
         {
             MaybeType = typeof(Maybe<T>);
             ValueType = typeof(T);
-            ValueConverter = TypeDescriptor.GetConverter(ValueType);
+            _valueConverter = TypeDescriptor.GetConverter(ValueType);
+
+            if (ValueType.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(ValueType) == null)
+            {
+                NullableType = typeof(Nullable<>).MakeGenericType(ValueType);
+                NullableValueConverter = TypeDescriptor.GetConverter(NullableType);
+            }
         }
         
         public Type MaybeType { get; }
         
         public Type ValueType { get; }
-        
-        public TypeConverter ValueConverter { get; }
 
+        public Type NullableType { get; }
+        
+        private readonly TypeConverter _valueConverter;
+
+        public TypeConverter ValueConverter => NullableValueConverter ?? _valueConverter;
+        
+        public TypeConverter NullableValueConverter { get; } 
+        
         /// <summary>
         ///     Converts an anonymous object to either a Maybe.Some when the object is non-null, or a Maybe.None when 
         ///     the object is null. 
@@ -91,6 +103,13 @@ namespace Amplified.CSharp.ComponentModel
         {
             if (sourceType == ValueType)
                 return true;
+
+            if (NullableValueConverter != null)
+            {
+                var underlyingType = Nullable.GetUnderlyingType(sourceType);
+                if (underlyingType != null)
+                    return NullableValueConverter.CanConvertFrom(context, underlyingType);
+            }
             
             if (ValueConverter != null)
                 return ValueConverter.CanConvertFrom(context, sourceType);
@@ -106,7 +125,8 @@ namespace Amplified.CSharp.ComponentModel
             if (value == null)
                 return Maybe<T>.None();
 
-            if (value.GetType() == ValueType)
+            var valueType = value.GetType();
+            if (valueType == ValueType)
                 return Maybe<T>.Some((T) value);
 
             var stringValue = value as string;
@@ -129,6 +149,13 @@ namespace Amplified.CSharp.ComponentModel
         {
             if (destinationType == ValueType)
                 return true;
+
+            if (NullableValueConverter != null)
+            {
+                var underlyingType = Nullable.GetUnderlyingType(destinationType);
+                if (underlyingType != null)
+                    return NullableValueConverter.CanConvertTo(context, underlyingType);
+            }
 
             if (ValueConverter != null)
                 return ValueConverter.CanConvertTo(context, destinationType);
@@ -190,8 +217,7 @@ namespace Amplified.CSharp.ComponentModel
         /// <summary>
         ///    <para>
         ///        Gets a value indicating whether changing a value on this object requires a call to
-        ///        <see cref='System.ComponentModel.TypeConverter.CreateInstance'/> to create a new value,
-        ///        using the specified context.
+        ///        <see cref='CreateInstance'/> to create a new value, using the specified context.
         ///    </para>
         /// </summary>
         public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
@@ -262,8 +288,7 @@ namespace Amplified.CSharp.ComponentModel
         /// <summary>
         ///    <para>
         ///        Gets a value indicating whether the collection of standard values returned from
-        ///        <see cref='System.ComponentModel.TypeConverter.GetStandardValues'/> is an exclusive 
-        ///        list of possible values, using the specified context.
+        ///        <see cref='GetStandardValues'/> is an exclusive list of possible values, using the specified context.
         ///    </para>
         /// </summary>
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
@@ -295,8 +320,12 @@ namespace Amplified.CSharp.ComponentModel
         {
             if (ValueConverter != null)
             {
+                // System.ComponentModel.NullableConverter has a null check, so value probably can be null.
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable HeuristicUnreachableCode
                 if (value == null)
-                    return true;
+                    return true; // null is transformed to Maybe<T>.None
+                // ReSharper restore HeuristicUnreachableCode
 
                 return ValueConverter.IsValid(context, value);
             }
