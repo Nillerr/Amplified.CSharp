@@ -18,8 +18,9 @@ namespace Amplified.CSharp
     ///   </para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerStepThrough]
+    [Serializable]
     [TypeConverter(typeof(MaybeConverter))]
+    [DebuggerStepThrough]
     [DebuggerDisplay("{" + nameof(DebuggerDisplayString) + "}")]
     public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
