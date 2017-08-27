@@ -6,11 +6,11 @@ namespace Amplified.CSharp
     public class None__ToString
     {
         [Fact]
-        public void ReturnsNoneLiteral()
+        public void ReturnsEmptyString()
         {
             var source = new None();
             var str = source.ToString();
-            Assert.Equal(nameof(None), str);
+            Assert.Equal(string.Empty, str);
         }
     }
 }

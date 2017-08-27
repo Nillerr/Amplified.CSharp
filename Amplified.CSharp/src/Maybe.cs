@@ -18,7 +18,6 @@ namespace Amplified.CSharp
     ///   </para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
     [TypeConverter(typeof(MaybeConverter))]
     [DebuggerStepThrough]
     [DebuggerDisplay("{" + nameof(DebuggerDisplayString) + "}")]

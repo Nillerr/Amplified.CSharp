@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;net452</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Amplified.CSharp</AssemblyName>
     <PackageId>Amplified.CSharp</PackageId>
@@ -21,11 +21,6 @@
     <Version>2.0.1</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.1.0" />
   </ItemGroup>

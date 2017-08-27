@@ -33,7 +33,7 @@ namespace Amplified.CSharp
         public async Task Some_Map_Action_T_Lambda_ReturnsSomeUnit()
         {
             var source = AsyncMaybe<int>.Some(5);
-            var result = await source.MapAsync(some => Task.CompletedTask);
+            var result = await source.MapAsync(some => TaskCache.CompletedTask);
             var unit = result.MustBeSome();
             Assert.IsType<Unit>(unit);
         }
@@ -41,7 +41,7 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Some_Map_Action_T_MethodReference_ReturnsSomeUnit()
         {
-            Task Foo(int it) => Task.CompletedTask;
+            Task Foo(int it) => TaskCache.CompletedTask;
             var source = AsyncMaybe<int>.Some(5);
             var result = await source.MapAsync(Foo);
             var unit = result.MustBeSome();
@@ -53,7 +53,7 @@ namespace Amplified.CSharp
         {
             var rec = new Recorder();
             var source = AsyncMaybe<int>.Some(5);
-            var result = await source.MapAsync(rec.Record((int it) => Task.CompletedTask));
+            var result = await source.MapAsync(rec.Record((int it) => TaskCache.CompletedTask));
             result.MustBeSome();
             rec.MustHaveExactly(1.Invocations());
         }
@@ -63,7 +63,7 @@ namespace Amplified.CSharp
         {
             var rec = new Recorder();
             var source = AsyncMaybe<int>.None();
-            var result = await source.MapAsync(rec.Record((int it) => Task.CompletedTask));
+            var result = await source.MapAsync(rec.Record((int it) => TaskCache.CompletedTask));
             result.MustBeNone();
             rec.MustHaveExactly(0.Invocations());
         }
@@ -72,7 +72,7 @@ namespace Amplified.CSharp
         public async Task None_Map_Action_T__ReturnsNoneUnit()
         {
             var source = AsyncMaybe<int>.None();
-            var result = await source.MapAsync(it => Task.CompletedTask);
+            var result = await source.MapAsync(it => TaskCache.CompletedTask);
             result.MustBeNone();
         }
         
@@ -84,7 +84,7 @@ namespace Amplified.CSharp
         public async Task Some_Map_ActionLambda_ReturnsSomeUnit()
         {
             var source = AsyncMaybe<int>.Some(5);
-            var result = await source.MapAsync(() => Task.CompletedTask);
+            var result = await source.MapAsync(() => TaskCache.CompletedTask);
             var unit = result.MustBeSome();
             Assert.IsType<Unit>(unit);
         }
@@ -92,7 +92,7 @@ namespace Amplified.CSharp
         [Fact]
         public async Task Some_Map_ActionMethodReference_ReturnsSomeUnit()
         {
-            Task Foo() => Task.CompletedTask;
+            Task Foo() => TaskCache.CompletedTask;
             var source = AsyncMaybe<int>.Some(5);
             var result = await source.MapAsync(Foo);
             var unit = result.MustBeSome();
@@ -104,7 +104,7 @@ namespace Amplified.CSharp
         {
             var rec = new Recorder();
             var source = AsyncMaybe<int>.Some(5);
-            var result = await source.MapAsync(rec.Record(() => Task.CompletedTask));
+            var result = await source.MapAsync(rec.Record(() => TaskCache.CompletedTask));
             result.MustBeSome();
             rec.MustHaveExactly(1.Invocations());
         }
@@ -114,7 +114,7 @@ namespace Amplified.CSharp
         {
             var rec = new Recorder();
             var source = AsyncMaybe<int>.None();
-            var result = await source.MapAsync(rec.Record(() => Task.CompletedTask));
+            var result = await source.MapAsync(rec.Record(() => TaskCache.CompletedTask));
             result.MustBeNone();
             rec.MustHaveExactly(0.Invocations());
         }
@@ -123,7 +123,7 @@ namespace Amplified.CSharp
         public async Task None_Map_Action_ReturnsNoneUnit()
         {
             var source = AsyncMaybe<int>.None();
-            var result = await source.MapAsync(() => Task.CompletedTask);
+            var result = await source.MapAsync(() => TaskCache.CompletedTask);
             result.MustBeNone();
         }
         
