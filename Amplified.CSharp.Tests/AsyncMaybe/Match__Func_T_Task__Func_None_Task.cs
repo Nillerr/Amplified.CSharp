@@ -12,7 +12,7 @@ namespace Amplified.CSharp
             var some = 0;
             var none = 0;
             var source = AsyncMaybe<int>.None();
-            await source.Match(_ => { some++; return Task.CompletedTask; }, _ => { none++; return Task.CompletedTask; });
+            await source.Match(_ => { some++; return TaskCache.CompletedTask; }, _ => { none++; return TaskCache.CompletedTask; });
             Assert.Equal(0, some);
             Assert.Equal(1, none);
         }
@@ -23,7 +23,7 @@ namespace Amplified.CSharp
             var some = 0;
             var none = 0;
             var source = AsyncMaybe<int>.Some(1);
-            await source.Match(_ => { some++; return Task.CompletedTask; }, _ => { none++; return Task.CompletedTask; });
+            await source.Match(_ => { some++; return TaskCache.CompletedTask; }, _ => { none++; return TaskCache.CompletedTask; });
             Assert.Equal(1, some);
             Assert.Equal(0, none);
         }
@@ -34,10 +34,10 @@ namespace Amplified.CSharp
             var some = 0;
             var none = 0;
             
-            Task MatchNone(None _) { none++; return Task.CompletedTask; }
+            Task MatchNone(None _) { none++; return TaskCache.CompletedTask; }
             
             var source = AsyncMaybe<int>.Some(1);
-            await source.Match(someAsync: _ => { some++; return Task.CompletedTask; }, noneAsync: MatchNone);
+            await source.Match(someAsync: _ => { some++; return TaskCache.CompletedTask; }, noneAsync: MatchNone);
             Assert.Equal(1, some);
             Assert.Equal(0, none);
         }
@@ -48,10 +48,10 @@ namespace Amplified.CSharp
             var some = 0;
             var none = 0;
             
-            Task MatchSome(int _) { some++; return Task.CompletedTask; }
+            Task MatchSome(int _) { some++; return TaskCache.CompletedTask; }
             
             var source = AsyncMaybe<int>.Some(1);
-            await source.Match(someAsync: MatchSome, noneAsync: _ => { none++; return Task.CompletedTask; });
+            await source.Match(someAsync: MatchSome, noneAsync: _ => { none++; return TaskCache.CompletedTask; });
             Assert.Equal(1, some);
             Assert.Equal(0, none);
         }
@@ -62,8 +62,8 @@ namespace Amplified.CSharp
             var some = 0;
             var none = 0;
             
-            Task MatchSome(int _) { some++; return Task.CompletedTask; }
-            Task MatchNone(None _) { none++; return Task.CompletedTask; }
+            Task MatchSome(int _) { some++; return TaskCache.CompletedTask; }
+            Task MatchNone(None _) { none++; return TaskCache.CompletedTask; }
             
             var source = AsyncMaybe<int>.Some(1);
             await source.Match(someAsync: MatchSome, noneAsync: MatchNone);

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Amplified.CSharp.Util;
 using Xunit;
 
 namespace Amplified.CSharp

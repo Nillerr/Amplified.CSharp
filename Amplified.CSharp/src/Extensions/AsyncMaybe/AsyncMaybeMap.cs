@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions
 {
