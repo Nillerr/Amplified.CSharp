@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Amplified.CSharp.Extensions;
-using Amplified.CSharp.Util;
 using Xunit;
 
 namespace Amplified.CSharp

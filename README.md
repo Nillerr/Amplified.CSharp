@@ -1,4 +1,7 @@
 # Amplified.CSharp
+# Amplified.Monads.Maybe
+
+Part of __Amplified.Monads__
 
 ![NuGet](https://img.shields.io/nuget/v/Amplified.CSharp.svg) ![Build status](https://ci.appveyor.com/api/projects/status/penxirmcfh2mhjxt/branch/master?svg=true)
 
