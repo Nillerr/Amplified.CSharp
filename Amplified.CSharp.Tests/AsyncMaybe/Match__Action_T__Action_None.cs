@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Xunit;
-using static Amplified.CSharp.Units;
 
 namespace Amplified.CSharp
 {
@@ -10,59 +9,66 @@ namespace Amplified.CSharp
         [Fact]
         public async Task NoneValue_WithLambdas()
         {
-            var invocations = 0;
+            var some = 0;
+            var none = 0;
             var source = AsyncMaybe<int>.None();
-            var result = await source.Match(some => { }, none => { invocations++; });
-            Assert.Equal(Unit(), result);
-            Assert.Equal(1, invocations);
+            await source.Match(_ => { some++; }, _ => { none++; });
+            Assert.Equal(0, some);
+            Assert.Equal(1, none);
         }
         
         [Fact]
         public async Task WithLambdas()
         {
+            var some = 0;
+            var none = 0;
             var source = AsyncMaybe<int>.Some(1);
-            var result = await source.Match(some => { }, none => { });
-            Assert.Equal(Unit(), result);
+            await source.Match(_ => { some++; }, _ => { none++; });
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
         
         [Fact]
         public async Task WithSomeLambda_AndNoneReference()
         {
-            void MatchNone(None none)
-            {
-            }
+            var some = 0;
+            var none = 0;
             
-            var source = AsyncMaybe<int>.Some(1);
-            var result = await source.Match(some => { }, none: MatchNone);
-            Assert.Equal(Unit(), result);
+            void MatchNone(None _) => none++;
+
+            var source = AsyncMaybe<int>.None();
+            await source.Match(_ => { some++; }, none: MatchNone);
+            Assert.Equal(0, some);
+            Assert.Equal(1, none);
         }
         
         [Fact]
         public async Task WithSomeReference_AndNoneLambda()
         {
-            void MatchSome(int some)
-            {
-            }
+            var some = 0;
+            var none = 0;
+            
+            void MatchSome(int _) => some++; 
             
             var source = AsyncMaybe<int>.Some(1);
-            var result = await source.Match(some: MatchSome, none: () => { });
-            Assert.Equal(Unit(), result);
+            await source.Match(some: MatchSome, none: () => { none++; });
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
         
         [Fact]
         public async Task WithReferences()
         {
-            void MatchSome(int some)
-            {
-            }
+            var some = 0;
+            var none = 0;
 
-            void MatchNone(None none)
-            {
-            }
+            void MatchSome(int _) => some++;
+            void MatchNone(None _) => none++;
             
             var source = AsyncMaybe<int>.Some(1);
-            var result = await source.Match(some: MatchSome, none: MatchNone);
-            Assert.Equal(Unit(), result);
+            await source.Match(some: MatchSome, none: MatchNone);
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
     }
 }

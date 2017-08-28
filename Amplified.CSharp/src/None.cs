@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Amplified.CSharp.Internal;
 using JetBrains.Annotations;
-using static Amplified.CSharp.Units;
 
 namespace Amplified.CSharp
 {
@@ -29,18 +28,14 @@ namespace Amplified.CSharp
             return none();
         }
         
-        [Pure]
-        public Unit Match([InstantHandle, NotNull] Action<None> none)
+        public void Match([InstantHandle, NotNull] Action<None> none)
         {
             none(this);
-            return Unit();
         }
         
-        [Pure]
-        public Unit Match([InstantHandle, NotNull] Action none)
+        public void Match([InstantHandle, NotNull] Action none)
         {
             none();
-            return Unit();
         }
 
         [Pure]

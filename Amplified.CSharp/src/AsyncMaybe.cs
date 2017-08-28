@@ -106,7 +106,7 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<Unit> Match(
+        public Task Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action<None> none
         )
@@ -115,7 +115,7 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<Unit> Match(
+        public Task Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action none
         )
@@ -124,7 +124,7 @@ namespace Amplified.CSharp
         }
 
         [NotNull]
-        public Task<Unit> Match(
+        public Task Match(
             [InstantHandle, NotNull] Func<T, Task> someAsync,
             [InstantHandle, NotNull] Func<None, Task> noneAsync
         )
@@ -132,14 +132,14 @@ namespace Amplified.CSharp
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+                        async some => await someAsync(some),
                         none => Task.FromResult(noneAsync(none))
                     )
             );
         }
 
         [NotNull]
-        public Task<Unit> Match(
+        public Task Match(
             [InstantHandle, NotNull] Func<T, Task> someAsync,
             [InstantHandle, NotNull] Func<Task> noneAsync
         )
@@ -147,7 +147,7 @@ namespace Amplified.CSharp
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+                        async some => await someAsync(some),
                         () => Task.FromResult(noneAsync())
                     )
             );

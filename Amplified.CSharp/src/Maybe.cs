@@ -88,7 +88,7 @@ namespace Amplified.CSharp
             return IsSome ? some(_value) : none();
         }
 
-        public Unit Match(
+        public void Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action<None> none
         )
@@ -97,11 +97,9 @@ namespace Amplified.CSharp
                 some(_value);
             else
                 none(default(None));
-            
-            return default(Unit);
         }
 
-        public Unit Match(
+        public void Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action none
         )
@@ -110,32 +108,24 @@ namespace Amplified.CSharp
                 some(_value);
             else
                 none();
-            
-            return default(Unit);
         }
 
-        public Unit MatchSome([InstantHandle, NotNull] Action<T> some)
+        public void MatchSome([InstantHandle, NotNull] Action<T> some)
         {
             if (IsSome)
                 some(_value);
-
-            return default(Unit);
         }
 
-        public Unit MatchNone([InstantHandle, NotNull] Action<None> none)
+        public void MatchNone([InstantHandle, NotNull] Action<None> none)
         {
             if (IsNone)
                 none(default(None));
-
-            return default(Unit);
         }
 
-        public Unit MatchNone([InstantHandle, NotNull] Action none)
+        public void MatchNone([InstantHandle, NotNull] Action none)
         {
             if (IsNone)
                 none();
-
-            return default(Unit);
         }
 
         [Pure]

@@ -1,5 +1,4 @@
 using Xunit;
-using static Amplified.CSharp.Units;
 
 namespace Amplified.CSharp
 {
@@ -9,21 +8,25 @@ namespace Amplified.CSharp
         [Fact]
         public void WithLambda()
         {
+            var invocations = 0;
+            
             var source = new None();
-            var result = source.Match(() => { });
-            Assert.Equal(Unit(), result);
+            source.Match(() => { invocations++; });
+            
+            Assert.Equal(1, invocations);
         }
         
         [Fact]
         public void WithMethodReference()
         {
-            void Match()
-            {
-            }
+            var invocations = 0;
+            
+            void Match() => invocations++;
 
             var source = new None();
-            var result = source.Match(Match);
-            Assert.Equal(Unit(), result);
+            source.Match(Match);
+            
+            Assert.Equal(1, invocations);
         }
     }
 }

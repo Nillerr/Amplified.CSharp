@@ -10,8 +10,7 @@ namespace Amplified.CSharp
         {
             var invocations = 0;
             var source = Maybe<int>.None();
-            var result = source.MatchNone(() => { invocations++; });
-            Assert.IsType<Unit>(result);
+            source.MatchNone(() => { invocations++; });
             Assert.Equal(1, invocations);
         }
         
@@ -20,8 +19,7 @@ namespace Amplified.CSharp
         {
             var invocations = 0;
             var source = Maybe<int>.Some(23);
-            var result = source.MatchNone(() => { invocations++; });
-            Assert.IsType<Unit>(result);
+            source.MatchNone(() => { invocations++; });
             Assert.Equal(0, invocations);
         }
     }

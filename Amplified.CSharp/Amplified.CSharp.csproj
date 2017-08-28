@@ -33,7 +33,6 @@
     <Folder Include="src\Extensions\Nullable" />
     <Folder Include="src\Extensions\task" />
     <Folder Include="src\Extensions\Task" />
-    <Folder Include="src\Extensions\Unit" />
     <Folder Include="src\Internal\Extensions" />
   </ItemGroup>
 </Project>

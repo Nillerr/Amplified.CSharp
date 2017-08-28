@@ -8,49 +8,60 @@ namespace Amplified.CSharp
         [Fact]
         public void WithLambdas()
         {
+            var some = 0;
+            var none = 0;
+            
             var source = Maybe<int>.Some(1);
-            var result = source.Match(some => { }, () => { });
-            Assert.Equal(Units.Unit(), result);
+            source.Match(_ => { some++; }, () => { none++; });
+            
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
         
         [Fact]
         public void WithSomeLambda_AndNoneReference()
         {
-            void MatchNone()
-            {
-            }
+            var some = 0;
+            var none = 0;
+
+            void MatchNone() => none++;
             
             var source = Maybe<int>.Some(1);
-            var result = source.Match(some => { }, MatchNone);
-            Assert.Equal(Units.Unit(), result);
+            source.Match(_ => { some++; }, MatchNone);
+
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
         
         [Fact]
         public void WithSomeReference_AndNoneLambda()
         {
-            void MatchSome(int some)
-            {
-            }
+            var some = 0;
+            var none = 0;
+
+            void MatchSome(int _) => some++;
             
             var source = Maybe<int>.Some(1);
-            var result = source.Match(MatchSome, () => { });
-            Assert.Equal(Units.Unit(), result);
+            source.Match(MatchSome, () => { none++; });
+
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
         
         [Fact]
         public void WithReferences()
         {
-            void MatchSome(int some)
-            {
-            }
+            var some = 0;
+            var none = 0;
 
-            void MatchNone()
-            {
-            }
+            void MatchSome(int _) => some++;
+            void MatchNone() => none++;
             
             var source = Maybe<int>.Some(1);
-            var result = source.Match(MatchSome, MatchNone);
-            Assert.Equal(Units.Unit(), result);
+            source.Match(MatchSome, MatchNone);
+
+            Assert.Equal(1, some);
+            Assert.Equal(0, none);
         }
     }
 }

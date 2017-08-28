@@ -28,28 +28,6 @@ namespace Amplified.CSharp
         }
         
         #endregion
-
-        #region Select<T>(Action<T> selector)
-
-        [Fact]
-        public async Task Some_Select_ReturnsSameAsMap()
-        {
-            var source = AsyncMaybe<int>.Some(5);
-            var where = await source.Select(it => { });
-            var map = await source.Map(it => { });
-            Assert.Equal(where, map);
-        }
-
-        [Fact]
-        public async Task None_Select_ReturnsSameAsMap()
-        {
-            var source = AsyncMaybe<int>.None();
-            var where = await source.Select(it => { });
-            var map = await source.Map(it => { });
-            Assert.Equal(where, map);
-        }
-        
-        #endregion
         
         #region SelectAsync<T, TResult>(Func<T, Task<TResult>> selector)
 

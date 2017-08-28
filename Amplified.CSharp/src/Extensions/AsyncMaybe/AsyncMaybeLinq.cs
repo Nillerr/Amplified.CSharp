@@ -9,11 +9,6 @@ namespace Amplified.CSharp.Extensions
             this AsyncMaybe<T> source,
             [NotNull] Func<T, TResult> mapper
         ) => source.Map(mapper);
-        
-        public static AsyncMaybe<Unit> Select<T>(
-            this AsyncMaybe<T> source,
-            [NotNull] Action<T> mapper
-        ) => source.Map(mapper);
 
         public static AsyncMaybe<T> Where<T>(
             this AsyncMaybe<T> source,
