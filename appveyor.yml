@@ -13,7 +13,7 @@ before_build:
 build_script:
  - msbuild /verbosity:quiet "Amplified.CSharp"
 test_script:
- - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Debug\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -output:"coverage.xml" -filter:"+[Amplified.CSharp*]* -[Amplified.CSharp.Tests*]*"
+ - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"Amplified.CSharp.Tests\bin\Release\netcoreapp1.1\Amplified.CSharp.Tests.dll -noshadow" -output:"coverage.xml" -filter:"+[Amplified.CSharp*]* -[Amplified.CSharp.Tests*]*"
 after_test:
  - ps: |
     $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
