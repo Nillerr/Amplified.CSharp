@@ -2,7 +2,6 @@
 using Amplified.CSharp.Extensions;
 using Amplified.CSharp.Util;
 using Xunit;
-using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp
 {

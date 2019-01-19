@@ -15,6 +15,7 @@ namespace Amplified.CSharp
     ///     for other types by implementing <c>ICanBeNone</c> or <c>IMaybe</c>.
     /// </remarks>
     [DebuggerStepThrough]
+    [DebuggerDisplay("None")]
     public struct None : IEquatable<None>, IEquatable<IMaybe>
     {
         [Pure]
@@ -93,7 +94,7 @@ namespace Amplified.CSharp
         [Pure]
         public override string ToString()
         {
-            return nameof(None);
+            return string.Empty;
         }
     }
 }

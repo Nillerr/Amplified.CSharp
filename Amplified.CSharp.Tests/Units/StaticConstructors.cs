@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -30,29 +29,31 @@ namespace Amplified.CSharp
         [Fact]
         public void WithMethodReferenceAsAction_ReturnsFunc_Unit()
         {
-            void Foo() => Console.WriteLine("bar");
+            var output = string.Empty;
+            void Foo() => output = "bar";
             var result = Units.Unit(Foo);
             Assert.Equal(result, default(Unit));
+            Assert.Equal("bar", output);
         }
 
         [Fact]
         public async Task WithLambdaAsFunc_Task_ReturnsFunc_Task_Unit()
         {
-            var result = await Units.UnitAsync(() => Task.CompletedTask);
+            var result = await Units.UnitAsync(() => TaskCache.CompletedTask);
             Assert.Equal(result, default(Unit));
         }
 
         [Fact]
         public async Task WithAsyncLambdaAsFunc_Task_ReturnsFunc_Task_Unit()
         {
-            var result = await Units.UnitAsync(async () => await Task.CompletedTask);
+            var result = await Units.UnitAsync(async () => await TaskCache.CompletedTask);
             Assert.Equal(result, default(Unit));
         }
 
         [Fact]
         public async Task WithMethodReferenceAsFunc_Task_ReturnsFunc_Task_Unit()
         {
-            Task Foo() => Task.CompletedTask;
+            Task Foo() => TaskCache.CompletedTask;
             var result = await Units.UnitAsync(Foo);
             Assert.Equal(result, default(Unit));
         }

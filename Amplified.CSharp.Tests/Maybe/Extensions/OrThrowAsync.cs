@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Amplified.CSharp.Extensions;
 using Amplified.CSharp.Util;
