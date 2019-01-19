@@ -123,7 +123,7 @@ namespace Amplified.CSharp
         ///   </para>
         /// </summary>
         /// <param name="some">Action to invoke if the <c>Maybe</c> is <c>Some</c>.</param>
-        /// <param name="none">Actiono to invoke if the <c>Maybe</c> is <c>None</c>.</param>
+        /// <param name="none">Action to invoke if the <c>Maybe</c> is <c>None</c>.</param>
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action<None> none
@@ -144,7 +144,7 @@ namespace Amplified.CSharp
         ///   </para>
         /// </summary>
         /// <param name="some">Action to invoke if the <c>Maybe</c> is <c>Some</c>.</param>
-        /// <param name="none">Actiono to invoke if the <c>Maybe</c> is <c>None</c>.</param>
+        /// <param name="none">Action to invoke if the <c>Maybe</c> is <c>None</c>.</param>
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action none
@@ -249,8 +249,8 @@ namespace Amplified.CSharp
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is None && Equals((None) obj));
+            return (obj is Maybe<T> maybe && Equals(maybe)) ||
+                   (obj is None none && Equals(none));
         }
 
         /// <summary>Returns the hash code for this instance.</summary>
