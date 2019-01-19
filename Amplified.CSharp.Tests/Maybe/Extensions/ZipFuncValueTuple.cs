@@ -5,14 +5,13 @@ using Xunit;
 namespace Amplified.CSharp
 {
     // ReSharper disable once InconsistentNaming
-    public class Maybe__ZipValueTuple
+    public class Maybe__ZipFuncValueTuple
     {
         [Fact]
         public void OnNone_WithOtherNone_ReturnsNone()
         {
             var source = Maybe<int>.None();
-            var other = Maybe<int>.None();
-            var joined = source.Zip(other);
+            var joined = source.Zip(s => Maybe<int>.None());
             joined.MustBeNone();
         }
 
@@ -20,8 +19,7 @@ namespace Amplified.CSharp
         public void OnSome_WithOtherNone_ReturnsNone()
         {
             var source = Maybe<int>.Some(1);
-            var other = Maybe<int>.None();
-            var joined = source.Zip(other);
+            var joined = source.Zip(s => Maybe<int>.None());
             joined.MustBeNone();
         }
 
@@ -29,8 +27,7 @@ namespace Amplified.CSharp
         public void OnNone_WithOtherSome_ReturnsNone()
         {
             var source = Maybe<int>.None();
-            var other = Maybe<int>.Some(1);
-            var joined = source.Zip(other);
+            var joined = source.Zip(s => Maybe<int>.Some(1));
             joined.MustBeNone();
         }
 
@@ -39,8 +36,7 @@ namespace Amplified.CSharp
         {
             var expected = (1, 6);
             var source = Maybe<int>.Some(1);
-            var other = Maybe<int>.Some(6);
-            var joined = source.Zip(other);
+            var joined = source.Zip(s => Maybe<int>.Some(6));
             var result = joined.MustBeSome();
             Assert.Equal(expected, result);
         }

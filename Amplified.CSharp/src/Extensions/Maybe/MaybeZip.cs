@@ -14,8 +14,8 @@ namespace Amplified.CSharp.Extensions
             if (zipper == null)
                 throw new ArgumentNullException(nameof(zipper));
             
-            return first.FlatMap<T1, TResult>(
-                some1 => second.Map<T2, TResult>(
+            return first.FlatMap(
+                some1 => second.Map(
                     some2 => zipper(some1, some2)
                 )
             );
@@ -31,9 +31,9 @@ namespace Amplified.CSharp.Extensions
             if (zipper == null)
                 throw new ArgumentNullException(nameof(zipper));
             
-            return first.FlatMap<T1, TResult>(
-                some1 => second.FlatMap<T2, TResult>(
-                    some2 => third.Map<T3, TResult>(
+            return first.FlatMap(
+                some1 => second.FlatMap(
+                    some2 => third.Map(
                         some3 => zipper(some1, some2, some3)
                     )
                 )
@@ -51,10 +51,10 @@ namespace Amplified.CSharp.Extensions
             if (zipper == null)
                 throw new ArgumentNullException(nameof(zipper));
             
-            return first.FlatMap<T1, TResult>(
-                some1 => second.FlatMap<T2, TResult>(
-                    some2 => third.FlatMap<T3, TResult>(
-                        some3 => fourth.Map<T4, TResult>(
+            return first.FlatMap(
+                some1 => second.FlatMap(
+                    some2 => third.FlatMap(
+                        some3 => fourth.Map(
                             some4 => zipper(some1, some2, some3, some4)
                         )
                     )
