@@ -132,7 +132,9 @@ namespace Amplified.CSharp
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+#pragma warning disable 4014
+                        some => someAsync(some).WithResult(default(Unit)),
+#pragma warning restore 4014
                         none => Task.FromResult(noneAsync(none))
                     )
             );
@@ -147,7 +149,9 @@ namespace Amplified.CSharp
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+#pragma warning disable 4014
+                        some => someAsync(some).WithResult(default(Unit)),
+#pragma warning restore 4014
                         () => Task.FromResult(noneAsync())
                     )
             );
