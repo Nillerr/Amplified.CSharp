@@ -17,7 +17,7 @@ build_script:
 test_script:
  - dotnet restore Amplified.CSharp.Tests
  - dotnet build Amplified.CSharp.Tests
- - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj6
+ - dotnet test Amplified.CSharp.Tests/Amplified.CSharp.Tests.csproj
 
 nuget:
   project_feed: true
