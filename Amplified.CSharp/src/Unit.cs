@@ -34,7 +34,7 @@ namespace Amplified.CSharp
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            return obj is Unit && Equals((Unit) obj);
+            return obj is Unit;
         }
 
         public override int GetHashCode()

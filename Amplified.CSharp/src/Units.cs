@@ -1,7 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Amplified.CSharp.Internal.Extensions;
+using Amplified.CSharp.Extensions;
+using Amplified.CSharp.Extensions.Continuations;
 
 namespace Amplified.CSharp
 {

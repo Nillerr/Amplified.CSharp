@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Amplified.CSharp.Internal.Extensions;
+using Amplified.CSharp.Extensions.Continuations;
 using static Amplified.CSharp.Maybe;
 
 namespace Amplified.CSharp.Extensions

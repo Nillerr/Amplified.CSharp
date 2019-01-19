@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Amplified.CSharp.Internal.Extensions
+namespace Amplified.CSharp.Extensions.Continuations
 {
-    internal static class TaskExtensions
+    public static class TaskContinuations
     {
         public static async Task<TResult> Then<T, TResult>(this Task<T> source, Func<T, Task<TResult>> async)
         {
@@ -27,6 +27,13 @@ namespace Amplified.CSharp.Internal.Extensions
         {
             await source.ConfigureAwait(false);
             return result;
+        }
+
+        public static async Task<Unit> Then<T>(this Task<T> task, Action<T> continuation)
+        {
+            var result = await task.ConfigureAwait(false);
+            continuation(result);
+            return Unit.Instance;
         }
     }
 }

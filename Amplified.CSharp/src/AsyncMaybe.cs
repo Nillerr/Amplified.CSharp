@@ -2,7 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Amplified.CSharp.Internal.Extensions;
+using Amplified.CSharp.Extensions;
+using Amplified.CSharp.Extensions.Continuations;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp

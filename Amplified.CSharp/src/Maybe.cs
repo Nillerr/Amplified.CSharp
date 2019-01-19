@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using Amplified.CSharp.ComponentModel;
+using Amplified.CSharp.Extensions.Continuations;
 using Amplified.CSharp.Internal;
-using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp

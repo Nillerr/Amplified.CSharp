@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;netstandard2.0;net452</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Amplified.CSharp</AssemblyName>
     <PackageId>Amplified.CSharp</PackageId>
@@ -23,6 +23,9 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.1.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="src\Extensions\AsyncMaybe\Async" />
     <Folder Include="src\Extensions\Enumerable" />
@@ -30,8 +33,6 @@
     <Folder Include="src\Extensions\None" />
     <Folder Include="src\Extensions\Nullable" />
     <Folder Include="src\Extensions\task" />
-    <Folder Include="src\Extensions\Task" />
     <Folder Include="src\Extensions\Unit" />
-    <Folder Include="src\Internal\Extensions" />
   </ItemGroup>
 </Project>
