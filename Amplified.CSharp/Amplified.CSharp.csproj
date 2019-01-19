@@ -27,9 +27,7 @@
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\Extensions\AsyncMaybe\Async" />
     <Folder Include="src\Extensions\Enumerable" />
-    <Folder Include="src\Extensions\Maybe\Async" />
     <Folder Include="src\Extensions\None" />
     <Folder Include="src\Extensions\Nullable" />
     <Folder Include="src\Extensions\task" />
