@@ -20,7 +20,7 @@ namespace Amplified.CSharp
     /// <typeparam name="T"></typeparam>
     [TypeConverter(typeof(MaybeConverter))]
     [DebuggerStepThrough]
-    [DebuggerDisplay("{" + nameof(DebuggerDisplayString) + "}")]
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
         /// <summary>
@@ -41,7 +41,7 @@ namespace Amplified.CSharp
             return new Maybe<T>(value);
         }
 
-        private string DebuggerDisplayString => Match(some => $"Some({some})", none => none.ToString());
+        private string DebuggerDisplay => Match(some => $"Some({some})", none => "None");
 
         private readonly T _value;
 
