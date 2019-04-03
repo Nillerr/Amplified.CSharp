@@ -1,37 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net452</TargetFrameworks>
-    <DebugType>portable</DebugType>
-    <AssemblyName>Amplified.CSharp</AssemblyName>
+    <TargetFrameworks>netstandard1.5;netstandard2.0;net452</TargetFrameworks>
+    <RootNamespace>Amplified.CSharp</RootNamespace>
+    <Version>2.0.1</Version>
+    <IncludeSymbols>True</IncludeSymbols>
+    <IncludeSource>True</IncludeSource>
+    <Authors>Nicklas Jensen</Authors>
     <PackageId>Amplified.CSharp</PackageId>
     <PackageTags>Monad;Functional;Optional;Maybe;Option</PackageTags>
     <PackageProjectUrl>https://github.com/Nillerr/Amplified.CSharp</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Nillerr/Amplified.CSharp/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>Provides a set of monadic types for use with C#. These types provide null safety and functional chaining, to provider a functional-like programming style in C#. All the monads are structs, which enforces their non-null behaviour.</Description>
+    <Copyright>Copyright © 2016 Nicklas Jensen</Copyright>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Nillerr/Amplified.CSharp</RepositoryUrl>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
-    <Version>2.0.1</Version>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.1.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Extensions\AsyncMaybe\Async" />
-    <Folder Include="src\Extensions\Enumerable" />
-    <Folder Include="src\Extensions\Maybe\Async" />
-    <Folder Include="src\Extensions\None" />
-    <Folder Include="src\Extensions\Nullable" />
-    <Folder Include="src\Extensions\task" />
-    <Folder Include="src\Extensions\Task" />
-    <Folder Include="src\Extensions\Unit" />
-    <Folder Include="src\Internal\Extensions" />
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 </Project>

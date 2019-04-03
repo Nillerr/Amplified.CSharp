@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using Amplified.CSharp.ComponentModel;
+using Amplified.CSharp.Extensions.Continuations;
 using Amplified.CSharp.Internal;
-using Amplified.CSharp.Internal.Extensions;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp
@@ -20,7 +20,7 @@ namespace Amplified.CSharp
     /// <typeparam name="T"></typeparam>
     [TypeConverter(typeof(MaybeConverter))]
     [DebuggerStepThrough]
-    [DebuggerDisplay("{" + nameof(DebuggerDisplayString) + "}")]
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Maybe<T> : IMaybe, IEquatable<Maybe<T>>
     {
         /// <summary>
@@ -41,7 +41,7 @@ namespace Amplified.CSharp
             return new Maybe<T>(value);
         }
 
-        private string DebuggerDisplayString => Match(some => $"Some({some})", none => none.ToString());
+        private string DebuggerDisplay => Match(some => $"Some({some})", none => "None");
 
         private readonly T _value;
 
@@ -123,7 +123,7 @@ namespace Amplified.CSharp
         ///   </para>
         /// </summary>
         /// <param name="some">Action to invoke if the <c>Maybe</c> is <c>Some</c>.</param>
-        /// <param name="none">Actiono to invoke if the <c>Maybe</c> is <c>None</c>.</param>
+        /// <param name="none">Action to invoke if the <c>Maybe</c> is <c>None</c>.</param>
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action<None> none
@@ -144,7 +144,7 @@ namespace Amplified.CSharp
         ///   </para>
         /// </summary>
         /// <param name="some">Action to invoke if the <c>Maybe</c> is <c>Some</c>.</param>
-        /// <param name="none">Actiono to invoke if the <c>Maybe</c> is <c>None</c>.</param>
+        /// <param name="none">Action to invoke if the <c>Maybe</c> is <c>None</c>.</param>
         public Unit Match(
             [InstantHandle, NotNull] Action<T> some,
             [InstantHandle, NotNull] Action none
@@ -249,8 +249,8 @@ namespace Amplified.CSharp
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return (obj is Maybe<T> && Equals((Maybe<T>) obj)) ||
-                   (obj is None && Equals((None) obj));
+            return (obj is Maybe<T> maybe && Equals(maybe)) ||
+                   (obj is None none && Equals(none));
         }
 
         /// <summary>Returns the hash code for this instance.</summary>

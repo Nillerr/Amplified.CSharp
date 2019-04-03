@@ -69,8 +69,8 @@ namespace Amplified.CSharp
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return (obj is None && Equals((None) obj)) ||
-                   (obj is IMaybe && Equals((IMaybe) obj));
+            return obj is None ||
+                   (obj is IMaybe maybe && Equals(maybe));
         }
 
         [Pure]

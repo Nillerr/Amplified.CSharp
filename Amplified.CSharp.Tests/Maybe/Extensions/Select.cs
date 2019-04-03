@@ -12,10 +12,10 @@ namespace Amplified.CSharp
             const int value = 3;
             var source = Maybe<int>.Some(value);
             
-            var whered = source.Select(v => v + 1);
-            var filtered = source.Map(v => v + 1);
+            var selected = source.Select(v => v + 1);
+            var mapped = source.Map(v => v + 1);
 
-            Assert.Equal(whered, filtered);
+            Assert.Equal(selected, mapped);
         }
         
         [Fact]
@@ -23,10 +23,10 @@ namespace Amplified.CSharp
         {
             var source = Maybe<int>.None();
             
-            var whered = source.Select(v => true);
-            var filtered = source.Map(v => true);
+            var selected = source.Select(v => true);
+            var mapped = source.Map(v => true);
 
-            Assert.Equal(whered, filtered);
+            Assert.Equal(selected, mapped);
         }
     }
 }

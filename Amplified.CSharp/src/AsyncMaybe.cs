@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Amplified.CSharp.Internal.Extensions;
+using Amplified.CSharp.Extensions.Continuations;
 using JetBrains.Annotations;
 
 namespace Amplified.CSharp
@@ -35,8 +35,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, TResult> some,
-            [InstantHandle, NotNull] Func<None, TResult> none
+            [NotNull] Func<T, TResult> some,
+            [NotNull] Func<None, TResult> none
         )
         {
             return GetTask().Then(result => result.Match(some, none));
@@ -44,8 +44,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, TResult> some,
-            [InstantHandle, NotNull] Func<TResult> none
+            [NotNull] Func<T, TResult> some,
+            [NotNull] Func<TResult> none
         )
         {
             return GetTask().Then(result => result.Match(some, none));
@@ -53,8 +53,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> MatchAsync<TResult>(
-            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
-            [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
+            [NotNull] Func<T, Task<TResult>> someAsync,
+            [NotNull] Func<None, Task<TResult>> noneAsync
         )
         {
             return GetTask().Then(result => result.Match(someAsync, noneAsync));
@@ -62,8 +62,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> MatchAsync<TResult>(
-            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
-            [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
+            [NotNull] Func<T, Task<TResult>> someAsync,
+            [NotNull] Func<Task<TResult>> noneAsync
         )
         {
             return GetTask().Then(result => result.Match(someAsync, noneAsync));
@@ -71,8 +71,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
-            [InstantHandle, NotNull] Func<None, TResult> none
+            [NotNull] Func<T, Task<TResult>> someAsync,
+            [NotNull] Func<None, TResult> none
         )
         {
             return GetTask().Then(result => result.Match(someAsync, n => Task.FromResult(none(n))));
@@ -80,8 +80,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, Task<TResult>> someAsync,
-            [InstantHandle, NotNull] Func<TResult> none
+            [NotNull] Func<T, Task<TResult>> someAsync,
+            [NotNull] Func<TResult> none
         )
         {
             return GetTask().Then(result => result.Match(someAsync, n => Task.FromResult(none())));
@@ -89,8 +89,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, TResult> some,
-            [InstantHandle, NotNull] Func<None, Task<TResult>> noneAsync
+            [NotNull] Func<T, TResult> some,
+            [NotNull] Func<None, Task<TResult>> noneAsync
         )
         {
             return GetTask().Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));
@@ -98,8 +98,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<TResult> Match<TResult>(
-            [InstantHandle, NotNull] Func<T, TResult> some,
-            [InstantHandle, NotNull] Func<Task<TResult>> noneAsync
+            [NotNull] Func<T, TResult> some,
+            [NotNull] Func<Task<TResult>> noneAsync
         )
         {
             return GetTask().Then(result => result.Match(s => Task.FromResult(some(s)), noneAsync));
@@ -107,8 +107,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<Unit> Match(
-            [InstantHandle, NotNull] Action<T> some,
-            [InstantHandle, NotNull] Action<None> none
+            [NotNull] Action<T> some,
+            [NotNull] Action<None> none
         )
         {
             return GetTask().Then(result => result.Match(some, none));
@@ -116,8 +116,8 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<Unit> Match(
-            [InstantHandle, NotNull] Action<T> some,
-            [InstantHandle, NotNull] Action none
+            [NotNull] Action<T> some,
+            [NotNull] Action none
         )
         {
             return GetTask().Then(result => result.Match(some, none));
@@ -125,14 +125,16 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<Unit> Match(
-            [InstantHandle, NotNull] Func<T, Task> someAsync,
-            [InstantHandle, NotNull] Func<None, Task> noneAsync
+            [NotNull] Func<T, Task> someAsync,
+            [NotNull] Func<None, Task> noneAsync
         )
         {
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+#pragma warning disable 4014
+                        some => someAsync(some).WithResult(default(Unit)),
+#pragma warning restore 4014
                         none => Task.FromResult(noneAsync(none))
                     )
             );
@@ -140,14 +142,16 @@ namespace Amplified.CSharp
 
         [NotNull]
         public Task<Unit> Match(
-            [InstantHandle, NotNull] Func<T, Task> someAsync,
-            [InstantHandle, NotNull] Func<Task> noneAsync
+            [NotNull] Func<T, Task> someAsync,
+            [NotNull] Func<Task> noneAsync
         )
         {
             return GetTask().Then(
                 result => result
                     .Match(
-                        async some => await someAsync(some).WithResult(default(Unit)),
+#pragma warning disable 4014
+                        some => someAsync(some).WithResult(default(Unit)),
+#pragma warning restore 4014
                         () => Task.FromResult(noneAsync())
                     )
             );
@@ -160,7 +164,7 @@ namespace Amplified.CSharp
 
         public static implicit operator AsyncMaybe<T>(None none)
         {
-            return new AsyncMaybe<T>(Task.FromResult(Maybe<T>.None()));
+            return new AsyncMaybe<T>(Task.FromResult((Maybe<T>) none));
         }
 
         public TaskAwaiter<Maybe<T>> GetAwaiter()
